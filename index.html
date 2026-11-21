@@ -74,6 +74,10 @@
   .hero-photo .cap .n{font-family:var(--serif);font-size:22px;margin-top:4px;color:var(--ink)}
   .hero-photo .cap .r{font-size:13px;color:#cfc5b8}
   .hero-photo .tagline{margin-top:14px;font-size:12px;color:var(--mute);letter-spacing:.04em}
+  .hero-facts{display:flex;flex-wrap:wrap;gap:10px 28px;margin:26px 0 0;padding:16px 0 0;border-top:1px solid var(--line);max-width:520px}
+  .hero-facts div{display:flex;flex-direction:column;gap:2px}
+  .hero-facts dt{font-size:11px;letter-spacing:.18em;color:var(--gold)}
+  .hero-facts dd{font-size:15px;color:#e4dbcf}
   .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin:56px auto 90px}
   .tile{background:var(--bg);border:0;text-align:left;padding:28px 24px 26px;cursor:pointer;transition:background .2s;display:flex;flex-direction:column;gap:6px;min-height:170px}
   .tile:hover{background:var(--bg2)}
@@ -104,8 +108,6 @@
   .stub .big{font-family:var(--latin);font-size:96px;line-height:1;color:var(--gold);margin:10px 0}
   .stub .small{font-size:14px;color:var(--mute)}
 
-  /* profile */
-  .profile{display:block;max-width:520px}
   .facts{list-style:none;border-top:1px solid var(--line)}
   .facts li{display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--line);font-size:15px}
   .facts li span:first-child{color:var(--mute)}
@@ -392,7 +394,6 @@
     .hero-photo{justify-self:start;max-width:320px}
     .now{grid-template-columns:1fr}
     .ticket{border-right:none;border-bottom:1px dashed #3a332d;padding:34px}
-    .profile{grid-template-columns:1fr;gap:40px}
     .page{padding-top:56px;padding-bottom:80px}
     .curtain{width:6vw}
     .films{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:22px 14px}
@@ -408,7 +409,6 @@
     <button class="logo" data-go="home">Baek <span>Hyeong Hun</span></button>
     <ul class="menu" id="menu">
       <li><button data-go="home">홈</button></li>
-      <li><button data-go="profile">프로필</button></li>
       <li><button data-go="y2026">2026</button></li>
       <li><button data-go="works">출연작</button></li>
       <li><button data-go="cal">일정</button></li>
@@ -430,6 +430,11 @@
         <div class="eyebrow">Musical Actor · Since 2010</div>
         <h1>백형훈</h1>
         <div class="en">Baek Hyeong Hun</div>
+        <dl class="hero-facts">
+          <div><dt>생년월일</dt><dd>1987. 3. 2</dd></div>
+          <div><dt>데뷔</dt><dd>2010 〈화랑〉 문노</dd></div>
+          <div><dt>학력</dt><dd>서울예술대학 연기과</dd></div>
+        </dl>
         <div class="social" id="social">
           <a href="https://www.instagram.com/kyeong_hun_bae" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
@@ -460,10 +465,10 @@
         <div class="up-list" id="upList"></div>
       </section>
       <div class="tiles">
-                <button class="tile" data-go="profile"><span class="n">01</span><span class="h">프로필</span><span class="d">배우 백형훈 소개 <span class="arrow">→</span></span></button>
-        <button class="tile" data-go="y2026"><span class="n">02</span><span class="h">2026</span><span class="d">올해의 무대 타임라인 <span class="arrow">→</span></span></button>
-        <button class="tile" data-go="works"><span class="n">03</span><span class="h">출연작</span><span class="d">2010–2026 배역 모음 <span class="arrow">→</span></span></button>
-        <button class="tile" data-go="cal"><span class="n">04</span><span class="h">일정</span><span class="d">출연 회차 캘린더 <span class="arrow">→</span></span></button>
+        <button class="tile" data-go="y2026"><span class="n">01</span><span class="h">2026</span><span class="d">올해의 무대 타임라인 <span class="arrow">→</span></span></button>
+        <button class="tile" data-go="works"><span class="n">02</span><span class="h">출연작</span><span class="d">2010–2026 배역 모음 <span class="arrow">→</span></span></button>
+        <button class="tile" data-go="cal"><span class="n">03</span><span class="h">일정</span><span class="d">출연 회차 캘린더 <span class="arrow">→</span></span></button>
+        <button class="tile" data-go="media"><span class="n">04</span><span class="h">아카이브</span><span class="d">영상 · 인터뷰 · 기사 · 사진 <span class="arrow">→</span></span></button>
       </div>
       <section class="extras" style="padding:0;border:0">
         <div class="head"><h2>작품 밖의 백형훈</h2><span class="note">라이브 · 다른 채널 영상 속 모습</span></div>
@@ -472,23 +477,9 @@
     </div>
   </div>
 
-  <!-- PROFILE -->
-  <div class="view" id="v-profile"><div class="wrap page">
-    <div class="sec-head"><span class="num">01</span><h2>프로필</h2></div>
-    <div class="profile">
-      <ul class="facts">
-        <li><span>이름</span><span>백형훈</span></li>
-        <li><span>생년월일</span><span>1987. 3. 2</span></li>
-        <li><span>데뷔</span><span>2010 〈화랑〉</span></li>
-        <li><span>데뷔 배역</span><span>문노</span></li>
-        <li><span>학력</span><span>서울예술대학 연기과</span></li>
-      </ul>
-    </div>
-  </div></div>
-
   <!-- 2026 -->
   <div class="view" id="v-y2026"><div class="wrap page">
-    <div class="sec-head"><span class="num">02</span><h2>2026년의 무대</h2></div>
+    <div class="sec-head"><span class="num">01</span><h2>2026년의 무대</h2></div>
     <div class="timeline">
       <div class="t-item live">
         <div class="t-date">2026. 11. 11 – 2027. 02. 08</div>
@@ -525,7 +516,7 @@
 
   <!-- WORKS -->
   <div class="view" id="v-works"><div class="wrap page">
-    <div class="sec-head"><span class="num">03</span><h2>출연작</h2></div>
+    <div class="sec-head"><span class="num">02</span><h2>출연작</h2></div>
     <div class="seg" id="wMode"><button data-m="cards" class="on">카드로 보기</button><button data-m="tl">연도별 타임라인</button></div>
     <div id="cardsBox">
       <div class="filters" id="filters"></div>
@@ -542,7 +533,7 @@
   </div></div>
   <!-- CALENDAR -->
   <div class="view" id="v-cal"><div class="wrap page">
-    <div class="sec-head"><span class="num">04</span><h2>일정</h2></div>
+    <div class="sec-head"><span class="num">03</span><h2>일정</h2></div>
     <div class="cal-bar">
       <button class="cal-nav" id="calPrev" aria-label="이전 달">‹</button>
       <div class="cal-title" id="calTitle"></div>
@@ -557,7 +548,7 @@
   </div></div>
   <!-- MEDIA ARCHIVE -->
   <div class="view" id="v-media"><div class="wrap page">
-    <div class="sec-head"><span class="num">05</span><h2>아카이브</h2></div>
+    <div class="sec-head"><span class="num">04</span><h2>아카이브</h2></div>
     <p class="arch-intro">영상 · 인터뷰 · 기사 · 사진을 한곳에 모았어요. 작품 이름을 누르면 그 작품의 자료만 볼 수 있어요.</p>
     <div class="filters" id="aFilters"></div>
     <div class="filters sub" id="aSub"></div>
@@ -565,7 +556,7 @@
   </div></div>
   <!-- CONTACT -->
   <div class="view" id="v-contact"><div class="wrap page">
-    <div class="sec-head"><span class="num">06</span><h2>제보·문의</h2></div>
+    <div class="sec-head"><span class="num">05</span><h2>제보·문의</h2></div>
     <p class="ct-intro">이 아카이브는 팬이 운영하는 비공식 페이지예요. 아래 같은 내용은 인스타그램 DM으로 편하게 알려 주세요.</p>
     <div class="ct-grid">
       <div class="ct-card"><b>정보 수정</b><span>공연 날짜·배역·캐스팅 등 잘못된 정보가 있을 때</span></div>
@@ -1199,7 +1190,7 @@
   })();
 
   /* 메뉴 / 화면 전환 (주소 끝 #now, #works 등으로 바로 열기 가능) */
-  const views = ["home","profile","y2026","works","cal","media","contact"];
+  const views = ["home","y2026","works","cal","media","contact"];
   const nav = document.getElementById("nav");
   function show(id){
     if(!views.includes(id)) id = "home";
