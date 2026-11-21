@@ -744,7 +744,7 @@
   renderWorks();
 
 
-  /* 작품과 관계없는 영상 — k:"등장"은 다른 사람 채널 영상에 잠깐 나오는 것 */
+  /* 작품과 관계없는 영상 — k:"깨알켱"은 다른 사람 채널 영상에 잠깐 나오는 것 */
   const extras = [
     {k:"인스타 라이브",t:"2022. 1. 17 인스타 라이브",dt:"2022. 1. 17",sd:"2022-01-17",u:"https://youtu.be/IaDuvimLN4o",th:"photos/live-20220117.jpg"},
     {k:"인스타 라이브",t:"2022. 2. 13 인스타 라이브",dt:"2022. 2. 13",sd:"2022-02-13",u:"https://youtu.be/k3M_vfuboyM",th:"photos/live-20220213.jpg"},
@@ -752,18 +752,18 @@
     {k:"인스타 라이브",t:"2022. 8. 8 인스타 라이브",dt:"2022. 8. 8",sd:"2022-08-08",u:"https://youtu.be/dNmEcpAOX4Y",th:"photos/live-20220808.jpg"},
     {k:"인스타 라이브",t:"2022. 9. 1 인스타 라이브",dt:"2022. 9. 1",sd:"2022-09-01",u:"https://youtu.be/J7-3suiIpnk",th:"photos/live-20220901.jpg"},
     {k:"인스타 라이브",t:"2022. 10. 9 인스타 라이브",dt:"2022. 10. 9",sd:"2022-10-09",u:"https://youtu.be/4v3XUCyTcY8",th:"photos/live-20221009.jpg"},
-    {k:"등장",t:"공연 시작 전, 배우들은 무엇을 할까? | 청사초롱 불 밝혀라 VLOG",ch:"이한수 컴퍼니",at:"12:21",u:"https://youtu.be/DZ5H2gIFnwM?t=741"}
+    {k:"깨알켱",t:"공연 시작 전, 배우들은 무엇을 할까? | 청사초롱 불 밝혀라 VLOG",ch:"이한수 컴퍼니",at:"12:21",u:"https://youtu.be/DZ5H2gIFnwM?t=741"}
   ];
   /* 최신순 정렬: sd(날짜) 큰 것이 위, 날짜 없는 자료는 맨 아래 */
   const byNew = arr => arr.map((x,i)=>[x,i]).sort((a,b)=>((b[0].sd||"")+"").localeCompare((a[0].sd||"")+"") || b[1]-a[1]).map(p=>p[0]);
   /* 영상 썸네일: th(직접 넣은 이미지) → 없으면 관련 작품 사진을 어둡게 → 없으면 기본 무늬 */
-  const isVid = k => k==="영상"||k==="인스타 라이브"||k==="등장";
+  const isVid = k => k==="영상"||k==="인스타 라이브"||k==="깨알켱";
   function thumbHTML(l, w){
     if(!isVid(l.k)) return "";
     const src = l.th || (w && w.img);
     return `<span class="th${l.th?' real':''}">${src?`<img src="${src}" alt="" loading="lazy" style="object-position:${l.th?'50% 50%':(w&&w.pos)||'50% 20%'}">`:""}<i class="pl"></i></span>`;
   }
-  const tgCls = k => k==="영상"?"v":k==="인터뷰"?"i":k==="등장"?"a":k==="인스타 라이브"?"l":"";
+  const tgCls = k => k==="영상"?"v":k==="인터뷰"?"i":k==="깨알켱"?"a":k==="인스타 라이브"?"l":"";
   document.getElementById("extras").innerHTML = `<ul class="links">${byNew(extras).map(l=>`<li><a href="${l.u}" target="_blank" rel="noopener">${thumbHTML(l,null)}<span class="tg ${tgCls(l.k)}">${l.k}</span><span class="lt">${l.t}<span class="sub">${[l.ch?l.ch+" 채널":"",l.dt||"",l.at?l.at+"부터 등장":""].filter(Boolean).join(" · ")}</span></span><span class="ar">↗</span></a></li>`).join("")}</ul>`;
 
   /* 작품 상세 창 */
@@ -823,13 +823,13 @@
   function renderArchive(){
     const items=archiveItems(), photos=archivePhotos();
     const cnt=k=>items.filter(x=>x.k===k).length;
-    const VID=["영상","인스타 라이브","등장"];
+    const VID=["영상","인스타 라이브","깨알켱"];
     const vidN=items.filter(x=>VID.includes(x.k)).length;
     const tabs=[["all","전체",items.length],["vid","영상",vidN],["인터뷰","인터뷰",cnt("인터뷰")],["기사","기사",cnt("기사")],["사진","사진",photos.length]].filter(t=>t[2]>0||t[0]==="all");
     document.getElementById("aFilters").innerHTML=tabs.map(t=>`<button class="${t[0]===aCur?'on':''}" data-a="${t[0]}">${t[1]}<span class="c">${t[2]}</span></button>`).join("");
     const sub=document.getElementById("aSub");
     if(aCur==="vid"){
-      const st=[["all","전체 영상",vidN],["영상","공연·공식 영상",cnt("영상")],["인스타 라이브","인스타 라이브",cnt("인스타 라이브")],["등장","등장",cnt("등장")]];
+      const st=[["all","전체 영상",vidN],["영상","공연·공식 영상",cnt("영상")],["인스타 라이브","인스타 라이브",cnt("인스타 라이브")],["깨알켱","깨알켱",cnt("깨알켱")]];
       sub.innerHTML=st.map(t=>`<button class="${t[0]===aSub?'on':''}" data-s="${t[0]}">${t[1]}<span class="c">${t[2]}</span></button>`).join("");
       sub.hidden=false;
     } else { sub.innerHTML=""; sub.hidden=true; }
