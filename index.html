@@ -18,6 +18,7 @@
     --serif:"Gowun Batang",serif; --sans:"IBM Plex Sans KR",system-ui,sans-serif; --latin:"Cormorant Garamond",serif;
   }
   *{box-sizing:border-box;margin:0;padding:0}
+  [hidden]{display:none!important}
   body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:300;line-height:1.75;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
   a{color:inherit}
   button{font:inherit;color:inherit}
@@ -295,6 +296,16 @@
   .ct-tpl-h button{background:none;border:1px solid var(--line);color:var(--ink);font-size:12px;padding:5px 12px;border-radius:999px;cursor:pointer}
   .ct-tpl pre{margin:0;padding:16px;font-family:var(--sans);font-size:14px;line-height:1.9;color:#d8cfc3;white-space:pre-wrap}
   @media (max-width:820px){ .ct-grid{grid-template-columns:1fr 1fr} .ct-id b{font-size:24px} }
+  /* concerts & broadcast */
+  .st-year{font-family:var(--latin);font-size:26px;color:var(--gold);margin:30px 0 6px}
+  .st-year:first-child{margin-top:0}
+  .st-list{list-style:none;border-top:1px solid var(--line)}
+  .st-list li{display:grid;grid-template-columns:120px 1fr;gap:18px;padding:15px 2px;border-bottom:1px solid var(--line)}
+  .st-list .dt{font-size:14px;color:#d8cfc3}
+  .st-list .t{font-size:16px}
+  .st-list .m{font-size:13px;color:var(--mute);margin-top:3px}
+  .st-list .k{display:inline-block;font-size:11px;padding:1px 9px;border-radius:999px;border:1px solid var(--c);color:var(--c);margin-right:8px;vertical-align:2px}
+  @media (max-width:820px){ .st-list li{grid-template-columns:78px 1fr;gap:10px} }
   /* archive */
   .arch-intro{color:var(--mute);font-size:15px;margin:-26px 0 28px}
   .filters .c{font-size:11px;opacity:.7;margin-left:4px}
@@ -411,6 +422,7 @@
       <li><button data-go="home">홈</button></li>
       <li><button data-go="y2026">2026</button></li>
       <li><button data-go="works">출연작</button></li>
+      <li><button data-go="stage">콘서트·방송</button></li>
       <li><button data-go="cal">일정</button></li>
       <li><button data-go="media">아카이브</button></li>
       <li><button data-go="contact">제보·문의</button></li>
@@ -519,7 +531,7 @@
     <div class="sec-head"><span class="num">02</span><h2>출연작</h2></div>
     <div class="seg" id="wMode"><button data-m="cards" class="on">카드로 보기</button><button data-m="tl">연도별 타임라인</button></div>
     <div id="cardsBox">
-      <div class="filters" id="filters"></div>
+      <div class="filters" id="filters" hidden></div>
       <div class="films" id="films"></div>
     </div>
     <div id="tlBox" hidden>
@@ -531,9 +543,17 @@
       <div class="tl-pop" id="tlPop" hidden></div>
     </div>
   </div></div>
+  <!-- CONCERTS & BROADCAST -->
+  <div class="view" id="v-stage"><div class="wrap page">
+    <div class="sec-head"><span class="num">03</span><h2>콘서트·방송</h2></div>
+    <p class="arch-intro">뮤지컬 무대 밖의 콘서트, 팬미팅, 방송 출연을 모았어요.</p>
+    <div class="filters" id="sFilters"></div>
+    <div id="sList"></div>
+  </div></div>
+
   <!-- CALENDAR -->
   <div class="view" id="v-cal"><div class="wrap page">
-    <div class="sec-head"><span class="num">03</span><h2>일정</h2></div>
+    <div class="sec-head"><span class="num">04</span><h2>일정</h2></div>
     <div class="cal-bar">
       <button class="cal-nav" id="calPrev" aria-label="이전 달">‹</button>
       <div class="cal-title" id="calTitle"></div>
@@ -548,7 +568,7 @@
   </div></div>
   <!-- MEDIA ARCHIVE -->
   <div class="view" id="v-media"><div class="wrap page">
-    <div class="sec-head"><span class="num">04</span><h2>아카이브</h2></div>
+    <div class="sec-head"><span class="num">05</span><h2>아카이브</h2></div>
     <p class="arch-intro">영상 · 인터뷰 · 기사 · 사진을 한곳에 모았어요. 작품 이름을 누르면 그 작품의 자료만 볼 수 있어요.</p>
     <div class="filters" id="aFilters"></div>
     <div class="filters sub" id="aSub"></div>
@@ -556,7 +576,7 @@
   </div></div>
   <!-- CONTACT -->
   <div class="view" id="v-contact"><div class="wrap page">
-    <div class="sec-head"><span class="num">05</span><h2>제보·문의</h2></div>
+    <div class="sec-head"><span class="num">06</span><h2>제보·문의</h2></div>
     <p class="ct-intro">이 아카이브는 팬이 운영하는 비공식 페이지예요. 아래 같은 내용은 인스타그램 DM으로 편하게 알려 주세요.</p>
     <div class="ct-grid">
       <div class="ct-card"><b>정보 수정</b><span>공연 날짜·배역·캐스팅 등 잘못된 정보가 있을 때</span></div>
@@ -732,9 +752,6 @@
   const detOf = w => details[w.y+"|"+w.t] || {};
   const eras = [
     {id:"all",label:"전체",f:()=>true},
-    {id:"2020s",label:"2020년대",f:w=>w.y>=2020},
-    {id:"2010s",label:"2010년대",f:w=>w.y<2020},
-    {id:"play",label:"연극",f:w=>w.k==="연극"}
   ];
   let cur = "all";
   const fEl = document.getElementById("filters"), gEl = document.getElementById("films");
@@ -1189,8 +1206,52 @@
     if(standalone){ rb.hidden=false; rb.addEventListener("click",()=>location.reload()); }
   })();
 
+
+  /* ===== 콘서트·방송 =====
+     sd: 정렬용 날짜, d: 표시 날짜(정확한 날을 모르면 월까지만), k: 콘서트|팬미팅|방송 */
+  const STAGE = [
+    {sd:"2026-11-30",d:"11. 30",t:"뮤이어(MU:YEAR) 콘서트",k:"콘서트",pl:"이화여자대학교 삼성홀"},
+    {sd:"2026-11-15",d:"11. 15",t:"팬텀, 영원한 사랑",k:"콘서트",pl:"대구문화예술회관 팔공홀"},
+    {sd:"2026-05-27",d:"5. 27",t:"2026 월간뮤지크 〈마이클 리 X 백형훈〉",k:"콘서트",pl:"양천문화회관 대극장"},
+    {sd:"2025-12-27",d:"12. 27 – 2026. 1. 11",t:"WONDERLAND FESTIVAL 2025",k:"콘서트",pl:"경희대학교 평화의전당"},
+    {sd:"2025-12-20",d:"12월",t:"크리스마스 지브리 & 디즈니 OST 콘서트",k:"콘서트",pl:"세종문화회관 대극장"},
+    {sd:"2025-09-05",d:"9월",t:"팬미팅 〈인사 vol.2〉",k:"팬미팅"},
+    {sd:"2025-06-28",d:"6월",t:"복면가왕 10주년 특집",k:"방송",pl:"MBC"},
+    {sd:"2024-09-01",d:"9월",t:"팬서트 UNIVERSE",k:"팬미팅"},
+    {sd:"2023-01-28",d:"1월",t:"단독 콘서트 (도쿄)",k:"콘서트",pl:"일본 도쿄"},
+    {sd:"2022-09-11",d:"9월",t:"복면가왕 듀엣 가왕",k:"방송",pl:"MBC"},
+    {sd:"2022-08-26",d:"8월",t:"팬미팅 〈인사〉",k:"팬미팅"},
+    {sd:"2022-04-21",d:"4월",t:"스프링 블렌드 콘서트",k:"콘서트"},
+    {sd:"2022-01-23",d:"1월",t:"복면가왕",k:"방송",pl:"MBC"},
+    {sd:"2021-12-09",d:"12월",t:"YTN 뉴스N이슈",k:"방송",pl:"YTN"},
+    {sd:"2021-11-13",d:"11월",t:"흉스프레소 듀엣 라이브",k:"콘서트"},
+    {sd:"2020-09-05",d:"9. 5",t:"데뷔 10주년 단독 콘서트 '10th Anniversary 백형훈 콘서트'",k:"콘서트",pl:"백암아트홀"},
+    {sd:"2018-05-10",d:"3 – 5월",t:"불후의 명곡 (3회 출연)",k:"방송",pl:"KBS"},
+    {sd:"2018-03-03",d:"3월",t:"백형훈 X 기세중 콘서트",k:"콘서트"},
+    {sd:"2016-06-01",d:"2016",t:"팬텀싱어 시즌1 — 흉스프레소 최종 3위",k:"방송",pl:"JTBC"},
+    {sd:"2016-03-28",d:"3. 28",t:"트루맨쇼 백형훈 편",k:"콘서트",pl:"홍대 레드빅스페이스"}
+  ];
+  const STK = {"콘서트":"#c9a46a","팬미팅":"#e59ac8","방송":"#c2413b"};
+  let sCur="all";
+  function renderStage(){
+    const cnt=k=>STAGE.filter(x=>x.k===k).length;
+    const tabs=[["all","전체",STAGE.length],["콘서트","콘서트",cnt("콘서트")],["팬미팅","팬미팅",cnt("팬미팅")],["방송","방송",cnt("방송")]].filter(t=>t[2]>0||t[0]==="all");
+    document.getElementById("sFilters").innerHTML=tabs.map(t=>`<button class="${t[0]===sCur?'on':''}" data-k="${t[0]}">${t[1]}<span class="c">${t[2]}</span></button>`).join("");
+    const list=STAGE.filter(x=>sCur==="all"||x.k===sCur).sort((a,b)=>b.sd.localeCompare(a.sd));
+    let h="", yr=null, open=false;
+    list.forEach(x=>{
+      const y=x.sd.slice(0,4);
+      if(y!==yr){ if(open) h+="</ul>"; h+=`<div class="st-year">${y}</div><ul class="st-list">`; yr=y; open=true; }
+      h+=`<li style="--c:${STK[x.k]}"><div class="dt">${x.d}</div><div><div class="t"><span class="k">${x.k}</span>${esc(x.t)}</div>${x.pl?`<div class="m">${esc(x.pl)}</div>`:""}</div></li>`;
+    });
+    if(open) h+="</ul>";
+    document.getElementById("sList").innerHTML=h||`<div class="empty">아직 자료가 없어요.</div>`;
+  }
+  document.getElementById("sFilters").addEventListener("click",e=>{const b=e.target.closest("button"); if(!b)return; sCur=b.dataset.k; renderStage();});
+  renderStage();
+
   /* 메뉴 / 화면 전환 (주소 끝 #now, #works 등으로 바로 열기 가능) */
-  const views = ["home","y2026","works","cal","media","contact"];
+  const views = ["home","y2026","works","stage","cal","media","contact"];
   const nav = document.getElementById("nav");
   function show(id){
     if(!views.includes(id)) id = "home";
