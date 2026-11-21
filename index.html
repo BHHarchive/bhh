@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>백형훈 비공식 팬페이지</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@300;400;600&family=Cormorant+Garamond:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f0d0c; --bg2:#171412; --line:#2c2622; --ink:#efe7dc; --mute:#a3978a;
+    --gold:#c9a46a; --red:#8e2b2b;
+    --serif:"Gowun Batang",serif; --sans:"IBM Plex Sans KR",system-ui,sans-serif; --latin:"Cormorant Garamond",serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:300;line-height:1.75;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
+  a{color:inherit}
+  button{font:inherit;color:inherit}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px;width:100%}
+
+  /* ---------- menu ---------- */
+  nav{position:sticky;top:0;z-index:20;background:rgba(15,13,12,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .logo{font-family:var(--latin);font-style:italic;font-size:22px;letter-spacing:.02em;background:none;border:0;cursor:pointer}
+  .logo span{color:var(--gold)}
+  .menu{display:flex;gap:4px;list-style:none}
+  .menu button{background:none;border:0;cursor:pointer;font-size:14px;color:var(--mute);padding:8px 14px;border-radius:999px;transition:all .2s;position:relative}
+  .menu button:hover{color:var(--ink)}
+  .menu button.on{color:var(--bg);background:var(--gold);font-weight:600}
+  .burger{display:none;background:none;border:1px solid var(--line);border-radius:8px;width:40px;height:40px;cursor:pointer;flex-direction:column;justify-content:center;align-items:center;gap:5px}
+  .burger i{display:block;width:18px;height:1.5px;background:var(--ink);transition:transform .25s,opacity .25s}
+  nav.open .burger i:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+  nav.open .burger i:nth-child(2){opacity:0}
+  nav.open .burger i:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+  main{flex:1}
+  .view{display:none;animation:fade .45s ease}
+  .view.on{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  /* ---------- home ---------- */
+  .hero{position:relative;min-height:62vh;display:flex;align-items:center;overflow:hidden;border-bottom:1px solid var(--line)}
+  .hero::before{content:"";position:absolute;inset:-20% -10% auto auto;width:70vw;height:70vw;max-width:900px;max-height:900px;
+    background:radial-gradient(closest-side,rgba(201,164,106,.20),rgba(201,164,106,.05) 55%,transparent 70%);pointer-events:none}
+  .curtain{position:absolute;top:0;bottom:0;width:9vw;max-width:110px;background:repeating-linear-gradient(90deg,#4a1515 0 10px,#5e1c1c 10px 22px,#3d1111 22px 30px);opacity:.55}
+  .curtain.l{left:0;box-shadow:inset -30px 0 40px rgba(0,0,0,.6)}
+  .curtain.r{right:0;box-shadow:inset 30px 0 40px rgba(0,0,0,.6)}
+  .hero .wrap{position:relative;z-index:2;padding-top:40px;padding-bottom:40px}
+  .eyebrow{font-size:12px;letter-spacing:.32em;color:var(--gold);text-transform:uppercase}
+  .hero h1{font-family:var(--serif);font-weight:700;font-size:clamp(64px,13vw,140px);line-height:1;margin:22px 0 8px;letter-spacing:-.02em}
+  .hero .en{font-family:var(--latin);font-style:italic;font-size:clamp(22px,3vw,32px);color:var(--mute)}
+  .hero p.lead{max-width:520px;margin-top:26px;font-size:17px;color:#d8cfc3}
+
+  .social{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
+  .social a{display:inline-flex;align-items:center;gap:9px;padding:10px 18px;border:1px solid var(--line);border-radius:999px;text-decoration:none;font-size:14px;color:var(--ink);background:rgba(15,13,12,.5);transition:all .2s}
+  .social a:hover{border-color:var(--gold);color:var(--gold)}
+  .social svg{width:17px;height:17px;flex:none}
+  .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center}
+  .hero-photo{position:relative;justify-self:end;width:100%;max-width:380px;cursor:pointer;border:0;padding:0;background:none;text-align:left}
+  .hero-photo .frame{position:relative;aspect-ratio:4/5;overflow:hidden;border:1px solid rgba(201,164,106,.35);box-shadow:0 30px 80px rgba(0,0,0,.55)}
+  .hero-photo .frame::before{content:"";position:absolute;inset:10px;border:1px solid rgba(201,164,106,.25);z-index:2;pointer-events:none}
+  .hero-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 20%;display:block;transition:transform .8s}
+  .hero-photo:hover img{transform:scale(1.03)}
+  .hero-photo .frame::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(15,13,12,.85));z-index:1}
+  .hero-photo .cap{position:absolute;left:22px;right:22px;bottom:20px;z-index:3}
+  .hero-photo .cap .t{display:inline-flex;align-items:center;gap:7px;font-size:11px;letter-spacing:.22em;color:var(--gold)}
+  .hero-photo .cap .n{font-family:var(--serif);font-size:22px;margin-top:4px;color:var(--ink)}
+  .hero-photo .cap .r{font-size:13px;color:#cfc5b8}
+  .hero-photo .tagline{margin-top:14px;font-size:12px;color:var(--mute);letter-spacing:.04em}
+  .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin:56px auto 90px}
+  .tile{background:var(--bg);border:0;text-align:left;padding:28px 24px 26px;cursor:pointer;transition:background .2s;display:flex;flex-direction:column;gap:6px;min-height:170px}
+  .tile:hover{background:var(--bg2)}
+  .tile .n{font-family:var(--latin);font-style:italic;color:var(--gold);font-size:18px}
+  .tile .h{font-family:var(--serif);font-size:22px}
+  .tile .d{font-size:13px;color:var(--mute);margin-top:auto}
+  .tile .arrow{color:var(--gold);transition:transform .2s;display:inline-block}
+  .tile:hover .arrow{transform:translateX(4px)}
+
+  /* ---------- section common ---------- */
+  .page{padding-top:80px;padding-bottom:100px}
+  .sec-head{display:flex;align-items:baseline;gap:18px;margin-bottom:46px}
+  .sec-head .num{font-family:var(--latin);font-style:italic;color:var(--gold);font-size:20px}
+  .sec-head h2{font-family:var(--serif);font-size:clamp(30px,4vw,42px);font-weight:700}
+
+  /* now */
+  .now{display:grid;grid-template-columns:1.3fr 1fr;border:1px solid var(--line);background:var(--bg2)}
+  .ticket{padding:46px;border-right:1px dashed #3a332d}
+  .ticket .tag{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.2em;color:var(--gold)}
+  .dot{width:7px;height:7px;border-radius:50%;background:#e0493f;animation:pulse 1.8s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(224,73,63,.6)}70%{box-shadow:0 0 0 10px rgba(224,73,63,0)}100%{box-shadow:0 0 0 0 rgba(224,73,63,0)}}
+  .ticket h3{font-family:var(--serif);font-size:clamp(28px,3.4vw,38px);margin:16px 0 4px;line-height:1.3}
+  .ticket .role{color:var(--mute)}
+  .ticket dl{display:grid;grid-template-columns:70px 1fr;gap:8px 16px;margin-top:28px;font-size:15px}
+  .ticket dt{color:var(--mute)}
+  .stub{padding:46px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+  .stub .label{font-size:12px;letter-spacing:.2em;color:var(--mute)}
+  .stub .big{font-family:var(--latin);font-size:96px;line-height:1;color:var(--gold);margin:10px 0}
+  .stub .small{font-size:14px;color:var(--mute)}
+
+  /* profile */
+  .profile{display:grid;grid-template-columns:300px 1fr;gap:60px}
+  .facts{list-style:none;border-top:1px solid var(--line)}
+  .facts li{display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--line);font-size:15px}
+  .facts li span:first-child{color:var(--mute)}
+  .bio p{font-family:var(--serif);font-size:19px;line-height:1.95;color:#ddd4c8;margin-bottom:22px}
+  .bio p:first-child::first-letter{font-size:3.2em;float:left;line-height:.9;margin:6px 10px 0 0;color:var(--gold)}
+  .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+  .chip{border:1px solid var(--line);padding:6px 14px;border-radius:999px;font-size:13px;color:var(--mute)}
+
+  /* timeline */
+  .timeline{position:relative;padding-left:34px}
+  .timeline::before{content:"";position:absolute;left:6px;top:6px;bottom:6px;width:1px;background:var(--line)}
+  .t-item{position:relative;padding:0 0 38px}
+  .t-item::before{content:"";position:absolute;left:-33px;top:9px;width:11px;height:11px;border-radius:50%;border:1px solid var(--gold);background:var(--bg)}
+  .t-item.live::before{background:var(--gold)}
+  .t-date{font-size:13px;color:var(--gold);letter-spacing:.05em}
+  .t-title{font-family:var(--serif);font-size:22px;margin:2px 0}
+  .t-meta{font-size:14px;color:var(--mute)}
+
+  /* filmography */
+  .filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:30px}
+  .filters button{background:none;border:1px solid var(--line);color:var(--mute);font-size:13px;padding:7px 16px;border-radius:999px;cursor:pointer;transition:all .2s}
+  .filters button:hover{color:var(--ink);border-color:#4a413a}
+  .filters button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+  .films{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:28px 22px}
+  .film{display:flex;flex-direction:column}
+  .photo{position:relative;aspect-ratio:3/4;overflow:hidden;border:1px solid var(--line);background:var(--bg2)}
+  .photo img{width:100%;height:100%;object-fit:cover;object-position:50% 20%;display:block;transition:transform .5s}
+  .film:hover .photo img{transform:scale(1.04)}
+  .ph{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:18px;
+      background:radial-gradient(120% 80% at 50% 0%,hsla(var(--h),45%,40%,.35),transparent 60%),linear-gradient(180deg,#1c1815,#120f0d)}
+  .ph::before{content:"";position:absolute;left:50%;top:22%;width:38%;aspect-ratio:1;transform:translateX(-50%);border-radius:50%;border:1px solid rgba(201,164,106,.25)}
+  .ph::after{content:"";position:absolute;left:50%;top:calc(22% + 30%);width:66%;height:40%;transform:translateX(-50%);border-radius:50% 50% 0 0;border:1px solid rgba(201,164,106,.18);border-bottom:0}
+  .ph .rn{position:relative;font-family:var(--serif);font-size:22px;line-height:1.25;color:var(--ink)}
+  .ph .lb{position:relative;font-size:10px;letter-spacing:.25em;color:var(--gold);margin-top:6px}
+  .film .kind{position:absolute;top:12px;left:12px;font-size:11px;color:var(--ink);background:rgba(15,13,12,.7);padding:2px 9px;border-radius:999px;letter-spacing:.05em;z-index:2}
+  .film .yr{font-family:var(--latin);font-style:italic;color:var(--gold);font-size:17px;margin-top:14px}
+  .film .ttl{font-family:var(--serif);font-size:18px;line-height:1.35;margin:2px 0}
+  .film .rl{font-size:14px;color:var(--mute)}
+
+  /* quote */
+  .quote{text-align:center;padding:40px 0 100px}
+  .quote blockquote{font-family:var(--serif);font-size:clamp(22px,3vw,32px);line-height:1.6;max-width:760px;margin:0 auto}
+  .quote cite{display:block;margin-top:18px;font-style:normal;font-size:13px;color:var(--mute);letter-spacing:.1em}
+
+  footer{padding:40px 0 60px;font-size:13px;color:var(--mute);border-top:1px solid var(--line)}
+  footer .disc{color:#c6bcb0}
+  footer ul{list-style:none;display:flex;flex-wrap:wrap;gap:6px 20px;margin-top:6px}
+  footer a{color:var(--mute)}
+
+
+
+
+  /* ---------- upcoming (home) ---------- */
+  .up{margin:56px 0 0}
+  .up-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:16px}
+  .up-head h2{font-family:var(--serif);font-size:26px;font-weight:700}
+  .up-more{background:none;border:0;color:var(--gold);font-size:14px;cursor:pointer}
+  .up-list{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+  .up-it{background:var(--bg2);padding:22px 22px 20px;display:flex;flex-direction:column;gap:4px;min-height:150px;border:0;text-align:left;color:inherit;font:inherit;cursor:pointer}
+  .up-it:hover{background:#1c1815}
+  .up-it .dd{font-family:var(--latin);font-size:30px;line-height:1;color:var(--gold)}
+  .up-it .dd.live{font-family:var(--sans);font-size:13px;letter-spacing:.14em;display:inline-flex;align-items:center;gap:7px}
+  .up-it .dt{font-size:13px;color:var(--mute);margin-top:8px}
+  .up-it .tt{font-family:var(--serif);font-size:19px;line-height:1.35}
+  .up-it .pl{font-size:13px;color:var(--mute);margin-top:auto;padding-top:8px}
+  .up-it .kd{align-self:flex-start;font-size:11px;padding:2px 9px;border-radius:999px;border:1px solid var(--c);color:var(--c);margin-bottom:6px}
+  .up-empty{background:var(--bg2);padding:22px;color:var(--mute);font-size:14px;grid-column:1/-1}
+  .tiles{margin-top:40px}
+
+  /* ---------- calendar ---------- */
+  .cal-bar{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .cal-title{font-family:var(--serif);font-size:26px;font-weight:700;min-width:150px;text-align:center}
+  .cal-nav{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:none;color:var(--ink);font-size:20px;cursor:pointer}
+  .cal-nav:hover,.cal-today:hover{border-color:var(--gold);color:var(--gold)}
+  .cal-today{margin-left:auto;border:1px solid var(--line);background:none;color:var(--ink);padding:8px 16px;border-radius:999px;cursor:pointer;font-size:13px}
+  .cal-legend{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:14px;font-size:12px;color:var(--mute)}
+  .cal-legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+  .cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border-top:1px solid var(--line);border-left:1px solid var(--line)}
+  .cal .wd{font-size:12px;color:var(--mute);padding:8px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);text-align:center}
+  .cal .wd.su{color:#d98a83}.cal .wd.sa{color:#8fb3d9}
+  .cal .d{min-height:104px;border:0;border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:6px 0 6px;position:relative;cursor:pointer;background:none;text-align:left;color:inherit;font:inherit;display:flex;flex-direction:column;gap:3px;min-width:0}
+  .cal .d:hover{background:var(--bg2)}
+  .cal .d.out{opacity:.35}
+  .cal .d .n{font-size:13px;padding:0 8px;color:var(--ink)}
+  .cal .d.su .n{color:#d98a83}.cal .d.sa .n{color:#8fb3d9}
+  .cal .d.td .n{display:inline-block;align-self:flex-start;margin-left:4px;background:var(--gold);color:var(--bg);border-radius:999px;padding:1px 8px;font-weight:600}
+  .cal .d.sel{outline:1px solid var(--gold);outline-offset:-1px}
+  .cal .rg{height:18px;background:color-mix(in srgb,var(--c) 30%,transparent);border-top:2px solid var(--c);font-size:11px;line-height:16px;padding:0 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+  .cal .ch{margin:0 5px;font-size:11px;line-height:1.35;padding:2px 6px;border-radius:3px;background:color-mix(in srgb,var(--c) 22%,transparent);border-left:3px solid var(--c);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cal-sub{font-family:var(--serif);font-size:20px;margin:34px 0 12px}
+  .cal-list{list-style:none;border-top:1px solid var(--line)}
+  .cal-list li{display:grid;grid-template-columns:110px 1fr;gap:16px;padding:14px 2px;border-bottom:1px solid var(--line)}
+  .cal-list .when{font-size:14px;color:var(--gold)}
+  .cal-list .when small{display:block;color:var(--mute);font-size:12px}
+  .cal-list .t{font-size:15px}
+  .cal-list .m{font-size:13px;color:var(--mute);margin-top:2px}
+  .cal-list .k{display:inline-block;font-size:11px;padding:1px 8px;border-radius:999px;border:1px solid var(--c);color:var(--c);margin-right:8px;vertical-align:1px}
+  .cal-list a{color:var(--gold)}
+  .cal-foot{font-size:12px;color:var(--mute);margin-top:16px}
+  @media (max-width:820px){
+    .up-list{grid-template-columns:1fr}
+    .up-it{min-height:0}
+    .cal .d{min-height:62px}
+    .cal .ch{font-size:0;height:6px;padding:0;margin:0 4px;border-left:0;background:var(--c)}
+    .cal .rg{font-size:0;height:5px;border-top:0;background:var(--c);opacity:.6}
+    .cal-title{font-size:20px;min-width:110px}
+    .cal-list li{grid-template-columns:84px 1fr;gap:10px}
+  }
+  /* ---------- filmography timeline ---------- */
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;margin-bottom:26px;background:var(--bg2)}
+  .seg button{background:none;border:0;color:var(--mute);font-size:14px;padding:8px 18px;border-radius:999px;cursor:pointer}
+  .seg button.on{background:var(--ink);color:var(--bg);font-weight:600}
+  .tl-intro{color:var(--mute);font-size:14px;margin-bottom:18px}
+  .tl-legend{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+  .tl-legend button{display:inline-flex;align-items:center;gap:8px;background:none;border:1px solid var(--line);color:var(--ink);font-size:13px;padding:6px 13px;border-radius:999px;cursor:pointer;transition:opacity .2s}
+  .tl-legend button.off{opacity:.35}
+  .tl-legend i{display:inline-block;width:16px;height:6px;border-radius:3px}
+  .tl-legend i.dm{width:9px;height:9px;border-radius:1px;transform:rotate(45deg)}
+  .tl-legend i.dt{width:9px;height:9px;border-radius:50%}
+  .tl-years{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:18px}
+  .tl-years button{background:none;border:0;color:var(--mute);font-family:var(--latin);font-size:16px;padding:2px 7px;cursor:pointer;border-radius:4px}
+  .tl-years button:hover{color:var(--gold);background:var(--bg2)}
+  .tl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border-top:1px solid var(--line)}
+  .tl{position:relative;min-width:760px}
+  .tl-head{display:grid;grid-template-columns:92px 1fr;position:sticky;top:0;z-index:3;background:var(--bg);border-bottom:1px solid var(--line)}
+  .tl-head .m{display:grid;grid-template-columns:repeat(12,1fr)}
+  .tl-head .m span{font-size:12px;color:var(--mute);padding:10px 0 8px 6px}
+  .tl-row{display:grid;grid-template-columns:92px 1fr;border-bottom:1px solid var(--line);scroll-margin-top:80px}
+  .tl-y{position:sticky;left:0;z-index:2;background:var(--bg);padding:14px 10px 12px 4px}
+  .tl-y b{display:block;font-family:var(--latin);font-size:24px;font-weight:500;line-height:1;color:var(--ink)}
+  .tl-y small{display:block;font-size:11px;color:var(--gold);margin-top:6px;line-height:1.35}
+  .tl-y .n{font-size:11px;color:var(--mute);margin-top:4px}
+  .tl-track{position:relative;background:repeating-linear-gradient(90deg,transparent 0,transparent calc(100%/12 - 1px),rgba(255,255,255,.05) calc(100%/12 - 1px),rgba(255,255,255,.05) calc(100%/12));padding:12px 0 10px}
+  .tl-lane{position:relative;height:50px}
+  .tl-lane.ev{height:28px}
+  .tl-it{position:absolute;top:0;background:none;border:0;padding:0;text-align:left;cursor:pointer;color:inherit;font:inherit;white-space:nowrap}
+  .tl-it .bar{display:block;height:8px;border-radius:4px;background:var(--c)}
+  .tl-it.ra{text-align:right}
+  .tl-it.ra .bar{margin-left:auto}
+  .tl-ev.ra{flex-direction:row-reverse}
+  .tl-ev.ra .mk{margin-left:0;margin-right:-5px}
+  .tl-it .tt{display:block;font-family:var(--serif);font-size:15px;font-weight:700;margin-top:6px;line-height:1.2;color:var(--ink)}
+  .tl-it .rl{display:block;font-size:12px;color:var(--mute);line-height:1.3}
+  .tl-it:hover .tt,.tl-it:focus-visible .tt{color:var(--gold)}
+  .tl-it:hover .bar{filter:brightness(1.25)}
+  .tl-it.cur .bar{background:repeating-linear-gradient(90deg,var(--c) 0 10px,#e4c58c 10px 14px);box-shadow:0 0 12px rgba(201,164,106,.5)}
+  .tl-ev{position:absolute;top:3px;background:none;border:0;padding:0;cursor:pointer;display:flex;align-items:center;gap:7px;color:var(--mute);font-size:12px;white-space:nowrap;font-family:var(--sans)}
+  .tl-ev .mk{display:inline-block;width:10px;height:10px;flex:none;margin-left:-5px}
+  .tl-ev .mk.dm{background:var(--gold);transform:rotate(45deg);border-radius:1px}
+  .tl-ev .mk.dt{background:#c2413b;border-radius:50%}
+  .tl-ev .mks{display:inline-flex;gap:3px}
+  .tl-ev:hover{color:var(--ink)}
+  .tl-today{position:absolute;top:0;bottom:0;width:2px;background:#c2413b;z-index:1;pointer-events:none}
+  .tl-today{opacity:.75}
+  .tl-today::after{content:"오늘";position:absolute;bottom:2px;left:5px;font-size:10px;color:#e8a29a}
+  .tl-empty{font-size:13px;color:var(--mute);padding:16px 8px}
+  .tl-foot{font-size:12px;color:var(--mute);margin-top:12px}
+  .tl-pop{position:fixed;z-index:40;width:280px;background:#1d1916;border:1px solid #3a322b;box-shadow:0 18px 50px rgba(0,0,0,.6);padding:16px 18px;border-radius:6px}
+  .tl-pop .k{font-size:11px;letter-spacing:.14em;color:var(--gold)}
+  .tl-pop h5{font-family:var(--serif);font-size:19px;margin:4px 0 2px;font-weight:700}
+  .tl-pop .r{font-size:13px;color:#d8cfc3}
+  .tl-pop .d{font-size:13px;color:var(--mute);margin-top:6px}
+  .tl-pop .go{margin-top:12px;width:100%;background:var(--gold);color:var(--bg);border:0;padding:8px;font-weight:600;font-size:13px;cursor:pointer;border-radius:4px}
+  .tl-pop .cl{position:absolute;top:8px;right:10px;background:none;border:0;color:var(--mute);font-size:16px;cursor:pointer}
+  @media (max-width:820px){
+    .tl{min-width:720px}
+    .tl-head,.tl-row{grid-template-columns:64px 1fr}
+    .tl-y b{font-size:19px}
+  }
+  /* archive */
+  .arch-intro{color:var(--mute);font-size:15px;margin:-26px 0 28px}
+  .filters .c{font-size:11px;opacity:.7;margin-left:4px}
+  .alist{list-style:none;border-top:1px solid var(--line)}
+  .alist li{display:flex;align-items:center;gap:14px;padding:14px 2px;border-bottom:1px solid var(--line)}
+  .alist .tg{flex:none;font-size:11px;padding:2px 9px;border-radius:999px;border:1px solid var(--line);color:var(--mute);min-width:52px;text-align:center}
+  .alist .tg.v{border-color:#7a2d2d;color:#e8a29a}
+  .alist .tg.i{border-color:#6b5a3a;color:var(--gold)}
+  .alist .tg.a{border-color:#2f5a55;color:#8fcfc4}
+  .alist .tg.l{border-color:#7a3a62;color:#e59ac8}
+  .alist .main{flex:1;min-width:0}
+  .alist .main a{text-decoration:none;font-size:15px;line-height:1.5}
+  .alist .main a:hover{color:var(--gold)}
+  .alist .wk{display:flex;flex-wrap:wrap;gap:6px;margin-top:5px}
+  .alist .wk button{background:none;border:0;padding:0;font:inherit;font-size:12px;color:var(--mute);cursor:pointer;text-decoration:underline;text-underline-offset:3px;text-decoration-color:#4a413a}
+  .alist .wk button:hover{color:var(--gold)}
+  .alist .wk span{font-size:12px;color:var(--mute)}
+  .alist .ar{flex:none;color:var(--mute);text-decoration:none}
+  .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}
+  .pgrid button{background:none;border:0;padding:0;text-align:left;cursor:pointer;color:inherit;font:inherit;display:flex;flex-direction:column;justify-content:flex-start}
+  .pgrid .im{aspect-ratio:3/4;overflow:hidden;border:1px solid var(--line)}
+  .pgrid img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
+  .pgrid button:hover img{transform:scale(1.04)}
+  .pgrid .cp{font-size:12px;color:var(--mute);margin-top:6px;line-height:1.4}
+  .pgrid .cp b{color:var(--ink);font-weight:400;display:block;font-size:13px}
+  /* work detail modal */
+  .film{cursor:pointer;background:none;border:0;padding:0;text-align:left;color:inherit;font:inherit}
+  .film:focus-visible .photo{outline:2px solid var(--gold);outline-offset:3px}
+  .film .more{position:absolute;right:10px;bottom:10px;z-index:2;font-size:11px;letter-spacing:.08em;color:var(--ink);background:rgba(15,13,12,.72);padding:3px 10px;border-radius:999px;opacity:0;transform:translateY(4px);transition:all .25s}
+  .film:hover .more,.film:focus-visible .more{opacity:1;transform:none}
+  .film .cnt{position:absolute;top:12px;right:12px;z-index:2;font-size:11px;color:var(--bg);background:var(--gold);padding:1px 8px;border-radius:999px;font-weight:600}
+  .modal{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(8,7,6,.82);backdrop-filter:blur(6px)}
+  .modal.on{display:flex;animation:fade .3s ease}
+  .sheet{position:relative;width:100%;max-width:960px;max-height:calc(100vh - 48px);overflow:auto;background:var(--bg2);border:1px solid var(--line);display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)}
+  .sheet .pic{position:relative;background:#0b0a09;min-height:420px}
+  .sheet .pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+  .sheet .pic .ph{position:absolute;inset:0}
+  .sheet .body{padding:40px 38px 36px}
+  .sheet .meta{font-size:12px;letter-spacing:.18em;color:var(--gold)}
+  .sheet h3{font-family:var(--serif);font-size:clamp(26px,3vw,34px);line-height:1.3;margin:10px 0 4px}
+  .sheet .role{color:#d8cfc3}
+  .sheet .when{margin-top:14px;font-size:14px;color:var(--mute);padding-left:12px;border-left:2px solid var(--gold)}
+  .sheet h4{font-size:12px;letter-spacing:.2em;color:var(--mute);margin:32px 0 12px;font-weight:600}
+  .gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px}
+  .gal button{border:1px solid var(--line);padding:0;background:none;cursor:pointer;aspect-ratio:1;overflow:hidden}
+  .gal button.on{border-color:var(--gold)}
+  .gal img{width:100%;height:100%;object-fit:cover;display:block}
+  .links{list-style:none;border-top:1px solid var(--line)}
+  .links a{display:flex;align-items:center;gap:12px;padding:13px 2px;border-bottom:1px solid var(--line);text-decoration:none;transition:color .2s}
+  .links a:hover{color:var(--gold)}
+  .links .tg{flex:none;font-size:11px;padding:2px 9px;border-radius:999px;border:1px solid var(--line);color:var(--mute);min-width:52px;text-align:center}
+  .links .tg.v{border-color:#7a2d2d;color:#e8a29a}
+  .links .tg.i{border-color:#6b5a3a;color:var(--gold)}
+  .links .tg.a{border-color:#2f5a55;color:#8fcfc4}
+  .links .tg.l{border-color:#7a3a62;color:#e59ac8}
+  .alist li > a:first-child{flex:none;display:block}
+  .th{display:block;flex:none;position:relative;width:128px;aspect-ratio:16/9;border-radius:5px;overflow:hidden;background:radial-gradient(120% 120% at 30% 20%,#3a2f27,#141110);border:1px solid var(--line)}
+  .th img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.45) saturate(.8);transition:transform .4s}
+  .th.real img{filter:none}
+  .th .pl{position:absolute;left:50%;top:50%;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;background:rgba(15,13,12,.7);border:1px solid rgba(255,255,255,.35)}
+  .th .pl::after{content:"";position:absolute;left:12px;top:9px;border-left:9px solid #fff;border-top:6px solid transparent;border-bottom:6px solid transparent}
+  a:hover .th img,li:hover .th img{transform:scale(1.05)}
+  .links a{gap:14px}
+  @media (max-width:820px){ .th{width:96px} }
+  .links .sub{display:block;font-size:12px;color:var(--mute);margin-top:2px}
+  .extras{margin:-30px auto 80px}
+  .extras .head{display:flex;align-items:baseline;gap:14px;margin-bottom:18px}
+  .extras h2{font-family:var(--serif);font-size:26px;font-weight:700}
+  .extras .note{font-size:13px;color:var(--mute)}
+  .links .lt{flex:1;font-size:14px;line-height:1.5}
+  .links .ar{flex:none;color:var(--mute)}
+  .empty{font-size:14px;color:var(--mute);padding:14px 16px;border:1px dashed var(--line)}
+  .x{position:absolute;top:12px;right:12px;z-index:3;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:rgba(15,13,12,.8);color:var(--ink);font-size:18px;cursor:pointer}
+  .x:hover{border-color:var(--gold);color:var(--gold)}
+  .nav2{display:flex;gap:8px;margin-top:28px}
+  .nav2 button{flex:1;background:none;border:1px solid var(--line);color:var(--mute);padding:9px;font-size:13px;cursor:pointer;border-radius:4px}
+  .nav2 button:hover{color:var(--ink);border-color:#4a413a}
+  body.lock{overflow:hidden}
+  @media (max-width:820px){
+    .sheet{display:block;max-height:calc(100vh - 24px)}
+    .modal{padding:12px}
+    .sheet .pic{min-height:0;height:56vh}
+    .sheet .body{padding:28px 22px 26px}
+    .film .more{opacity:1;transform:none}
+  }
+  @media (max-width:820px){
+    .burger{display:flex}
+    .menu{position:absolute;top:64px;left:0;right:0;flex-direction:column;gap:0;background:var(--bg);border-bottom:1px solid var(--line);
+          max-height:0;overflow:hidden;transition:max-height .3s ease}
+    nav.open .menu{max-height:400px}
+    .menu button{width:100%;text-align:left;border-radius:0;padding:16px 28px;font-size:16px;border-top:1px solid var(--line)}
+    .menu button.on{background:var(--bg2);color:var(--gold)}
+    .tiles{grid-template-columns:1fr 1fr}
+    .hero-grid{grid-template-columns:1fr;gap:36px}
+    .hero-photo{justify-self:start;max-width:320px}
+    .now{grid-template-columns:1fr}
+    .ticket{border-right:none;border-bottom:1px dashed #3a332d;padding:34px}
+    .profile{grid-template-columns:1fr;gap:40px}
+    .page{padding-top:56px;padding-bottom:80px}
+    .curtain{width:6vw}
+    .films{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:22px 14px}
+    .ph .rn{font-size:18px}
+  }
+  @media (prefers-reduced-motion:reduce){.dot,.view{animation:none}}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="wrap">
+    <button class="logo" data-go="home">Baek <span>Hyeong Hun</span></button>
+    <ul class="menu" id="menu">
+      <li><button data-go="home">홈</button></li>
+      <li><button data-go="profile">프로필</button></li>
+      <li><button data-go="y2026">2026</button></li>
+      <li><button data-go="works">출연작</button></li>
+      <li><button data-go="cal">일정</button></li>
+      <li><button data-go="media">아카이브</button></li>
+    </ul>
+    <button class="burger" id="burger" aria-label="메뉴 열기"><i></i><i></i><i></i></button>
+  </div>
+</nav>
+
+<main>
+  <!-- HOME -->
+  <div class="view" id="v-home">
+    <header class="hero">
+      <div class="curtain l"></div><div class="curtain r"></div>
+      <div class="wrap hero-grid">
+        <div>
+        <div class="eyebrow">Musical Actor · Since 2010</div>
+        <h1>백형훈</h1>
+        <div class="en">Baek Hyeong Hun</div>
+        <div class="social" id="social">
+          <a href="https://www.instagram.com/kyeong_hun_bae" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+            Instagram
+          </a>
+          <a href="https://www.youtube.com/channel/UC_kSiVLbDhY1Gg2hBREE9Eg/featured" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="5" width="19" height="14" rx="4"/><path d="M10 9.2v5.6l4.8-2.8z" fill="currentColor" stroke="none"/></svg>
+            YouTube
+          </a>
+        </div>
+        </div>
+        <button class="hero-photo" id="heroWork" aria-label="〈두 도시 이야기〉 자세히 보기">
+          <div class="frame">
+            <img src="photos/hero-two-cities.jpg" alt="〈두 도시 이야기〉 찰스 다네이 역 백형훈 프로필 사진">
+            <div class="cap">
+              <span class="t"><i class="dot"></i>NOW PLAYING</span>
+              <div class="n">〈두 도시 이야기〉</div>
+              <div class="r">찰스 다네이 역 · ~ 2027. 2. 8</div>
+            </div>
+          </div>
+          <div class="tagline">광림아트센터 BBCH홀 →</div>
+        </button>
+      </div>
+    </header>
+    <div class="wrap">
+      <section class="up">
+        <div class="up-head"><h2>다가오는 일정</h2><button class="up-more" data-go="cal">일정 전체 보기 →</button></div>
+        <div class="up-list" id="upList"></div>
+      </section>
+      <div class="tiles">
+                <button class="tile" data-go="profile"><span class="n">01</span><span class="h">프로필</span><span class="d">배우 백형훈 소개 <span class="arrow">→</span></span></button>
+        <button class="tile" data-go="y2026"><span class="n">02</span><span class="h">2026</span><span class="d">올해의 무대 타임라인 <span class="arrow">→</span></span></button>
+        <button class="tile" data-go="works"><span class="n">03</span><span class="h">출연작</span><span class="d">2010–2026 배역 모음 <span class="arrow">→</span></span></button>
+        <button class="tile" data-go="cal"><span class="n">04</span><span class="h">일정</span><span class="d">출연 회차 캘린더 <span class="arrow">→</span></span></button>
+      </div>
+      <section class="extras" style="padding:0;border:0">
+        <div class="head"><h2>작품 밖의 백형훈</h2><span class="note">라이브 · 다른 채널 영상 속 모습</span></div>
+        <div id="extras"></div>
+      </section>
+    </div>
+  </div>
+
+  <!-- PROFILE -->
+  <div class="view" id="v-profile"><div class="wrap page">
+    <div class="sec-head"><span class="num">01</span><h2>프로필</h2></div>
+    <div class="profile">
+      <ul class="facts">
+        <li><span>이름</span><span>백형훈</span></li>
+        <li><span>생년월일</span><span>1987. 3. 2</span></li>
+        <li><span>데뷔</span><span>2010 〈화랑〉</span></li>
+        <li><span>데뷔 배역</span><span>문노</span></li>
+        <li><span>학력</span><span>서울예술대학 연기과</span></li>
+      </ul>
+      <div class="bio">
+        <p>가수를 꿈꾸던 청년은 청계천 하이서울페스티벌에서 우연히 본 뮤지컬 갈라쇼를 계기로 무대를 향했습니다. 2010년 〈화랑〉으로 데뷔한 뒤 해마다 쉬지 않고 여러 작품에 오르며, 대학로 소극장부터 대극장까지 폭넓은 무대를 지켜 왔습니다.</p>
+        <p>넓은 음역과 장르를 가리지 않는 보컬로 사랑받으면서도, 바른 청년의 이미지를 깨는 거칠고 어두운 인물까지 차근차근 영역을 넓혀 왔습니다. 그리고 2025–26 시즌 〈킹키부츠〉의 롤라로 또 한 번 새로운 얼굴을 보여 주었습니다.</p>
+        <div class="chips">
+          <span class="chip">#만능보컬</span><span class="chip">#넓은음역</span><span class="chip">#롤라</span><span class="chip">#한정훈</span><span class="chip">#갈릴레오</span>
+        </div>
+      </div>
+    </div>
+  </div></div>
+
+  <!-- 2026 -->
+  <div class="view" id="v-y2026"><div class="wrap page">
+    <div class="sec-head"><span class="num">02</span><h2>2026년의 무대</h2></div>
+    <div class="timeline">
+      <div class="t-item live">
+        <div class="t-date">2026. 11. 11 – 2027. 02. 08</div>
+        <div class="t-title">뮤지컬 〈두 도시 이야기〉</div>
+        <div class="t-meta">찰스 다네이 역 · 광림아트센터 BBCH홀</div>
+      </div>
+      <div class="t-item">
+        <div class="t-date">2026. 09. 15 – 10. 15</div>
+        <div class="t-title">〈곤 투모로우〉 10주년 기념 공연</div>
+        <div class="t-meta">한정훈 역 · 홍익대 대학로 아트센터 · 10/15 막공</div>
+      </div>
+      <div class="t-item">
+        <div class="t-date">2026. 06. 13 – 07. 05</div>
+        <div class="t-title">창작가무극 〈신과 함께_저승편〉</div>
+        <div class="t-meta">강림 역 · NOL 씨어터 대학로 우리카드홀</div>
+      </div>
+      <div class="t-item">
+        <div class="t-date">2026. 05. 27</div>
+        <div class="t-title">2026 월간뮤지크 〈마이클 리 X 백형훈〉</div>
+        <div class="t-meta">콘서트 · 양천문화회관 대극장</div>
+      </div>
+      <div class="t-item">
+        <div class="t-date">2026. 04 – 05</div>
+        <div class="t-title">〈킹키부츠〉 지방 투어</div>
+        <div class="t-meta">롤라 역 · 광주 · 대구 · 부산 외</div>
+      </div>
+      <div class="t-item">
+        <div class="t-date">2025. 12. 17 – 2026. 03. 29</div>
+        <div class="t-title">뮤지컬 〈킹키부츠〉</div>
+        <div class="t-meta">롤라 역 · 샤롯데씨어터</div>
+      </div>
+    </div>
+  </div></div>
+
+  <!-- WORKS -->
+  <div class="view" id="v-works"><div class="wrap page">
+    <div class="sec-head"><span class="num">03</span><h2>출연작</h2></div>
+    <div class="seg" id="wMode"><button data-m="cards" class="on">카드로 보기</button><button data-m="tl">연도별 타임라인</button></div>
+    <div id="cardsBox">
+      <div class="filters" id="filters"></div>
+      <div class="films" id="films"></div>
+    </div>
+    <div id="tlBox" hidden>
+      <p class="tl-intro">데뷔작부터 지금까지 한 줄에 한 해씩. 막대를 누르면 자세한 정보를 볼 수 있어요.</p>
+      <div class="tl-legend" id="tlLegend"></div>
+      <div class="tl-years" id="tlYears"></div>
+      <div class="tl-scroll" id="tlScroll"><div class="tl" id="tl"></div></div>
+      <p class="tl-foot">‹ › 는 해를 넘겨 이어지는 공연이에요. 방송·콘서트 날짜는 대략적인 위치예요.</p>
+      <div class="tl-pop" id="tlPop" hidden></div>
+    </div>
+  </div></div>
+  <!-- CALENDAR -->
+  <div class="view" id="v-cal"><div class="wrap page">
+    <div class="sec-head"><span class="num">04</span><h2>일정</h2></div>
+    <div class="cal-bar">
+      <button class="cal-nav" id="calPrev" aria-label="이전 달">‹</button>
+      <div class="cal-title" id="calTitle"></div>
+      <button class="cal-nav" id="calNext" aria-label="다음 달">›</button>
+      <button class="cal-today" id="calToday">오늘</button>
+    </div>
+    <div class="cal-legend" id="calLegend"></div>
+    <div class="cal" id="cal"></div>
+    <h3 class="cal-sub" id="calSub"></h3>
+    <div id="calList"></div>
+    <p class="cal-foot">출연 회차(캐스팅 일정)는 제작사 공지를 기준으로 업데이트해요. 정확한 시간과 캐스팅은 예매처에서 다시 확인해 주세요.</p>
+  </div></div>
+  <!-- MEDIA ARCHIVE -->
+  <div class="view" id="v-media"><div class="wrap page">
+    <div class="sec-head"><span class="num">05</span><h2>아카이브</h2></div>
+    <p class="arch-intro">영상 · 인터뷰 · 기사 · 사진을 한곳에 모았어요. 작품 이름을 누르면 그 작품의 자료만 볼 수 있어요.</p>
+    <div class="filters" id="aFilters"></div>
+    <div id="aList"></div>
+  </div></div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="disc">이 페이지는 팬이 만든 <b>비공식</b> 팬페이지로, 배우 본인 및 소속사와는 관련이 없습니다. 정확한 공연 일정과 캐스팅은 각 공연 예매처와 제작사 공지를 확인해 주세요.</div>
+  </div>
+</footer>
+
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <button class="x" id="mClose" aria-label="닫기">✕</button>
+    <div class="pic" id="mPic"></div>
+    <div class="body">
+      <div class="meta" id="mMeta"></div>
+      <h3 id="mTitle"></h3>
+      <div class="role" id="mRole"></div>
+      <div class="when" id="mWhen"></div>
+      <div id="mGalWrap"><h4>사진</h4><div class="gal" id="mGal"></div></div>
+      <h4>영상 · 인터뷰 · 기사</h4>
+      <div id="mLinks"></div>
+      <div class="nav2"><button id="mPrev">← 이전 작품</button><button id="mNext">다음 작품 →</button></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* 출연작 데이터 — img 에 사진 파일 경로(예: "photos/kinky-lola.jpg")를 넣으면 카드에 사진이 표시됩니다 */
+  const works = [
+    {y:2026,t:"두 도시 이야기",r:"찰스 다네이",k:"뮤지컬",img:"photos/2026-two-cities-darnay.jpg",pos:"50% 30%"},
+    {y:2026,t:"곤 투모로우 (10주년)",r:"한정훈",k:"뮤지컬",img:"photos/2026-gone-tomorrow.jpg"},
+    {y:2026,t:"신과 함께_저승편",r:"강림",k:"가무극",img:"photos/2026-gangrim.jpg",pos:"50% 10%"},
+    {y:2025,t:"킹키부츠",r:"롤라",k:"뮤지컬",img:"photos/2025-lola.jpg",pos:"50% 0%"},
+    {y:2025,t:"명성황후 (30주년)",r:"홍계훈",k:"뮤지컬",img:"photos/2025-empress-hong.jpg",pos:"60% 20%"},
+    {y:2024,t:"노트르담 드 파리",r:"페뷔스",k:"뮤지컬",img:"photos/2024-notre-dame-phoebus.jpg",pos:"50% 15%"},
+    {y:2024,t:"지저스 크라이스트 수퍼스타",r:"유다",k:"뮤지컬",img:"photos/2024-jcs-judas.jpg",pos:"50% 15%"},
+    {y:2024,t:"살리에르",r:"젤라스",k:"뮤지컬",img:"photos/2024-salieri-jealous.jpg",pos:"60% 20%"},
+    {y:2023,t:"렌트",r:"로저",k:"뮤지컬",img:"photos/2023-rent-roger.jpg",pos:"50% 15%"},
+    {y:2023,t:"곤 투모로우 - 삼일천하 1884",r:"한정훈",k:"뮤지컬",img:"photos/2023-gone-tomorrow.jpg",pos:"30% 25%"},
+    {y:2023,t:"HOPE: 읽히지 않은 책과 읽히지 않은 인생",r:"K",k:"뮤지컬",img:"photos/2023-hope-k.jpg",pos:"50% 25%"},
+    {y:2022,t:"킹아더",r:"멜레아강",k:"뮤지컬",img:"photos/2022-king-arthur-meleagant.jpg",pos:"50% 25%"},
+    {y:2022,t:"지저스 크라이스트 수퍼스타",r:"유다",k:"뮤지컬",img:"photos/2022-jcs-judas.jpg",pos:"50% 15%"},
+    {y:2021,t:"더데빌",r:"X-WHITE",k:"뮤지컬",img:"photos/2021-the-devil-xwhite.jpg",pos:"50% 20%"},
+    {y:2021,t:"팬레터",r:"김해진",k:"뮤지컬",img:"photos/2021-fanletter-haejin.jpg",pos:"60% 20%"},
+    {y:2021,t:"마마, 돈 크라이",r:"프로페서V",k:"뮤지컬",img:"photos/2020-mama-professor-v.jpg",pos:"50% 15%"},
+    {y:2021,t:"드라큘라",r:"조나단 하커",k:"뮤지컬",img:"photos/2021-dracula-jonathan.jpg",pos:"50% 20%"},
+    {y:2020,t:"작은 아씨들",r:"브룩",k:"연극",img:"photos/2021-little-women-brooke.jpg",pos:"50% 20%"},
+    {y:2020,t:"고스트",r:"칼 브루너",k:"뮤지컬",img:"photos/2020-ghost-carl.jpg",pos:"40% 20%"},
+    {y:2020,t:"최후진술",r:"갈릴레오 갈릴레이",k:"뮤지컬",img:"photos/2020-last-statement-galileo.jpg",pos:"50% 60%"},
+    {y:2020,t:"미드나잇 : 앤틀러스",r:"맨",k:"뮤지컬",img:"photos/2020-midnight-man.jpg",pos:"65% 35%"},
+    {y:2019,t:"최후진술",r:"갈릴레오 갈릴레이",k:"뮤지컬",img:"photos/2019-last-statement-galileo.jpg",pos:"50% 75%"},
+    {y:2019,t:"랭보",r:"랭보",k:"뮤지컬",img:"photos/2019-rimbaud.jpg",pos:"35% 70%"},
+    {y:2019,t:"팬레터",r:"정세훈",k:"뮤지컬",img:"photos/2019-fanletter-sehun.jpg",pos:"40% 20%"},
+    {y:2019,t:"에브리바디 원츠 힘 데드",r:"싱페이",k:"연극",img:"photos/2019-ewhd-xingpei.jpg",pos:"50% 15%"},
+    {y:2019,t:"테레즈 라캥",r:"로랑",k:"뮤지컬",img:"photos/2019-therese-laurent.jpg",pos:"50% 25%"},
+    {y:2018,t:"팬텀",r:"필립 드 샹동 백작",k:"뮤지컬",img:"photos/2018-phantom-philippe.jpg",pos:"50% 15%"},
+    {y:2018,t:"록키호러쇼",r:"브래드",k:"뮤지컬",img:"photos/2018-rocky-brad.jpg",pos:"50% 45%"},
+    {y:2018,t:"바람과 함께 사라지다",r:"애슐리 윌크스",k:"뮤지컬",img:"photos/2018-gwtw-ashley.jpg",pos:"50% 15%"},
+    {y:2017,t:"에드거 앨런 포",r:"그리스월드",k:"뮤지컬",img:"photos/2017-poe-griswold.jpg",pos:"40% 15%"},
+    {y:2017,t:"나폴레옹",r:"뤼시앙",k:"뮤지컬",img:"photos/2017-napoleon-lucien.jpg",pos:"50% 15%"},
+    {y:2017,t:"서른 즈음에",r:"젊은 현식",k:"뮤지컬",img:""},
+    {y:2017,t:"록키호러쇼",r:"브래드 메이저스",k:"뮤지컬",img:""},
+    {y:2017,t:"미드나잇",r:"맨",k:"뮤지컬",img:""},
+    {y:2016,t:"트레이스 유",r:"구본하",k:"뮤지컬",img:"photos/2016-trace-u-bonha.jpg",pos:"55% 15%"},
+    {y:2016,t:"씨왓아이워너씨",r:"강도/기자",k:"뮤지컬",img:""},
+    {y:2016,t:"아들",r:"준석",k:"연극",img:"photos/2016-ahdeul.jpg",pos:"50% 20%"},
+    {y:2015,t:"넥스트 투 노멀",r:"헨리·게이브",k:"뮤지컬",img:""},
+    {y:2015,t:"엘리자벳",r:"루돌프",k:"뮤지컬",img:"photos/2015-elisabeth-rudolf.jpg",pos:"50% 10%"},
+    {y:2015,t:"쓰루 더 도어",r:"카일",k:"뮤지컬",img:"photos/2015-through-the-door-kyle.jpg",pos:"50% 15%"},
+    {y:2014,t:"쓰릴 미",r:"나",k:"뮤지컬",img:"photos/2014-thrill-me-na.jpg",pos:"50% 20%"},
+    {y:2014,t:"여신님이 보고 계셔",r:"조동현",k:"뮤지컬",img:"photos/2014-goddess-donghyun.jpg",pos:"50% 20%"},
+    {y:2013,t:"명성황후",r:"앙상블",k:"뮤지컬",img:""},
+    {y:2013,t:"더 프로미스",r:"앙상블",k:"뮤지컬",img:""},
+    {y:2011,t:"화랑",r:"기파랑",k:"뮤지컬",img:""},
+    {y:2011,t:"모차르트!",r:"앙상블",k:"뮤지컬",img:""},
+    {y:2010,t:"화랑",r:"문노 · 데뷔작",k:"뮤지컬",img:""}
+  ];
+
+  /* 작품별 상세 정보 — 키는 "연도|제목".
+     d: 기간·장소 / gallery: 추가 사진 경로 / links: {k:"영상"|"인터뷰"|"기사", t:제목, u:주소} */
+  const details = {
+    "2026|두 도시 이야기": {d:"2026. 11. 11 – 2027. 2. 8 · 광림아트센터 BBCH홀", links:[
+      {k:"영상",t:"〈두 도시 이야기〉 CASTING FILM",u:"https://youtu.be/WCR0uOiwAuE"},
+      {k:"영상",t:"〈두 도시 이야기〉 연습실 스케치 필름",u:"https://youtu.be/m4W9sOXFxFA"},
+      {k:"영상",t:"〈두 도시 이야기〉 첫공 무대인사",u:"https://youtu.be/WG3JdJDed8Y"},
+      {k:"영상",t:"〈두 도시 이야기〉 랜덤 인터뷰",u:"https://youtu.be/K62tYlFsyps"},
+      {k:"영상",t:"〈두 도시 이야기〉 릴레이 인터뷰",u:"https://youtu.be/LUsGm1CWBSE"},
+      {k:"기사",t:"12년 만에 돌아온 〈두 도시 이야기〉의 변화 포인트 (위키더뮤지컬)",u:"https://brunch.co.kr/@wikithemusical/16"},
+      {k:"기사",t:"〈두 도시 이야기〉 개막 리뷰 (연합뉴스)",u:"https://supple.kr/news/cmwo32vs3rj6vkwp8pxxblcc9"}]},
+    "2026|곤 투모로우 (10주년)": {d:"2026. 9. 15 – 10. 15 (백형훈 출연, 10/15 막공) · 홍익대 대학로 아트센터", links:[
+      {k:"영상",t:"〈곤 투모로우〉 첫공 무대인사",u:"https://youtu.be/HPAiOWmQQ3I"},
+      {k:"영상",t:"〈곤 투모로우〉 첫공 퇴근길",u:"https://youtu.be/zg3zAn5aOTc"},
+      {k:"영상",t:"261001 〈곤 투모로우〉 스페셜 커튼콜 – 내일은 없다",u:"https://youtu.be/GsutyjxIb_E"},
+      {k:"영상",t:"〈곤 투모로우〉 막공 무대인사",u:"https://youtu.be/31xlSptZwq8"},
+      {k:"영상",t:"〈곤 투모로우〉 막공 퇴근길",u:"https://youtu.be/iX-wtKyTpyo"}]},
+    "2026|신과 함께_저승편": {d:"2026. 6. 13 – 7. 5 · NOL 씨어터 대학로 우리카드홀"},
+    "2025|킹키부츠": {d:"2025. 12. 17 – 2026. 3. 29 · 샤롯데씨어터 (이후 지방 투어)"},
+    "2025|명성황후 (30주년)": {d:"2025. 1. 21 – 3. 30 · 세종문화회관 대극장"},
+    "2024|노트르담 드 파리": {d:"2024. 1. 24 – 3. 24 · 세종문화회관 대극장"},
+    "2024|지저스 크라이스트 수퍼스타": {d:"2024. 11. 7 – 2025. 1. 12 · 광림아트센터 BBCH홀", links:[
+      {k:"기사",t:"〈지저스 크라이스트 수퍼스타〉 11월 개막·캐스팅 (더뮤지컬)",u:"https://www.themusical.co.kr/News/Detail?num=14186"}]},
+    "2024|살리에르": {d:"2024. 7. 11 – 9. 21 · 세종문화회관 M씨어터"},
+    "2023|렌트": {d:"2023. 11. 11 – 2024. 2. 25 · 코엑스 신한카드 아티움", links:[
+      {k:"기사",t:"〈렌트〉 2023 캐스팅 공개 (엑스포츠뉴스)",u:"https://www.xportsnews.com/article/1769646"},
+      {k:"기사",t:"〈렌트〉 프레스콜 현장 (스타뉴스)",u:"https://www.starnewskorea.com/pop-culture/2023/11/15/2023111516491168083"}]},
+    "2023|곤 투모로우 - 삼일천하 1884": {d:"2023. 8. 10 – 10. 22 · 광림아트센터 BBCH홀"},
+    "2023|HOPE: 읽히지 않은 책과 읽히지 않은 인생": {d:"2023. 3. 16 – 6. 11 · 유니플렉스 1관"},
+    "2022|킹아더": {d:"2022. 3. 22 – 6. 6 · 홍익대 대학로 아트센터 대극장", links:[
+      {k:"기사",t:"〈킹아더〉 재연 캐스팅 공개 (스포츠경향)",u:"https://sports.khan.co.kr/article/202201261655003"}]},
+    "2022|지저스 크라이스트 수퍼스타": {d:"2022. 11. 10 – 2023. 1. 15 · 광림아트센터 BBCH홀", links:[
+      {k:"기사",t:"브로드웨이 초연 50주년 〈수퍼스타〉 캐스팅 (더뮤지컬)",u:"https://www.themusical.co.kr/News/Detail?num=13317"}]},
+    "2021|팬레터": {d:"2021. 12. 10 – 2022. 3. 20 · 코엑스아티움"},
+    "2021|드라큘라": {d:"2021. 5. 18 – 8. 1 · 블루스퀘어 신한카드홀", links:[
+      {k:"기사",t:"〈드라큘라〉 2021 개막 현장 (엑스포츠뉴스)",u:"https://www.xportsnews.com/article/1428398"}]},
+    "2020|작은 아씨들": {d:"2020. 5. 8 – 5. 13 · 신촌 연희예술극장", links:[
+      {k:"기사",t:"연극 〈작은 아씨들〉 연습실 방문기 (더뮤지컬)",u:"https://www.themusical.co.kr/Magazine/Detail?num=4545"}]},
+    "2021|마마, 돈 크라이": {d:"2021. 5 – 8",links:[
+      {k:"인터뷰",t:"데뷔 10년 백형훈 인터뷰 · 프로페서V 프로필 (문화일보)",u:"https://www.munhwa.com/article/11174515"}]},
+    "2020|고스트": {d:"2020. 10. 6 – 2021. 3. 14", links:[
+      {k:"기사",t:"데뷔 10주년 콘서트 · 〈고스트〉 칼 캐스팅 소식 (더뮤지컬)",u:"https://www.themusical.co.kr/News/Detail?num=13160"}]},
+    "2020|최후진술": {d:"2020. 3. 13 – 5. 31 · 예스24 스테이지 2관", links:[
+      {k:"인터뷰",t:"“노래·연기 힘 조금 빼고, 상대와 호흡 늘렸죠” (한경 머니)",u:"https://magazine.hankyung.com/money/article/202101203257c"},
+      {k:"인터뷰",t:"데뷔 10년 백형훈, 〈최후진술〉 연습 현장 (문화일보)",u:"https://www.munhwa.com/article/11174515"}]},
+    "2020|미드나잇 : 앤틀러스": {d:"2020. 2. 11 – 5. 3"},
+    "2019|최후진술": {d:"2019. 3. 16 – 6. 9 · 예스24 스테이지 2관"},
+    "2019|랭보": {d:"2019. 9. 7 – 12. 1 · 예스24 스테이지 1관", links:[
+      {k:"인터뷰",t:"[SPOTLIGHT] 〈랭보〉 백형훈, 반짝임에서 단단함으로 (더뮤지컬)",u:"https://www.themusical.co.kr/Magazine/Detail?num=4283"}]},
+    "2019|팬레터": {d:"2019. 11 – 2020. 2 · 두산아트센터 연강홀"},
+    "2019|에브리바디 원츠 힘 데드": {links:[
+      {k:"인터뷰",t:"〈랭보〉 인터뷰에서 싱페이 역 언급 (더뮤지컬)",u:"https://www.themusical.co.kr/Magazine/Detail?num=4283"}]},
+    "2018|팬텀": {d:"2018. 12. 1 – 2019. 2. 17"},
+    "2018|록키호러쇼": {d:"2018. 8. 3 – 10. 21"},
+    "2018|바람과 함께 사라지다": {d:"2018. 5. 18 – 7. 29 · 샤롯데씨어터"},
+    "2017|에드거 앨런 포": {d:"2017. 11. 17 – 2018. 2. 4 · 광림아트센터 BBCH홀", links:[
+      {k:"인터뷰",t:"[LIVE TALK] 〈에드거 앨런 포〉 백형훈 (더뮤지컬)",u:"https://www.themusical.co.kr/Magazine/Detail?num=3505"}]},
+    "2017|나폴레옹": {d:"2017. 7. 15 – 10. 22 · 샤롯데씨어터", links:[
+      {k:"기사",t:"〈나폴레옹〉 단체 포스터 공개 (뉴데일리)",u:"https://www.newdaily.co.kr/site/data/html/2017/06/05/2017060500091.amp.html"}]},
+    "2016|트레이스 유": {links:[
+      {k:"인터뷰",t:"[FACE] 〈씨왓아이워너씨〉 백형훈 — 구본하 이야기 (더뮤지컬)",u:"https://www.themusical.co.kr/Magazine/Detail?num=2936"},
+      {k:"인터뷰",t:"[매거진PS] 백형훈, 노력이 만들어 낼 무대 (더뮤지컬)",u:"https://www.themusical.co.kr/Pick/Detail?num=8908"}]},
+    "2016|아들": {d:"2016. 6 – 7", links:[
+      {k:"인터뷰",t:"2016년 6월 연극 〈아들〉 언급 인터뷰 (더뮤지컬)",u:"https://www.themusical.co.kr/Magazine/Detail?num=2936"}]},
+    "2015|쓰루 더 도어": {d:"2015. 3. 7 – 6. 7 · 대학로 유니플렉스 1관", links:[
+      {k:"기사",t:"[HOT MUSICAL] 〈쓰루 더 도어〉 (더뮤지컬)",u:"https://www.themusical.co.kr/Magazine/Detail?num=2323"}]},
+    "2014|쓰릴 미": {d:"2014. 12. 10 – 2015. 3. 1"},
+    "2017|서른 즈음에": {d:"2017. 10 – 12"},
+    "2017|록키호러쇼": {d:"2017. 5 – 8"},
+    "2017|미드나잇": {d:"2017. 1 – 2"},
+    "2015|넥스트 투 노멀": {d:"2015. 11 – 2016. 3"},
+    "2013|명성황후": {d:"2013. 12"},
+    "2013|더 프로미스": {d:"2013. 1"},
+    "2011|화랑": {d:"2011. 8 – 9"},
+    "2016|씨왓아이워너씨": {d:"2015. 10 – 11 / 2016. 9 – 11", links:[
+      {k:"인터뷰",t:"[FACE] 〈씨왓아이워너씨〉 백형훈 (더뮤지컬)",u:"https://www.themusical.co.kr/Magazine/Detail?num=2936"}]},
+    "2014|여신님이 보고 계셔": {d:"2014. 4. 26 – 7. 27"},
+    "2011|모차르트!": {d:"2011. 5. 24 – 7. 3"},
+    "2010|화랑": {d:"2010. 1. 15 – 5. 30 · 뮤지컬 데뷔작"}
+  };
+  const detOf = w => details[w.y+"|"+w.t] || {};
+  const eras = [
+    {id:"all",label:"전체",f:()=>true},
+    {id:"2020s",label:"2020년대",f:w=>w.y>=2020},
+    {id:"2010s",label:"2010년대",f:w=>w.y<2020},
+    {id:"play",label:"연극",f:w=>w.k==="연극"}
+  ];
+  let cur = "all";
+  const fEl = document.getElementById("filters"), gEl = document.getElementById("films");
+  let shown = [];
+  function picHTML(w, lazy){
+    const hue = (w.y*37 + w.t.length*23) % 360;
+    return w.img
+      ? `<img src="${w.img}" style="object-position:${w.pos||"50% 20%"}" alt="${w.t} ${w.r} 프로필 사진"${lazy?' loading="lazy"':''}>`
+      : `<div class="ph" style="--h:${hue}"><div class="rn">${w.r ? w.r.split(" · ")[0] : w.t}</div><div class="lb">PROFILE PHOTO</div></div>`;
+  }
+  function renderWorks(){
+    fEl.innerHTML = eras.map(e=>`<button class="${e.id===cur?'on':''}" data-id="${e.id}">${e.label}</button>`).join("");
+    const era = eras.find(e=>e.id===cur);
+    shown = works.filter(era.f);
+    gEl.innerHTML = shown.map((w,i)=>{
+      const n = (detOf(w).links||[]).length + (detOf(w).gallery||[]).length;
+      return `<button class="film" data-i="${i}" aria-label="${w.t} 자세히 보기"><div class="photo"><span class="kind">${w.k}</span>${n?`<span class="cnt">${n}</span>`:""}${picHTML(w,true)}<span class="more">자세히 보기</span></div>
+        <div class="yr">${w.y}</div><div class="ttl">${w.t}</div><div class="rl">${w.r ? w.r + " 역" : "&nbsp;"}</div></button>`;
+    }).join("");
+  }
+  fEl.addEventListener("click",e=>{const b=e.target.closest("button"); if(!b)return; cur=b.dataset.id; renderWorks();});
+  renderWorks();
+
+
+  /* 작품과 관계없는 영상 — k:"등장"은 다른 사람 채널 영상에 잠깐 나오는 것 */
+  const extras = [
+    {k:"인스타 라이브",t:"2022. 1. 17 인스타 라이브",dt:"2022. 1. 17",u:"https://youtu.be/IaDuvimLN4o",th:"photos/live-20220117.jpg"},
+    {k:"등장",t:"공연 시작 전, 배우들은 무엇을 할까? | 청사초롱 불 밝혀라 VLOG",ch:"이한수 컴퍼니",at:"12:21",u:"https://youtu.be/DZ5H2gIFnwM?t=741"}
+  ];
+  /* 영상 썸네일: th(직접 넣은 이미지) → 없으면 관련 작품 사진을 어둡게 → 없으면 기본 무늬 */
+  const isVid = k => k==="영상"||k==="인스타 라이브"||k==="등장";
+  function thumbHTML(l, w){
+    if(!isVid(l.k)) return "";
+    const src = l.th || (w && w.img);
+    return `<span class="th${l.th?' real':''}">${src?`<img src="${src}" alt="" loading="lazy" style="object-position:${l.th?'50% 50%':(w&&w.pos)||'50% 20%'}">`:""}<i class="pl"></i></span>`;
+  }
+  const tgCls = k => k==="영상"?"v":k==="인터뷰"?"i":k==="등장"?"a":k==="인스타 라이브"?"l":"";
+  document.getElementById("extras").innerHTML = `<ul class="links">${extras.map(l=>`<li><a href="${l.u}" target="_blank" rel="noopener">${thumbHTML(l,null)}<span class="tg ${tgCls(l.k)}">${l.k}</span><span class="lt">${l.t}<span class="sub">${[l.ch?l.ch+" 채널":"",l.dt||"",l.at?l.at+"부터 등장":""].filter(Boolean).join(" · ")}</span></span><span class="ar">↗</span></a></li>`).join("")}</ul>`;
+
+  /* 작품 상세 창 */
+  const modal=document.getElementById("modal"); let mi=-1;
+  const esc = t => String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  function openWork(i){
+    mi=(i+shown.length)%shown.length; const w=shown[mi], d=detOf(w);
+    document.getElementById("mPic").innerHTML = picHTML(w,false).replace(/style="object-position:[^"]*"/,"");
+    document.getElementById("mMeta").textContent = w.y+" · "+w.k;
+    document.getElementById("mTitle").textContent = "〈"+w.t+"〉";
+    document.getElementById("mRole").textContent = w.r ? w.r+" 역" : "";
+    const wh=document.getElementById("mWhen"); wh.textContent=d.d||""; wh.style.display=d.d?"":"none";
+    const gal=[w.img,...(d.gallery||[])].filter(Boolean);
+    document.getElementById("mGalWrap").style.display = gal.length>1?"":"none";
+    document.getElementById("mGal").innerHTML = gal.map((g,j)=>`<button class="${j?'':'on'}" data-g="${esc(g)}"><img src="${esc(g)}" alt="" loading="lazy"></button>`).join("");
+    const L=d.links||[];
+    document.getElementById("mLinks").innerHTML = L.length
+      ? `<ul class="links">${L.map(l=>`<li><a href="${esc(l.u)}" target="_blank" rel="noopener">${thumbHTML(l,w)}<span class="tg ${tgCls(l.k)}">${esc(l.k)}</span><span class="lt">${esc(l.t)}</span><span class="ar">↗</span></a></li>`).join("")}</ul>`
+      : `<div class="empty">아직 등록된 영상·인터뷰·기사가 없어요.</div>`;
+    modal.classList.add("on"); modal.setAttribute("aria-hidden","false"); document.body.classList.add("lock");
+    modal.querySelector(".sheet").scrollTop=0;
+  }
+  function openWorkObj(w){ shown = works.slice(); openWork(works.indexOf(w)); }
+  function closeWork(){ modal.classList.remove("on"); modal.setAttribute("aria-hidden","true"); document.body.classList.remove("lock"); }
+  gEl.addEventListener("click",e=>{const b=e.target.closest(".film"); if(b) openWork(+b.dataset.i);});
+  document.getElementById("mClose").addEventListener("click",closeWork);
+  document.getElementById("mPrev").addEventListener("click",()=>openWork(mi-1));
+  document.getElementById("mNext").addEventListener("click",()=>openWork(mi+1));
+  modal.addEventListener("click",e=>{ if(e.target===modal) closeWork(); });
+  document.getElementById("mGal").addEventListener("click",e=>{
+    const b=e.target.closest("button"); if(!b) return;
+    document.querySelectorAll("#mGal button").forEach(x=>x.classList.toggle("on",x===b));
+    document.getElementById("mPic").innerHTML=`<img src="${b.dataset.g}" alt="">`;
+  });
+  document.addEventListener("keydown",e=>{
+    if(!modal.classList.contains("on")) return;
+    if(e.key==="Escape") closeWork();
+    if(e.key==="ArrowLeft") openWork(mi-1);
+    if(e.key==="ArrowRight") openWork(mi+1);
+  });
+  /* 아카이브: 작품별 자료 + 작품 밖 영상 + 사진을 한곳에 */
+  let aCur="all";
+  function archiveItems(){
+    const byUrl=new Map();
+    works.forEach(w=>(detOf(w).links||[]).forEach(l=>{
+      if(!byUrl.has(l.u)) byUrl.set(l.u,{...l,ws:[]});
+      byUrl.get(l.u).ws.push(w);
+    }));
+    extras.forEach(l=>{ if(!byUrl.has(l.u)) byUrl.set(l.u,{...l,ws:[],ext:true}); });
+    return [...byUrl.values()];
+  }
+  function archivePhotos(){
+    const out=[];
+    works.forEach(w=>{ [w.img,...(detOf(w).gallery||[])].filter(Boolean).forEach((g,j)=>out.push({g,w,pos:j?"50% 30%":(w.pos||"50% 20%")})); });
+    return out;
+  }
+  function renderArchive(){
+    const items=archiveItems(), photos=archivePhotos();
+    const cnt=k=>items.filter(x=>x.k===k).length;
+    const tabs=[["all","전체",items.length],["영상","영상",cnt("영상")],["인스타 라이브","인스타 라이브",cnt("인스타 라이브")],["인터뷰","인터뷰",cnt("인터뷰")],["기사","기사",cnt("기사")],["등장","등장",cnt("등장")],["사진","사진",photos.length]].filter(t=>t[2]>0||t[0]==="all"||t[0]==="인스타 라이브");
+    document.getElementById("aFilters").innerHTML=tabs.map(t=>`<button class="${t[0]===aCur?'on':''}" data-a="${t[0]}">${t[1]}<span class="c">${t[2]}</span></button>`).join("");
+    const box=document.getElementById("aList");
+    if(aCur==="사진"){
+      box.innerHTML=`<div class="pgrid">${photos.map(p=>`<button data-w="${works.indexOf(p.w)}"><div class="im"><img src="${p.g}" style="object-position:${p.pos}" alt="${esc(p.w.t)} 사진" loading="lazy"></div><div class="cp"><b>〈${esc(p.w.t)}〉</b>${p.w.y}${p.w.r?" · "+esc(p.w.r):""}</div></button>`).join("")}</div>`;
+      return;
+    }
+    const list=items.filter(x=>aCur==="all"||x.k===aCur);
+    box.innerHTML=list.length?`<ul class="alist">${list.map(l=>`<li>${isVid(l.k)?`<a href="${esc(l.u)}" target="_blank" rel="noopener" tabindex="-1">${thumbHTML(l,l.ws[0])}</a>`:""}<span class="tg ${tgCls(l.k)}">${esc(l.k)}</span><div class="main"><a href="${esc(l.u)}" target="_blank" rel="noopener">${esc(l.t)}</a><div class="wk">${l.ws.length?l.ws.map(w=>`<button data-w="${works.indexOf(w)}">〈${esc(w.t)}〉 ${w.y}</button>`).join(""):`<span>${esc([l.ch?l.ch+" 채널":"",l.dt||"",l.at?l.at+"부터 등장":""].filter(Boolean).join(" · ")||"작품 밖")}</span>`}</div></div><a class="ar" href="${esc(l.u)}" target="_blank" rel="noopener" aria-label="새 창으로 열기">↗</a></li>`).join("")}</ul>`:`<div class="empty">${aCur==="인스타 라이브"?"아직 등록된 인스타 라이브가 없어요.":"아직 자료가 없어요."}</div>`;
+  }
+  document.getElementById("aFilters").addEventListener("click",e=>{const b=e.target.closest("button"); if(!b)return; aCur=b.dataset.a; renderArchive();});
+  document.getElementById("aList").addEventListener("click",e=>{const b=e.target.closest("button[data-w]"); if(b) openWorkObj(works[+b.dataset.w]);});
+  renderArchive();
+
+
+  /* ===== 연도별 필모그래피 타임라인 =====
+     t:제목 r:배역 s,e:시작·끝(YYYY-MM-DD) c:main|ens|play|tour  w:출연작 카드 연결 키("연도|제목") */
+  const TL = [
+    {t:"화랑",r:"문노",s:"2010-01-15",e:"2010-05-30",c:"main",w:"2010|화랑"},
+    {t:"모차르트!",r:"앙상블",s:"2011-05-24",e:"2011-07-03",c:"ens",w:"2011|모차르트!"},
+    {t:"화랑",r:"문노",s:"2011-07-01",e:"2011-07-08",c:"main",w:"2011|화랑"},
+    {t:"화랑",r:"기파랑",s:"2011-08-18",e:"2011-09-04",c:"main",w:"2011|화랑"},
+    {t:"더 프로미스",r:"앙상블",s:"2013-01-08",e:"2013-01-20",c:"ens",w:"2013|더 프로미스"},
+    {t:"명성황후",r:"앙상블",s:"2013-12-05",e:"2013-12-29",c:"ens",w:"2013|명성황후"},
+    {t:"여신님이 보고 계셔",r:"조동현",s:"2014-04-26",e:"2014-07-27",c:"main",w:"2014|여신님이 보고 계셔"},
+    {t:"쓰릴 미",r:"나",s:"2014-12-10",e:"2015-03-01",c:"main",w:"2014|쓰릴 미"},
+    {t:"쓰루 더 도어",r:"카일",s:"2015-03-07",e:"2015-06-07",c:"main",w:"2015|쓰루 더 도어"},
+    {t:"엘리자벳",r:"황태자 루돌프",s:"2015-06-13",e:"2015-09-06",c:"main",w:"2015|엘리자벳"},
+    {t:"엘리자벳 투어",r:"황태자 루돌프",s:"2015-09-18",e:"2015-10-12",c:"tour",w:"2015|엘리자벳"},
+    {t:"씨왓아이워너씨",r:"강도/기자",s:"2015-10-29",e:"2015-11-15",c:"main",w:"2016|씨왓아이워너씨"},
+    {t:"넥스트 투 노멀",r:"헨리·게이브",s:"2015-11-16",e:"2016-03-13",c:"main",w:"2015|넥스트 투 노멀"},
+    {t:"아들",r:"준석",s:"2016-06-06",e:"2016-07-24",c:"play",w:"2016|아들"},
+    {t:"트레이스 유",r:"구본하",s:"2016-08-02",e:"2016-09-25",c:"main",w:"2016|트레이스 유"},
+    {t:"씨왓아이워너씨",r:"강도/기자",s:"2016-09-27",e:"2016-11-20",c:"main",w:"2016|씨왓아이워너씨"},
+    {t:"미드나잇",r:"맨",s:"2017-01-08",e:"2017-02-27",c:"main",w:"2017|미드나잇"},
+    {t:"록키호러쇼",r:"브래드 메이저스",s:"2017-05-24",e:"2017-08-06",c:"main",w:"2017|록키호러쇼"},
+    {t:"나폴레옹",r:"뤼시앙",s:"2017-07-15",e:"2017-10-22",c:"main",w:"2017|나폴레옹"},
+    {t:"서른 즈음에",r:"젊은 현식",s:"2017-10-19",e:"2017-12-02",c:"main",w:"2017|서른 즈음에"},
+    {t:"에드거 앨런 포",r:"그리스월드",s:"2017-11-17",e:"2018-02-04",c:"main",w:"2017|에드거 앨런 포"},
+    {t:"바람과 함께 사라지다",r:"애슐리 윌크스",s:"2018-05-18",e:"2018-07-29",c:"main",w:"2018|바람과 함께 사라지다"},
+    {t:"록키호러쇼",r:"브래드 메이저스",s:"2018-08-03",e:"2018-10-21",c:"main",w:"2018|록키호러쇼"},
+    {t:"팬텀",r:"필립 드 샹동 백작",s:"2018-12-01",e:"2019-02-17",c:"main",w:"2018|팬텀"},
+    {t:"최후진술",r:"갈릴레오 갈릴레이",s:"2019-03-16",e:"2019-06-09",c:"main",w:"2019|최후진술"},
+    {t:"테레즈 라캥",r:"로랑",s:"2019-06-16",e:"2019-09-01",c:"main",w:"2019|테레즈 라캥"},
+    {t:"Everybody Wants Him Dead",r:"싱페이",s:"2019-07-07",e:"2019-09-29",c:"play",w:"2019|에브리바디 원츠 힘 데드"},
+    {t:"랭보",r:"랭보",s:"2019-09-07",e:"2019-12-01",c:"main",w:"2019|랭보"},
+    {t:"팬레터",r:"정세훈",s:"2019-11-07",e:"2020-02-02",c:"main",w:"2019|팬레터"},
+    {t:"미드나잇",r:"맨",s:"2020-02-11",e:"2020-03-01",c:"main",w:"2020|미드나잇 : 앤틀러스"},
+    {t:"최후진술",r:"갈릴레오 갈릴레이",s:"2020-03-13",e:"2020-05-31",c:"main",w:"2020|최후진술"},
+    {t:"작은 아씨들",r:"브룩",s:"2020-05-08",e:"2020-05-13",c:"play",w:"2020|작은 아씨들"},
+    {t:"팬레터 투어",r:"정세훈",s:"2020-06-12",e:"2020-06-14",c:"tour",w:"2019|팬레터"},
+    {t:"고스트",r:"칼 브루너",s:"2020-10-06",e:"2021-03-14",c:"main",w:"2020|고스트"},
+    {t:"팬레터 투어",r:"정세훈",s:"2021-03-25",e:"2021-03-27",c:"tour",w:"2019|팬레터"},
+    {t:"드라큘라",r:"조나단 하커",s:"2021-05-18",e:"2021-08-01",c:"main",w:"2021|드라큘라"},
+    {t:"마마, 돈 크라이",r:"프로페서V",s:"2021-05-26",e:"2021-08-22",c:"main",w:"2021|마마, 돈 크라이"},
+    {t:"더데빌",r:"X-WHITE",s:"2021-12-10",e:"2022-02-27",c:"main",w:"2021|더데빌"},
+    {t:"팬레터",r:"김해진",s:"2021-12-10",e:"2022-03-20",c:"main",w:"2021|팬레터"},
+    {t:"킹아더",r:"멜레아강",s:"2022-03-22",e:"2022-06-06",c:"main",w:"2022|킹아더"},
+    {t:"팬레터 투어",r:"김해진",s:"2022-07-07",e:"2022-08-14",c:"tour",w:"2021|팬레터"},
+    {t:"지저스 크라이스트 수퍼스타",r:"유다",s:"2022-11-10",e:"2023-01-15",c:"main",w:"2022|지저스 크라이스트 수퍼스타"},
+    {t:"지저스 크라이스트 수퍼스타 투어",r:"유다",s:"2023-02-04",e:"2023-03-05",c:"tour",w:"2022|지저스 크라이스트 수퍼스타"},
+    {t:"호프",r:"K",s:"2023-03-16",e:"2023-06-11",c:"main",w:"2023|HOPE: 읽히지 않은 책과 읽히지 않은 인생"},
+    {t:"곤 투모로우",r:"한정훈",s:"2023-08-10",e:"2023-10-22",c:"main",w:"2023|곤 투모로우 - 삼일천하 1884"},
+    {t:"렌트",r:"로저",s:"2023-11-11",e:"2024-02-25",c:"main",w:"2023|렌트"},
+    {t:"노트르담 드 파리",r:"페뷔스",s:"2024-01-24",e:"2024-03-24",c:"main",w:"2024|노트르담 드 파리"},
+    {t:"살리에르",r:"젤라스",s:"2024-07-11",e:"2024-09-21",c:"main",w:"2024|살리에르"},
+    {t:"지저스 크라이스트 수퍼스타",r:"유다",s:"2024-11-07",e:"2025-01-12",c:"main",w:"2024|지저스 크라이스트 수퍼스타"},
+    {t:"명성황후 투어",r:"홍계훈",s:"2024-12-09",e:"2024-12-29",c:"tour",w:"2025|명성황후 (30주년)"},
+    {t:"지저스 크라이스트 수퍼스타 투어",r:"유다",s:"2025-01-17",e:"2025-01-19",c:"tour",w:"2024|지저스 크라이스트 수퍼스타"},
+    {t:"명성황후",r:"홍계훈",s:"2025-01-21",e:"2025-03-30",c:"main",w:"2025|명성황후 (30주년)"},
+    {t:"명성황후 30주년 투어",r:"홍계훈",s:"2025-05-28",e:"2025-07-26",c:"tour",w:"2025|명성황후 (30주년)"},
+    {t:"킹키부츠 투어",r:"롤라",s:"2025-11-01",e:"2025-12-07",c:"tour",w:"2025|킹키부츠"},
+    {t:"킹키부츠",r:"롤라",s:"2025-12-17",e:"2026-03-29",c:"main",w:"2025|킹키부츠"},
+    {t:"킹키부츠 투어",r:"롤라",s:"2026-04-04",e:"2026-05-03",c:"tour",w:"2025|킹키부츠"},
+    {t:"신과 함께 저승편",r:"강림",s:"2026-06-13",e:"2026-07-05",c:"main",w:"2026|신과 함께_저승편"},
+    {t:"곤 투모로우",r:"한정훈",s:"2026-09-15",e:"2026-10-15",c:"main",w:"2026|곤 투모로우 (10주년)"},
+    {t:"두 도시 이야기",r:"찰스 다네이",s:"2026-11-11",e:"2027-02-08",c:"main",w:"2026|두 도시 이야기"}
+  ];
+  /* 방송(tv)·단독 공연/팬미팅(show) — 날짜는 대략 */
+  const TLE = [
+    {t:"트루맨쇼 백형훈 편",c:"show",d:["2016-03-28"]},
+    {t:"백형훈 X 기세중 콘서트",c:"show",d:["2018-03-03"]},
+    {t:"불후의 명곡 ×3",c:"tv",d:["2018-03-29","2018-05-10","2018-05-24"]},
+    {t:"흉스프레소 듀엣 라이브",c:"show",d:["2021-11-13"]},
+    {t:"YTN 뉴스N이슈",c:"tv",d:["2021-12-09"]},
+    {t:"복면가왕",c:"tv",d:["2022-01-23"]},
+    {t:"스프링 블렌드 콘서트",c:"show",d:["2022-04-21"]},
+    {t:"팬미팅 〈인사〉",c:"show",d:["2022-08-26"]},
+    {t:"복면가왕 듀엣 가왕",c:"tv",d:["2022-09-04","2022-09-11","2022-09-18"]},
+    {t:"단독 콘서트 (도쿄)",c:"show",d:["2023-01-28"]},
+    {t:"팬서트 UNIVERSE",c:"show",d:["2024-09-01"]},
+    {t:"복면가왕 10주년 특집",c:"tv",d:["2025-06-28"]},
+    {t:"팬미팅 〈인사 vol.2〉",c:"show",d:["2025-09-05"]}
+  ];
+  const TLNOTE = {2010:"데뷔",2012:"군 복무",2016:"팬텀싱어 3위"};
+  const TLC = {main:["주요 배역","#c9a46a"],ens:["앙상블","#8d8476"],play:["연극","#a07ab8"],tour:["지방·투어","#4f9a90"],tv:["방송 출연","#c2413b"],show:["단독 공연·팬미팅","#c9a46a"]};
+  const tlOn = {main:1,ens:1,play:1,tour:1,tv:1,show:1};
+  const pd = x => { const [y,m,d]=x.split("-").map(Number); return new Date(y,m-1,d); };
+  const fmt = x => { const [y,m,d]=x.split("-").map(Number); return `${y}. ${m}. ${d}`; };
+  const yFrac = (dt,y) => (dt - new Date(y,0,1)) / (new Date(y+1,0,1) - new Date(y,0,1));
+  const TODAY = new Date();
+  let tlCtx;
+  function tw(text,font){ tlCtx = tlCtx || document.createElement("canvas").getContext("2d"); tlCtx.font=font; return tlCtx.measureText(text).width; }
+  function lanes(items, px, fontT, fontR){
+    // 겹치지 않게 줄(lane)을 나눔 — 막대 길이와 글자 폭 중 긴 쪽을 차지 영역으로 계산
+    const L=[];
+    items.forEach(it=>{
+      const lab = (Math.max(tw(it.lab1,fontT), it.lab2?tw(it.lab2,fontR):0) + 16)/px;
+      if(it.x0 + lab <= 1){ it.r0=it.x0; it.r1=Math.max(it.x1, it.x0+lab); it.ra=false; }
+      else { it.r1=Math.max(it.x1, Math.min(1, it.x0+lab)); it.r0=Math.min(it.x0, it.r1-lab); it.ra=true; }
+    });
+    items.sort((a,b)=>a.r0-b.r0).forEach(it=>{
+      let i = L.findIndex(end => end <= it.r0 - 0.004);
+      if(i<0){ i=L.length; L.push(0); }
+      L[i]=it.r1; it.lane=i;
+    });
+    return L.length;
+  }
+  function renderTL(){
+    const box=document.getElementById("tl"); if(!box || document.getElementById("tlBox").hidden) return;
+    document.getElementById("tlLegend").innerHTML = Object.entries(TLC).map(([k,[n,c]])=>`<button data-c="${k}" class="${tlOn[k]?'':'off'}"><i class="${k==='show'?'dm':k==='tv'?'dt':''}" style="background:${c}"></i>${n}</button>`).join("");
+    const y0=2010, y1=Math.max(TODAY.getFullYear(), ...TL.map(x=>pd(x.s).getFullYear()));
+    const years=[]; for(let y=y1;y>=y0;y--) years.push(y);
+    document.getElementById("tlYears").innerHTML = years.map(y=>`<button data-y="${y}">${y}</button>`).join("");
+    const trackPx = Math.max(box.parentElement.clientWidth, window.innerWidth<=820?720:760) - (window.innerWidth<=820?64:92);
+    const fT='700 15px "Gowun Batang", serif', fR='300 12px "IBM Plex Sans KR", sans-serif', fE='300 12px "IBM Plex Sans KR", sans-serif';
+    let html=`<div class="tl-head"><div></div><div class="m">${Array.from({length:12},(_,i)=>`<span>${i+1}월</span>`).join("")}</div></div>`;
+    years.forEach(y=>{
+      const yS=new Date(y,0,1), yE=new Date(y+1,0,1);
+      const segs=[];
+      TL.forEach((it,idx)=>{
+        if(!tlOn[it.c]) return;
+        const s=pd(it.s), e=pd(it.e); e.setDate(e.getDate()+1);
+        if(e<=yS||s>=yE) return;
+        const cl=s<yS, cr=e>yE;
+        const cur = TODAY>=pd(it.s) && TODAY<=e;
+        segs.push({idx,it,x0:Math.max(0,yFrac(s,y)),x1:Math.min(1,yFrac(e,y)),cl,cr,cur,lab1:(cl?"‹ ":"")+it.t+(cr?" ›":""),lab2:it.r});
+      });
+      const nL = lanes(segs, trackPx, fT, fR);
+      const evs=[];
+      TLE.forEach((ev,idx)=>{
+        if(!tlOn[ev.c]) return;
+        const ds=ev.d.filter(d=>pd(d).getFullYear()===y); if(!ds.length) return;
+        const x0=yFrac(pd(ds[0]),y);
+        evs.push({idx,ev,ds,x0,x1:x0+ (ds.length-1)*0.02, lab1:"     ".repeat(ds.length)+ev.t, lab2:""});
+      });
+      const nE = lanes(evs, trackPx, fE, fE);
+      const n = segs.length;
+      let lanesHTML="";
+      for(let i=0;i<nL;i++){
+        lanesHTML+=`<div class="tl-lane">${segs.filter(g=>g.lane===i).map(g=>`<button class="tl-it${g.cur?' cur':''}${g.ra?' ra':''}" data-tl="${g.idx}" style="${g.ra?`right:${(1-g.x1)*100}%`:`left:${g.x0*100}%`};--c:${TLC[g.it.c][1]}"><span class="bar" style="width:${Math.max(.6,(g.x1-g.x0)*trackPx)}px;${g.cl?'border-top-left-radius:0;border-bottom-left-radius:0;':''}${g.cr?'border-top-right-radius:0;border-bottom-right-radius:0;':''}"></span><span class="tt">${esc(g.lab1)}</span><span class="rl">${esc(g.it.r)}</span></button>`).join("")}</div>`;
+      }
+      for(let i=0;i<nE;i++){
+        lanesHTML+=`<div class="tl-lane ev">${evs.filter(g=>g.lane===i).map(g=>`<button class="tl-ev${g.ra?' ra':''}" data-ev="${g.idx}" data-y="${y}" style="${g.ra?`right:${(1-g.x1)*100}%`:`left:${g.x0*100}%`}"><span class="mks">${g.ds.map(()=>`<i class="mk ${g.ev.c==='tv'?'dt':'dm'}"></i>`).join("")}</span>${esc(g.ev.t)}</button>`).join("")}</div>`;
+      }
+      if(!nL && !nE) lanesHTML=`<div class="tl-empty">${TLNOTE[y]?"":"기록된 무대가 없어요"}</div>`;
+      const today = "";
+      html+=`<div class="tl-row" id="tl-${y}"><div class="tl-y"><b>${y}</b>${TLNOTE[y]?`<small>${TLNOTE[y]}</small>`:""}${n?`<div class="n">${n}개</div>`:""}</div><div class="tl-track">${today}${lanesHTML}</div></div>`;
+    });
+    box.innerHTML=html;
+  }
+  const pop=document.getElementById("tlPop");
+  function showPop(el, html){
+    pop.innerHTML=`<button class="cl" aria-label="닫기">✕</button>`+html; pop.hidden=false;
+    const r=el.getBoundingClientRect(), pw=pop.offsetWidth, ph=pop.offsetHeight;
+    let x=Math.min(Math.max(12,r.left), window.innerWidth-pw-12);
+    let y=r.bottom+8; if(y+ph>window.innerHeight-12) y=Math.max(12,r.top-ph-8);
+    pop.style.left=x+"px"; pop.style.top=y+"px";
+  }
+  document.getElementById("tl").addEventListener("click",e=>{
+    const b=e.target.closest(".tl-it"), v=e.target.closest(".tl-ev");
+    if(b){
+      const it=TL[+b.dataset.tl], w=it.w && works.find(x=>x.y+"|"+x.t===it.w);
+      const days=Math.round((pd(it.e)-pd(it.s))/86400000)+1;
+      showPop(b,`<div class="k">${TLC[it.c][0]}</div><h5>〈${esc(it.t)}〉</h5><div class="r">${esc(it.r)} 역</div><div class="d">${fmt(it.s)} – ${fmt(it.e)} · ${days}일</div>${w?`<button class="go" data-go-w="${works.indexOf(w)}">작품 자세히 보기 →</button>`:""}`);
+    } else if(v){
+      const ev=TLE[+v.dataset.ev];
+      showPop(v,`<div class="k">${TLC[ev.c][0]}</div><h5>${esc(ev.t)}</h5><div class="d">${ev.d.map(d=>{const [y,m]=d.split("-");return `${y}년 ${+m}월`;}).filter((x,i,a)=>a.indexOf(x)===i).join(", ")} 무렵</div>`);
+    }
+  });
+  pop.addEventListener("click",e=>{
+    if(e.target.closest(".cl")) pop.hidden=true;
+    const g=e.target.closest(".go"); if(g){ pop.hidden=true; openWorkObj(works[+g.dataset.goW]); }
+  });
+  document.addEventListener("click",e=>{ if(!pop.hidden && !e.target.closest("#tlPop,.tl-it,.tl-ev")) pop.hidden=true; });
+  document.getElementById("tlScroll").addEventListener("scroll",()=>{pop.hidden=true;});
+  window.addEventListener("scroll",()=>{pop.hidden=true;},{passive:true});
+  document.getElementById("tlLegend").addEventListener("click",e=>{const b=e.target.closest("button"); if(!b)return; tlOn[b.dataset.c]=tlOn[b.dataset.c]?0:1; renderTL();});
+  document.getElementById("tlYears").addEventListener("click",e=>{const b=e.target.closest("button"); if(!b)return; const r=document.getElementById("tl-"+b.dataset.y); if(r) r.scrollIntoView({behavior:"smooth",block:"start"});});
+  document.getElementById("wMode").addEventListener("click",e=>{
+    const b=e.target.closest("button"); if(!b) return;
+    document.querySelectorAll("#wMode button").forEach(x=>x.classList.toggle("on",x===b));
+    const tl=b.dataset.m==="tl";
+    document.getElementById("cardsBox").hidden=tl; document.getElementById("tlBox").hidden=!tl; pop.hidden=true;
+    try{ localStorage.setItem("bhh-wmode",b.dataset.m); }catch(_){}
+    if(tl) renderTL();
+  });
+  let rz; window.addEventListener("resize",()=>{clearTimeout(rz); rz=setTimeout(renderTL,150);});
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(renderTL);
+  try{ if(localStorage.getItem("bhh-wmode")==="tl") document.querySelector('#wMode button[data-m="tl"]').click(); }catch(_){}
+
+
+  /* ===== 일정 =====
+     s:시작일 e:끝일(기간 일정일 때) tm:시간 pl:장소 k:공연|출연 회차|방송|행사|기념일 w:작품 연결 키 u:링크 */
+  const SCHED = [
+    {t:"팬텀, 영원한 사랑",s:"2026-11-15",tm:"19:00",k:"행사",pl:"대구문화예술회관 팔공홀"},
+    {t:"뮤이어(MU:YEAR) 콘서트",s:"2026-11-30",tm:"19:30",k:"행사",pl:"이화여자대학교 삼성홀"},
+    {t:"〈곤 투모로우〉",s:"2026-09-16",tm:"19:30",k:"출연 회차",pl:"홍익대 대학로 아트센터",note:"한정훈 역",w:"2026|곤 투모로우 (10주년)"},
+    {t:"〈곤 투모로우〉",s:"2026-09-20",tm:"18:30",k:"출연 회차",pl:"홍익대 대학로 아트센터",note:"한정훈 역",w:"2026|곤 투모로우 (10주년)"},
+    {t:"〈곤 투모로우〉",s:"2026-09-24",tm:"18:30",k:"출연 회차",pl:"홍익대 대학로 아트센터",note:"한정훈 역",w:"2026|곤 투모로우 (10주년)"},
+    {t:"〈곤 투모로우〉",s:"2026-10-01",tm:"19:30",k:"출연 회차",pl:"홍익대 대학로 아트센터",note:"한정훈 역",w:"2026|곤 투모로우 (10주년)"},
+    {t:"〈곤 투모로우〉",s:"2026-10-06",tm:"19:30",k:"출연 회차",pl:"홍익대 대학로 아트센터",note:"한정훈 역",w:"2026|곤 투모로우 (10주년)"},
+    {t:"〈곤 투모로우〉",s:"2026-10-09",tm:"14:00",k:"출연 회차",pl:"홍익대 대학로 아트센터",note:"한정훈 역",w:"2026|곤 투모로우 (10주년)"},
+    {t:"〈곤 투모로우〉",s:"2026-10-10",tm:"19:30",k:"출연 회차",pl:"홍익대 대학로 아트센터",note:"한정훈 역",w:"2026|곤 투모로우 (10주년)"},
+    {t:"〈곤 투모로우〉",s:"2026-10-15",tm:"19:30",k:"출연 회차",pl:"홍익대 대학로 아트센터",note:"한정훈 역",w:"2026|곤 투모로우 (10주년)"},
+    {t:"〈두 도시 이야기〉",s:"2026-11-11",tm:"19:30",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",w:"2026|두 도시 이야기"},
+    {t:"〈두 도시 이야기〉",s:"2026-11-14",tm:"19:00",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",w:"2026|두 도시 이야기"},
+    {t:"〈두 도시 이야기〉",s:"2026-11-18",tm:"14:30",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",w:"2026|두 도시 이야기"},
+    {t:"〈두 도시 이야기〉",s:"2026-11-20",tm:"19:30",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",w:"2026|두 도시 이야기"},
+    {t:"〈두 도시 이야기〉",s:"2026-11-22",tm:"14:00",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",w:"2026|두 도시 이야기"},
+    {t:"〈두 도시 이야기〉",s:"2026-11-25",tm:"14:30",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",w:"2026|두 도시 이야기"},
+    {t:"〈두 도시 이야기〉",s:"2026-11-29",tm:"19:00",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",w:"2026|두 도시 이야기"},
+    {t:"〈두 도시 이야기〉",s:"2026-12-01",tm:"19:30",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",w:"2026|두 도시 이야기"},
+    {t:"〈두 도시 이야기〉",s:"2026-12-04",tm:"19:30",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",w:"2026|두 도시 이야기"},
+    {t:"〈두 도시 이야기〉",s:"2026-12-06",tm:"14:00",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",w:"2026|두 도시 이야기"},
+    {t:"〈두 도시 이야기〉",s:"2026-12-08",tm:"19:30",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",w:"2026|두 도시 이야기"},
+    {t:"〈두 도시 이야기〉",s:"2026-12-10",tm:"19:30",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",w:"2026|두 도시 이야기"},
+    {t:"〈두 도시 이야기〉",s:"2026-12-12",tm:"14:00",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",w:"2026|두 도시 이야기"},
+    {t:"〈두 도시 이야기〉",s:"2026-12-17",tm:"19:30",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",w:"2026|두 도시 이야기"},
+    {t:"〈두 도시 이야기〉",s:"2026-12-20",tm:"14:00",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",w:"2026|두 도시 이야기"},
+    {t:"〈두 도시 이야기〉",s:"2026-12-23",tm:"19:30",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",w:"2026|두 도시 이야기"},
+    {t:"〈두 도시 이야기〉",s:"2026-12-25",tm:"19:00",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",w:"2026|두 도시 이야기"},
+    {t:"〈두 도시 이야기〉",s:"2026-12-26",tm:"19:00",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",w:"2026|두 도시 이야기"},
+    {t:"〈두 도시 이야기〉",s:"2026-12-29",tm:"19:30",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",w:"2026|두 도시 이야기"},
+    {t:"〈두 도시 이야기〉",s:"2026-12-31",tm:"19:30",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",w:"2026|두 도시 이야기"},
+    {t:"〈두 도시 이야기〉",s:"2027-01-01",tm:"19:00",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",w:"2026|두 도시 이야기"},
+  ];
+  const SK = {"공연":"#c9a46a","출연 회차":"#e4c58c","방송":"#c2413b","행사":"#4f9a90","기념일":"#a07ab8"};
+  const ds = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+  const WK = ["일","월","화","수","목","금","토"];
+  function allSched(y0,y1){
+    const out=SCHED.slice();
+    const ANNIV=true; /* true로 바꾸면 생일(3/2)·데뷔 기념일(3/5)이 해마다 자동 표시돼요 */
+    if(ANNIV) for(let y=y0;y<=y1;y++){
+      out.push({t:`백형훈 생일`,s:`${y}-03-02`,k:"기념일",note:`${y-1987}번째 생일`,auto:1});
+      out.push({t:`뮤지컬 데뷔 ${y-2010}주년`,s:`${y}-03-05`,k:"기념일",note:"2010년 〈화랑〉 데뷔",auto:1});
+    }
+    return out;
+  }
+  const onDay = (ev,d) => { const k=ds(d); return ev.e ? (k>=ev.s && k<=ev.e) : k===ev.s; };
+  const fmtD = x => { const d=pd(x); return `${d.getMonth()+1}. ${d.getDate()} (${WK[d.getDay()]})`; };
+  const t0 = () => { const t=new Date(); t.setHours(0,0,0,0); return t; };
+
+  /* 홈: 다가오는 일정 2~3개 */
+  function renderUpcoming(){
+    const today=t0(), key=ds(today), y=today.getFullYear();
+    const list=allSched(y,y+1);
+    const ongoing=list.filter(e=>e.e && e.s<=key && e.e>=key && e.k==="공연");
+    const next=list.filter(e=>e.s>=key && !(e.e)).concat(list.filter(e=>e.e && e.s>key))
+      .sort((a,b)=>a.s.localeCompare(b.s));
+    const pick=[...ongoing.slice(0,1), ...next].slice(0,3);
+    const box=document.getElementById("upList");
+    box.innerHTML = pick.length ? pick.map(e=>{
+      const isNow = e.e && e.s<=key;
+      const dday = Math.round((pd(e.s)-today)/86400000);
+      const lead = isNow ? `<span class="dd live"><i class="dot"></i>공연 중</span>` : `<span class="dd">${dday===0?"D-DAY":"D-"+dday}</span>`;
+      const when = isNow ? `${fmtD(e.e)}까지` : (e.e?`${fmtD(e.s)} – ${fmtD(e.e)}`:fmtD(e.s)+(e.tm?" · "+e.tm:""));
+      return `<button class="up-it" data-up="${encodeURIComponent(e.s)}" style="--c:${SK[e.k]}"><span class="kd">${e.k}</span>${lead}<span class="dt">${when}</span><span class="tt">${esc(e.t.replace(" 공연 기간",""))}</span>${e.note?`<span class="pl" style="margin-top:0;padding-top:0">${esc(e.note)}</span>`:""}${e.pl?`<span class="pl">${esc(e.pl)}</span>`:""}</button>`;
+    }).join("") : `<div class="up-empty">일정을 준비하고 있어요. 곧 업데이트할게요.</div>`;
+  }
+  document.getElementById("upList").addEventListener("click",e=>{
+    const b=e.target.closest(".up-it"); if(!b) return;
+    const s=decodeURIComponent(b.dataset.up), d=pd(s), today=t0();
+    calY = (d<today?today:d).getFullYear(); calM=(d<today?today:d).getMonth(); calSel=null;
+    location.hash="cal";
+  });
+
+  /* 일정 탭: 월간 캘린더 */
+  let calY=t0().getFullYear(), calM=t0().getMonth(), calSel=null;
+  function renderCal(){
+    const first=new Date(calY,calM,1), start=new Date(first); start.setDate(1-first.getDay());
+    const list=allSched(calY-1,calY+1), key=ds(t0());
+    document.getElementById("calTitle").textContent=`${calY}년 ${calM+1}월`;
+    document.getElementById("calLegend").innerHTML=Object.entries(SK).map(([k,c])=>`<span><i style="background:${c}"></i>${k}</span>`).join("");
+    let h=WK.map((w,i)=>`<div class="wd ${i===0?'su':i===6?'sa':''}">${w}</div>`).join("");
+    for(let i=0;i<42;i++){
+      const d=new Date(start); d.setDate(start.getDate()+i);
+      if(i>=35 && d.getMonth()!==calM) break;
+      const k=ds(d), evs=list.filter(ev=>onDay(ev,d));
+      const rg=evs.filter(ev=>ev.e).sort((a,b)=>a.s.localeCompare(b.s)).map(ev=>`<div class="rg" style="--c:${SK[ev.k]}" title="${esc(ev.t)}">${(k===ev.s||d.getDay()===0||d.getDate()===1)?esc(ev.t.replace(" 공연 기간","")):"&nbsp;"}</div>`).join("");
+      const ch=evs.filter(ev=>!ev.e).map(ev=>`<div class="ch" style="--c:${SK[ev.k]}" title="${esc(ev.t)}">${ev.tm?ev.tm+" ":""}${esc(ev.t)}</div>`).join("");
+      h+=`<button class="d ${d.getMonth()!==calM?'out':''} ${d.getDay()===0?'su':d.getDay()===6?'sa':''} ${k===key?'td':''} ${k===calSel?'sel':''}" data-d="${k}"><span class="n">${d.getDate()}</span>${rg}${ch}</button>`;
+    }
+    document.getElementById("cal").innerHTML=h;
+    // 아래 목록: 선택한 날 또는 이번 달 전체
+    const mS=ds(first), mE=ds(new Date(calY,calM+1,0));
+    let items, title;
+    if(calSel){ items=list.filter(ev=>onDay(ev,pd(calSel))); title=`${fmtD(calSel)} 일정`; }
+    else { items=list.filter(ev=>ev.e ? (ev.s<=mE && ev.e>=mS) : (ev.s>=mS && ev.s<=mE)); title=`${calM+1}월 일정`; }
+    items.sort((a,b)=>a.s.localeCompare(b.s));
+    document.getElementById("calSub").textContent=title+` · ${items.length}개`;
+    document.getElementById("calList").innerHTML = items.length ? `<ul class="cal-list">${items.map(ev=>{
+      const w=ev.w && works.find(x=>x.y+"|"+x.t===ev.w);
+      return `<li style="--c:${SK[ev.k]}"><div class="when">${ev.e?`${fmtD(ev.s)}<small>– ${fmtD(ev.e)}</small>`:`${fmtD(ev.s)}${ev.tm?`<small>${ev.tm}</small>`:""}`}</div><div><div class="t"><span class="k">${ev.k}</span>${esc(ev.t)}</div><div class="m">${[ev.note,ev.pl].filter(Boolean).map(esc).join(" · ")}${w?` · <a href="#" data-cw="${works.indexOf(w)}">작품 보기</a>`:""}${ev.u?` · <a href="${esc(ev.u)}" target="_blank" rel="noopener">자세히 ↗</a>`:""}</div></div></li>`;
+    }).join("")}</ul>` : `<div class="empty">${calSel?"이 날은 등록된 일정이 없어요.":"이번 달 등록된 일정이 없어요."}</div>`;
+  }
+  document.getElementById("cal").addEventListener("click",e=>{const b=e.target.closest(".d"); if(!b)return; calSel = calSel===b.dataset.d?null:b.dataset.d; renderCal();});
+  document.getElementById("calList").addEventListener("click",e=>{const a=e.target.closest("[data-cw]"); if(!a)return; e.preventDefault(); openWorkObj(works[+a.dataset.cw]);});
+  document.getElementById("calPrev").addEventListener("click",()=>{calM--; if(calM<0){calM=11;calY--;} calSel=null; renderCal();});
+  document.getElementById("calNext").addEventListener("click",()=>{calM++; if(calM>11){calM=0;calY++;} calSel=null; renderCal();});
+  document.getElementById("calToday").addEventListener("click",()=>{const t=t0(); calY=t.getFullYear(); calM=t.getMonth(); calSel=ds(t); renderCal();});
+  renderUpcoming(); renderCal();
+
+  document.getElementById("heroWork").addEventListener("click",()=>{ const w=works.find(x=>x.y===2026&&x.t==="두 도시 이야기"); if(w) openWorkObj(w); });
+
+  /* 메뉴 / 화면 전환 (주소 끝 #now, #works 등으로 바로 열기 가능) */
+  const views = ["home","profile","y2026","works","cal","media"];
+  const nav = document.getElementById("nav");
+  function show(id){
+    if(!views.includes(id)) id = "home";
+    views.forEach(v=>document.getElementById("v-"+v).classList.toggle("on", v===id));
+    document.querySelectorAll("#menu button").forEach(b=>b.classList.toggle("on", b.dataset.go===id));
+    nav.classList.remove("open");
+    if(typeof closeWork==="function") closeWork();
+    if(id==="works") setTimeout(renderTL,0);
+    if(id==="cal") renderCal();
+    window.scrollTo(0,0);
+  }
+  document.addEventListener("click",e=>{
+    const b = e.target.closest("[data-go]"); if(!b) return;
+    const id = b.dataset.go;
+    if(location.hash.slice(1) === id){ show(id); } else { location.hash = id; }
+  });
+  document.getElementById("burger").addEventListener("click",()=>nav.classList.toggle("open"));
+  window.addEventListener("hashchange",()=>show(location.hash.slice(1)));
+  show(location.hash.slice(1));
+
+</script>
+</body>
+</html>
