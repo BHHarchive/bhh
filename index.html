@@ -487,10 +487,6 @@
         <button class="tile" data-go="media"><span class="n">03</span><span class="h">아카이브</span><span class="d">영상 · 인터뷰 · 기사 · 사진 <span class="arrow">→</span></span></button>
         <button class="tile" data-go="contact"><span class="n">04</span><span class="h">제보·문의</span><span class="d">@bhh_archive DM <span class="arrow">→</span></span></button>
       </div>
-      <section class="extras" style="padding:0;border:0">
-        <div class="head"><h2>작품 밖의 백형훈</h2><span class="note">라이브 · 다른 채널 영상 속 모습</span></div>
-        <div id="extras"></div>
-      </section>
     </div>
   </div>
 
@@ -764,7 +760,7 @@
     return `<span class="th${l.th?' real':''}">${src?`<img src="${src}" alt="" loading="lazy" style="object-position:${l.th?'50% 50%':(w&&w.pos)||'50% 20%'}">`:""}<i class="pl"></i></span>`;
   }
   const tgCls = k => k==="영상"?"v":k==="인터뷰"?"i":k==="깨알켱"?"a":k==="인스타 라이브"?"l":"";
-  document.getElementById("extras").innerHTML = `<ul class="links">${byNew(extras).map(l=>`<li><a href="${l.u}" target="_blank" rel="noopener">${thumbHTML(l,null)}<span class="tg ${tgCls(l.k)}">${l.k}</span><span class="lt">${l.t}<span class="sub">${[l.ch?l.ch+" 채널":"",l.dt||"",l.at?l.at+"부터 등장":""].filter(Boolean).join(" · ")}</span></span><span class="ar">↗</span></a></li>`).join("")}</ul>`;
+  if(document.getElementById("extras")) document.getElementById("extras").innerHTML = `<ul class="links">${byNew(extras).map(l=>`<li><a href="${l.u}" target="_blank" rel="noopener">${thumbHTML(l,null)}<span class="tg ${tgCls(l.k)}">${l.k}</span><span class="lt">${l.t}<span class="sub">${[l.ch?l.ch+" 채널":"",l.dt||"",l.at?l.at+"부터 등장":""].filter(Boolean).join(" · ")}</span></span><span class="ar">↗</span></a></li>`).join("")}</ul>`;
 
   /* 작품 상세 창 */
   const modal=document.getElementById("modal"); let mi=-1;
