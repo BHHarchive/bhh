@@ -587,13 +587,6 @@
         <a class="ct-sub" href="https://www.instagram.com/bhh_archive" target="_blank" rel="noopener">프로필 보기</a>
       </div>
     </div>
-    <div class="ct-tpl">
-      <div class="ct-tpl-h"><span>DM에 이렇게 적어 주시면 빨라요</span><button id="ctCopy">복사하기</button></div>
-      <pre id="ctText">[제보·문의 종류] 정보 수정 / 자료 제보 / 삭제 요청 / 기타
-[해당 작품·자료] 
-[내용] 
-[링크·출처 (있으면)] </pre>
-    </div>
   </div></div>
 </main>
 
@@ -1187,12 +1180,6 @@
 
   document.getElementById("heroWork").addEventListener("click",()=>{ const w=works.find(x=>x.y===2026&&x.t==="두 도시 이야기"); if(w) openWorkObj(w); });
 
-  document.getElementById("ctCopy").addEventListener("click",async e=>{
-    const b=e.currentTarget, t=document.getElementById("ctText").textContent;
-    try{ await navigator.clipboard.writeText(t); b.textContent="복사됐어요"; }
-    catch(_){ const r=document.createRange(); r.selectNodeContents(document.getElementById("ctText")); const sel=getSelection(); sel.removeAllRanges(); sel.addRange(r); b.textContent="길게 눌러 복사하세요"; }
-    setTimeout(()=>b.textContent="복사하기",2000);
-  });
 
   /* 홈 화면에 추가한 앱(아이폰)에서도 최신 내용 보이게:
      다시 열 때 서버의 페이지가 바뀌었는지 확인하고, 바뀌었으면 자동 새로고침 */
