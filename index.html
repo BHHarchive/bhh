@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="백형훈 아카이브">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="theme-color" content="#0f0d0c">
 <title>백형훈 아카이브</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -384,7 +384,7 @@
     .burger{display:flex}
     .menu{position:absolute;top:64px;left:0;right:0;flex-direction:column;gap:0;background:var(--bg);border-bottom:1px solid var(--line);
           max-height:0;overflow:hidden;transition:max-height .3s ease}
-    nav.open .menu{max-height:400px}
+    nav.open .menu{max-height:calc(100vh - 64px);max-height:calc(100dvh - 64px);overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
     .menu button{width:100%;text-align:left;border-radius:0;padding:16px 28px;font-size:16px;border-top:1px solid var(--line)}
     .menu button.on{background:var(--bg2);color:var(--gold)}
     .tiles{grid-template-columns:1fr 1fr}
@@ -1223,7 +1223,7 @@
     if(!views.includes(id)) id = "home";
     views.forEach(v=>document.getElementById("v-"+v).classList.toggle("on", v===id));
     document.querySelectorAll("#menu button").forEach(b=>b.classList.toggle("on", b.dataset.go===id));
-    nav.classList.remove("open");
+    nav.classList.remove("open"); document.body.classList.remove("lock");
     if(typeof closeWork==="function") closeWork();
     if(id==="works") setTimeout(renderTL,0);
     if(id==="cal") renderCal();
@@ -1234,7 +1234,7 @@
     const id = b.dataset.go;
     if(location.hash.slice(1) === id){ show(id); } else { location.hash = id; }
   });
-  document.getElementById("burger").addEventListener("click",()=>nav.classList.toggle("open"));
+  document.getElementById("burger").addEventListener("click",()=>{ nav.classList.toggle("open"); document.body.classList.toggle("lock", nav.classList.contains("open")); });
   window.addEventListener("hashchange",()=>show(location.hash.slice(1)));
   show(location.hash.slice(1));
 
