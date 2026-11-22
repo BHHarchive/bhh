@@ -1222,7 +1222,7 @@
   });
 
   /* 연도별 타임라인 — 목록 버전 */
-  const TLK={main:"",ens:"앙상블",play:"연극",tour:"지방·투어"};
+  const TLK={main:"",ens:"앙상블",play:"연극",tour:"지방 투어"};
   const p2=n=>String(n).padStart(2,"0");
   const fmtD2=x=>{const [y,m,d]=x.split("-");return `${y}. ${m}. ${d}`;};
   function renderTLList(){
@@ -1237,7 +1237,7 @@
         const it=TL[i], live=pd(it.s)<=today && today<=pd(it.e);
         const w=it.w && works.find(x=>x.y+"|"+x.t===it.w);
         const det=w?detOf(w).d:"", place=det&&det.includes(" · ")?det.split(" · ")[1]:"";
-        const meta=[it.r+" 역",TLK[it.c],place].filter(Boolean).join(" · ");
+        const meta=[it.r+" 역",TLK[it.c],it.c==="tour"?"":place].filter(Boolean).join(" · ");
         h+=`<div class="t-item${live?' live':''}" data-tli="${i}"><div class="t-date">${fmtD2(it.s)} – ${fmtD2(it.e)}${it.pe?`<small class="lc"> (백형훈 막공)</small><small class="pe">공연 기간 ${fmtD2(it.s)} – ${fmtD2(it.pe)}</small>`:""}</div><div class="t-title">〈${esc(it.t)}〉</div><div class="t-meta">${esc(meta)}</div></div>`;
       });
       h+="</div>";
