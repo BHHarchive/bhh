@@ -943,6 +943,8 @@
   const isVid = k => k==="영상"||k==="인스타 라이브"||k==="깨알켱";
   const ytId = u => { const m=String(u||"").match(/(?:youtu\.be\/|[?&]v=|\/shorts\/|\/embed\/|\/live\/)([\w-]{11})/); return m?m[1]:""; };
   /* 배역 표기: "강림" → "강림 역", 앙상블은 그대로, "문노 · 데뷔작" → "문노 역 · 데뷔작" */
+  /* 공연 제목 표기: "킹키부츠 투어" → "〈킹키부츠〉 투어", "명성황후 30주년 투어" → "〈명성황후〉 30주년 투어" */
+  function showTitle(t){ const m=String(t).match(/^(.*?)((?: \d+주년)? 투어)$/); return m?`〈${esc(m[1])}〉${esc(m[2])}`:`〈${esc(t)}〉`; }
   function roleTxt(r){ if(!r) return ""; const [a,...b]=String(r).split(" · "); return [/앙상블/.test(a)?a:a+" 역",...b].join(" · "); }
   function thumbHTML(l, w){
     if(!isVid(l.k)) return "";
@@ -1199,7 +1201,7 @@
     if(b){
       const it=TL[+b.dataset.tl], w=it.w && works.find(x=>x.y+"|"+x.t===it.w);
       const days=Math.round((pd(it.e)-pd(it.s))/86400000)+1;
-      showPop(b,`<div class="k">${TLC[it.c][0]}</div><h5>〈${esc(it.t)}〉</h5><div class="r">${esc(roleTxt(it.r))}</div><div class="d">${it.pe?`백형훈 출연 ${fmt(it.s)} – ${fmt(it.e)} · ${days}일<br>공연 기간 ${fmt(it.s)} – ${fmt(it.pe)}`:`${fmt(it.s)} – ${fmt(it.e)} · ${days}일`}</div>${w?`<button class="go" data-go-w="${works.indexOf(w)}">작품 자세히 보기 →</button>`:""}`);
+      showPop(b,`<div class="k">${TLC[it.c][0]}</div><h5>${showTitle(it.t)}</h5><div class="r">${esc(roleTxt(it.r))}</div><div class="d">${it.pe?`백형훈 출연 ${fmt(it.s)} – ${fmt(it.e)} · ${days}일<br>공연 기간 ${fmt(it.s)} – ${fmt(it.pe)}`:`${fmt(it.s)} – ${fmt(it.e)} · ${days}일`}</div>${w?`<button class="go" data-go-w="${works.indexOf(w)}">작품 자세히 보기 →</button>`:""}`);
     } else if(v){
       const ev=TLE[+v.dataset.ev];
       showPop(v,`<div class="k">${TLC[ev.c][0]}</div><h5>${esc(ev.t)}</h5><div class="d">${ev.d.map(d=>{const [y,m]=d.split("-");return `${y}년 ${+m}월`;}).filter((x,i,a)=>a.indexOf(x)===i).join(", ")} 무렵</div>`);
@@ -1240,7 +1242,7 @@
         const w=it.w && works.find(x=>x.y+"|"+x.t===it.w);
         const det=w?detOf(w).d:"", place=it.pl || (det&&det.includes(" · ")?det.split(" · ")[1].replace(/\s*\(.*$/,"").replace(/\s*\/.*$/,""):"");
         const meta=[roleTxt(it.r),it.c==="ens"?"":TLK[it.c],it.c==="tour"?"":place].filter(Boolean).join(" · ");
-        h+=`<div class="t-item${live?' live':''}" data-tli="${i}"><div class="t-date">${fmtD2(it.s)} – ${fmtD2(it.e)}${it.pe?`<small class="lc"> (백형훈 막공)</small><small class="pe">공연 기간 ${fmtD2(it.s)} – ${fmtD2(it.pe)}</small>`:""}</div><div class="t-title">〈${esc(it.t)}〉</div><div class="t-meta">${esc(meta)}</div></div>`;
+        h+=`<div class="t-item${live?' live':''}" data-tli="${i}"><div class="t-date">${fmtD2(it.s)} – ${fmtD2(it.e)}${it.pe?`<small class="lc"> (백형훈 막공)</small><small class="pe">공연 기간 ${fmtD2(it.s)} – ${fmtD2(it.pe)}</small>`:""}</div><div class="t-title">${showTitle(it.t)}</div><div class="t-meta">${esc(meta)}</div></div>`;
       });
       h+="</div>";
     });
