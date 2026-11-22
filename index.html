@@ -749,7 +749,7 @@
     "2026|신과 함께_저승편": {d:"2026. 6. 13 – 7. 5 · NOL 씨어터 대학로 우리카드홀", links:[
       {k:"영상",t:"2026 창작가무극 〈신과함께_저승편〉 연습실 V-Log (서울예술단)",ap:1,sd:"2026-06-01",u:"https://youtu.be/-cIoKCypwPU"},
       {k:"기사",t:"〈신과 함께_저승편〉 6월 개막·캐스팅 (더뮤지컬)",sd:"2026-04-16",u:"https://www.themusical.co.kr/News/Detail?num=14656"}]},
-    "2025|킹키부츠": {d:"2025. 12. 17 – 2026. 3. 29 · 샤롯데씨어터 (이후 지방 투어)", links:[
+    "2025|킹키부츠": {d:"2025. 12. 17 – 2026. 3. 29 · 샤롯데씨어터", links:[
       {k:"인터뷰",t:"All I Wanna Be_뮤지컬 〈킹키부츠〉 배우 백형훈 (시어터플러스)",ap:1,sd:"2025-12-01",u:"https://theatreplus.co.kr/article/people/8/555/"},
       {k:"영상",t:"[FULL] 〈킹키부츠〉 이재환·백형훈 보는 라디오 | 12시엔 주현영 (SBS)",sd:"2025-11-06",u:"https://youtu.be/jdT5WMID2VA"},
       {k:"영상",t:"[월요라이브] 백형훈 ‘Hold Me in Your Heart’ Live (NOL)",ap:1,sd:"2026-01-01",u:"https://youtu.be/pJNQWnbJLSA"},
@@ -1236,7 +1236,7 @@
       ids.forEach(i=>{
         const it=TL[i], live=pd(it.s)<=today && today<=pd(it.e);
         const w=it.w && works.find(x=>x.y+"|"+x.t===it.w);
-        const det=w?detOf(w).d:"", place=det&&det.includes(" · ")?det.split(" · ")[1]:"";
+        const det=w?detOf(w).d:"", place=det&&det.includes(" · ")?det.split(" · ")[1].replace(/\s*\(.*$/,""):"";
         const meta=[it.r+" 역",TLK[it.c],it.c==="tour"?"":place].filter(Boolean).join(" · ");
         h+=`<div class="t-item${live?' live':''}" data-tli="${i}"><div class="t-date">${fmtD2(it.s)} – ${fmtD2(it.e)}${it.pe?`<small class="lc"> (백형훈 막공)</small><small class="pe">공연 기간 ${fmtD2(it.s)} – ${fmtD2(it.pe)}</small>`:""}</div><div class="t-title">〈${esc(it.t)}〉</div><div class="t-meta">${esc(meta)}</div></div>`;
       });
