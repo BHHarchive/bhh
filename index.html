@@ -886,7 +886,7 @@
     gEl.innerHTML = shown.map((w,i)=>{
       const n = (detOf(w).links||[]).length + (detOf(w).gallery||[]).length;
       return `<button class="film" data-i="${i}" aria-label="${w.t} 자세히 보기"><div class="photo"><span class="kind">${w.k}</span>${n?`<span class="cnt">${n}</span>`:""}${picHTML(w,true)}<span class="more">자세히 보기</span></div>
-        <div class="yr">${w.y}</div><div class="ttl">${w.t}</div><div class="rl">${w.r ? w.r + " 역" : "&nbsp;"}</div></button>`;
+        <div class="yr">${w.y}</div><div class="ttl">${w.t}</div><div class="rl">${w.r ? roleTxt(w.r) : "&nbsp;"}</div></button>`;
     }).join("");
   }
   fEl.addEventListener("click",e=>{const b=e.target.closest("button"); if(!b)return; cur=b.dataset.id; renderWorks();});
@@ -942,6 +942,8 @@
   /* 영상 썸네일: th(직접 넣은 이미지) → 없으면 관련 작품 사진을 어둡게 → 없으면 기본 무늬 */
   const isVid = k => k==="영상"||k==="인스타 라이브"||k==="깨알켱";
   const ytId = u => { const m=String(u||"").match(/(?:youtu\.be\/|[?&]v=|\/shorts\/|\/embed\/|\/live\/)([\w-]{11})/); return m?m[1]:""; };
+  /* 배역 표기: "강림" → "강림 역", 앙상블은 그대로, "문노 · 데뷔작" → "문노 역 · 데뷔작" */
+  function roleTxt(r){ if(!r) return ""; const [a,...b]=String(r).split(" · "); return [/앙상블/.test(a)?a:a+" 역",...b].join(" · "); }
   function thumbHTML(l, w){
     if(!isVid(l.k)) return "";
     const yid = !l.th && ytId(l.u);
@@ -961,7 +963,7 @@
     document.getElementById("mPic").innerHTML = picHTML(w,false).replace(/style="object-position:[^"]*"/,"");
     document.getElementById("mMeta").textContent = w.y+" · "+w.k;
     document.getElementById("mTitle").textContent = "〈"+w.t+"〉";
-    document.getElementById("mRole").textContent = w.r ? w.r+" 역" : "";
+    document.getElementById("mRole").textContent = roleTxt(w.r);
     const wh=document.getElementById("mWhen"); wh.textContent=d.d||""; wh.style.display=d.d?"":"none";
     const gal=[w.img,...(d.gallery||[])].filter(Boolean);
     document.getElementById("mGalWrap").style.display = gal.length>1?"":"none";
@@ -1197,7 +1199,7 @@
     if(b){
       const it=TL[+b.dataset.tl], w=it.w && works.find(x=>x.y+"|"+x.t===it.w);
       const days=Math.round((pd(it.e)-pd(it.s))/86400000)+1;
-      showPop(b,`<div class="k">${TLC[it.c][0]}</div><h5>〈${esc(it.t)}〉</h5><div class="r">${esc(it.r)} 역</div><div class="d">${it.pe?`백형훈 출연 ${fmt(it.s)} – ${fmt(it.e)} · ${days}일<br>공연 기간 ${fmt(it.s)} – ${fmt(it.pe)}`:`${fmt(it.s)} – ${fmt(it.e)} · ${days}일`}</div>${w?`<button class="go" data-go-w="${works.indexOf(w)}">작품 자세히 보기 →</button>`:""}`);
+      showPop(b,`<div class="k">${TLC[it.c][0]}</div><h5>〈${esc(it.t)}〉</h5><div class="r">${esc(roleTxt(it.r))}</div><div class="d">${it.pe?`백형훈 출연 ${fmt(it.s)} – ${fmt(it.e)} · ${days}일<br>공연 기간 ${fmt(it.s)} – ${fmt(it.pe)}`:`${fmt(it.s)} – ${fmt(it.e)} · ${days}일`}</div>${w?`<button class="go" data-go-w="${works.indexOf(w)}">작품 자세히 보기 →</button>`:""}`);
     } else if(v){
       const ev=TLE[+v.dataset.ev];
       showPop(v,`<div class="k">${TLC[ev.c][0]}</div><h5>${esc(ev.t)}</h5><div class="d">${ev.d.map(d=>{const [y,m]=d.split("-");return `${y}년 ${+m}월`;}).filter((x,i,a)=>a.indexOf(x)===i).join(", ")} 무렵</div>`);
@@ -1237,7 +1239,7 @@
         const it=TL[i], live=pd(it.s)<=today && today<=pd(it.e);
         const w=it.w && works.find(x=>x.y+"|"+x.t===it.w);
         const det=w?detOf(w).d:"", place=det&&det.includes(" · ")?det.split(" · ")[1].replace(/\s*\(.*$/,""):"";
-        const meta=[it.r+" 역",TLK[it.c],it.c==="tour"?"":place].filter(Boolean).join(" · ");
+        const meta=[roleTxt(it.r),it.c==="ens"?"":TLK[it.c],it.c==="tour"?"":place].filter(Boolean).join(" · ");
         h+=`<div class="t-item${live?' live':''}" data-tli="${i}"><div class="t-date">${fmtD2(it.s)} – ${fmtD2(it.e)}${it.pe?`<small class="lc"> (백형훈 막공)</small><small class="pe">공연 기간 ${fmtD2(it.s)} – ${fmtD2(it.pe)}</small>`:""}</div><div class="t-title">〈${esc(it.t)}〉</div><div class="t-meta">${esc(meta)}</div></div>`;
       });
       h+="</div>";
@@ -1567,7 +1569,7 @@
   let sIdx=[], sHits=[];
   function buildIndex(){
     const out=[];
-    works.forEach(w=>{ const d=detOf(w).d||""; out.push({g:"작품",w,t:`〈${w.t}〉`,s:[w.y, w.r?w.r+" 역":"", w.k, d.split(" · ").slice(1).join(" · ")].filter(Boolean).join(" · "),hay:[w.t,w.r,w.k,w.y,d].join(" "),img:w.img}); });
+    works.forEach(w=>{ const d=detOf(w).d||""; out.push({g:"작품",w,t:`〈${w.t}〉`,s:[w.y, roleTxt(w.r), w.k, d.split(" · ").slice(1).join(" · ")].filter(Boolean).join(" · "),hay:[w.t,w.r,w.k,w.y,d].join(" "),img:w.img}); });
     STAGE.forEach(x=>out.push({g:"콘서트·방송",stage:1,t:x.t,s:[x.sd.slice(0,4)+". "+x.d,x.k,x.pl].filter(Boolean).join(" · "),hay:[x.t,x.k,x.pl,x.sd].join(" "),sd:x.sd}));
     const key=ds(t0());
     allSched(t0().getFullYear(),t0().getFullYear()+1).filter(e=>e.k!=="출연 회차" && (e.e||e.s)>=key).sort((a,b)=>a.s.localeCompare(b.s)).forEach(e=>out.push({g:"다가오는 일정",cal:e.s,t:e.t,s:[fmtD(e.s)+(e.tm?" "+e.tm:""),e.k,e.pl||e.note].filter(Boolean).join(" · "),hay:[e.t,e.k,e.pl,e.note].join(" ")}));
