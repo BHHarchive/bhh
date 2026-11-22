@@ -496,7 +496,6 @@
       <li><button data-go="contact">제보·문의</button></li>
     </ul>
     <button class="sbtn" id="sOpen" aria-label="검색"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg></button>
-    <button class="reload" id="reloadBtn" aria-label="새로고침" hidden>↻</button>
     <button class="burger" id="burger" aria-label="메뉴 열기"><i></i><i></i><i></i></button>
   </div>
 </nav>
@@ -1422,11 +1421,9 @@
       busy=false;
     }
     check();
-    document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible" && Date.now()-last>20000) check(); if(document.visibilityState==="hidden") last=Date.now(); });
+    document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible" && Date.now()-last>5000) check(); if(document.visibilityState==="hidden") last=Date.now(); });
+    setInterval(()=>{ if(document.visibilityState==="visible" && !document.body.classList.contains("lock")) check(); }, 120000);
     window.addEventListener("pageshow",e=>{ if(e.persisted) check(); });
-    const standalone = window.navigator.standalone===true || (window.matchMedia && matchMedia("(display-mode: standalone)").matches);
-    const rb=document.getElementById("reloadBtn");
-    if(standalone){ rb.hidden=false; rb.addEventListener("click",()=>location.reload()); }
   })();
 
 
