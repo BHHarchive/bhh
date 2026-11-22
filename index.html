@@ -874,8 +874,11 @@
   const byNew = arr => arr.map((x,i)=>[x,i]).sort((a,b)=>((b[0].sd||"")+"").localeCompare((a[0].sd||"")+"") || b[1]-a[1]).map(p=>p[0]);
   /* 영상 썸네일: th(직접 넣은 이미지) → 없으면 관련 작품 사진을 어둡게 → 없으면 기본 무늬 */
   const isVid = k => k==="영상"||k==="인스타 라이브"||k==="깨알켱";
+  const ytId = u => { const m=String(u||"").match(/(?:youtu\.be\/|[?&]v=|\/shorts\/|\/embed\/|\/live\/)([\w-]{11})/); return m?m[1]:""; };
   function thumbHTML(l, w){
     if(!isVid(l.k)) return "";
+    const yid = !l.th && ytId(l.u);
+    if(yid) return `<span class="th real"><img src="https://i.ytimg.com/vi/${yid}/mqdefault.jpg" alt="" loading="lazy" style="object-position:50% 50%"><i class="pl"></i></span>`;
     const src = l.th || (w && w.img);
     if(l.k==="인스타 라이브" && /i\.ytimg\.com/.test(l.th||"")) return `<span class="th real"><span class="yb" style="background-image:url('${l.th}')"></span><span class="yf" style="background-image:url('${l.th}')"></span><i class="pl"></i></span>`;
     return `<span class="th${l.th?' real':''}">${src?`<img src="${src}" alt="" loading="lazy" style="object-position:${l.th?'50% 50%':(w&&w.pos)||'50% 20%'}">`:""}<i class="pl"></i></span>`;
