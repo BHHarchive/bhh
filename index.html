@@ -1012,7 +1012,7 @@
       return;
     }
     const list=byNew(items.filter(x=> aCur==="all" ? true : aCur==="vid" ? (aSub==="all" ? VID.includes(x.k) : x.k===aSub) : x.k===aCur));
-    const liveNote = aCur==="vid" && aSub==="인스타 라이브" ? `<div class="live-note"><b>💌 켱덕분들끼리만 오붓하게</b>인스타 라이브 영상은 켱덕분들끼리 편하게 즐기실 수 있도록 <em>링크 공개</em>로만 열어두었어요. 우리끼리만 소중히 보고, 다른 곳으로는 옮기지 않아 주시면 감사하겠습니다 🤍</div>` : "";
+    const liveNote = aCur==="vid" && aSub==="인스타 라이브" ? `<div class="live-note">💌 인스타 라이브 영상은 켱덕분들만 편하게 즐기실 수 있도록 <em>링크 공개</em>로만 열어두었어요. 우리끼리만 소중히 보고, 다른 곳으로는 옮기지 않아 주시면 감사하겠습니다 🤍</div>` : "";
     box.innerHTML=liveNote+(list.length?`<ul class="alist">${list.map(l=>`<li>${isVid(l.k)?`<a href="${esc(l.u)}" target="_blank" rel="noopener" tabindex="-1">${thumbHTML(l,l.ws[0])}</a>`:""}<span class="tg ${tgCls(l.k)}">${esc(l.k)}</span><div class="main"><a href="${esc(l.u)}" target="_blank" rel="noopener">${esc(l.t)}</a><div class="wk">${l.sd?`<span class="dt">${sdFmt(l)}</span>`:""}${l.ws.length?l.ws.map(w=>`<button data-w="${works.indexOf(w)}">〈${esc(w.t)}〉</button>`).join(""):(()=>{const x=[l.ch?l.ch+" 채널":"",l.sd?"":(l.dt||""),l.at?l.at+"부터 등장":""].filter(Boolean).join(" · "); return x?`<span>${esc(x)}</span>`:(l.sd?"":`<span>작품 밖</span>`);})()}</div></div><a class="ar" href="${esc(l.u)}" target="_blank" rel="noopener" aria-label="새 창으로 열기">↗</a></li>`).join("")}</ul>`:`<div class="empty">아직 자료가 없어요.</div>`);
   }
   document.getElementById("aFilters").addEventListener("click",e=>{const b=e.target.closest("button"); if(!b)return; aCur=b.dataset.a; aSub="all"; renderArchive();});
