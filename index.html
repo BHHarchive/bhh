@@ -219,6 +219,19 @@
   .cal-nav{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:none;color:var(--ink);font-size:20px;cursor:pointer}
   .cal-nav:hover,.cal-today:hover{border-color:var(--gold);color:var(--gold)}
   .cal-today{margin-left:auto;border:1px solid var(--line);background:none;color:var(--ink);padding:8px 16px;border-radius:999px;cursor:pointer;font-size:13px}
+  .pair{border:1px solid var(--line);border-radius:14px;padding:14px 16px 12px;margin:0 0 18px;background:rgba(255,255,255,.015)}
+  .pair-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;margin-bottom:10px}
+  .pair-h b{font-size:14px;font-weight:600}
+  .pair-h span{font-size:12px;color:var(--mute)}
+  .pair-h button{margin-left:auto;background:none;border:0;color:var(--gold);font:inherit;font-size:12px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+  .pair-chips{display:flex;flex-wrap:wrap;gap:7px}
+  .pair-chips button{background:none;border:1px solid var(--line);border-radius:999px;color:var(--ink);font:inherit;font-size:13px;padding:5px 12px;cursor:pointer;transition:all .15s}
+  .pair-chips button:hover{border-color:var(--gold)}
+  .pair-chips button.on{background:var(--gold);border-color:var(--gold);color:#17130f;font-weight:600}
+  .pair-chips i{display:inline-block;width:1px;height:18px;background:var(--line);margin:0 3px;align-self:center}
+  .cal-list .pr{font-size:12.5px;color:var(--gold);margin-top:3px}
+  .cal-list .pr b{font-weight:600}
+  .cal .d.pm{box-shadow:inset 0 0 0 1px var(--gold)}
   .cal-legend{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:14px;font-size:12px;color:var(--mute)}
   .cal-legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
   .cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border-top:1px solid var(--line);border-left:1px solid var(--line)}
@@ -578,6 +591,10 @@
       <div class="cal-title" id="calTitle"></div>
       <button class="cal-nav" id="calNext" aria-label="다음 달">›</button>
       <button class="cal-today" id="calToday">오늘</button>
+    </div>
+    <div class="pair" id="pairBox">
+      <div class="pair-h"><b>〈두 도시 이야기〉 페어로 보기</b><span id="pairNote">배우를 고르면 함께 서는 회차만 보여요</span><button id="pairReset" hidden>선택 해제</button></div>
+      <div class="pair-chips" id="pairChips"></div>
     </div>
     <div class="cal-legend" id="calLegend"></div>
     <div class="cal" id="cal"></div>
@@ -1254,14 +1271,14 @@
     {t:"〈두 도시 이야기〉",s:"2026-12-08",tm:"19:30",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",w:"2026|두 도시 이야기"},
     {t:"〈두 도시 이야기〉",s:"2026-12-10",tm:"19:30",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",w:"2026|두 도시 이야기"},
     {t:"〈두 도시 이야기〉",s:"2026-12-12",tm:"14:00",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",w:"2026|두 도시 이야기"},
-    {t:"〈두 도시 이야기〉",s:"2026-12-17",tm:"19:30",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",w:"2026|두 도시 이야기"},
-    {t:"〈두 도시 이야기〉",s:"2026-12-20",tm:"14:00",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",w:"2026|두 도시 이야기"},
-    {t:"〈두 도시 이야기〉",s:"2026-12-23",tm:"19:30",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",w:"2026|두 도시 이야기"},
-    {t:"〈두 도시 이야기〉",s:"2026-12-25",tm:"19:00",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",w:"2026|두 도시 이야기"},
-    {t:"〈두 도시 이야기〉",s:"2026-12-26",tm:"19:00",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",w:"2026|두 도시 이야기"},
-    {t:"〈두 도시 이야기〉",s:"2026-12-29",tm:"19:30",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",w:"2026|두 도시 이야기"},
-    {t:"〈두 도시 이야기〉",s:"2026-12-31",tm:"19:30",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",w:"2026|두 도시 이야기"},
-    {t:"〈두 도시 이야기〉",s:"2027-01-01",tm:"19:00",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",w:"2026|두 도시 이야기"},
+    {t:"〈두 도시 이야기〉",s:"2026-12-17",tm:"19:30",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",co:["신성록", "선민", "김소향", "나유진"],w:"2026|두 도시 이야기"},
+    {t:"〈두 도시 이야기〉",s:"2026-12-20",tm:"14:00",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",co:["고은성", "선민", "이영미", "최나래"],w:"2026|두 도시 이야기"},
+    {t:"〈두 도시 이야기〉",s:"2026-12-23",tm:"19:30",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",co:["신성록", "이지혜", "김소향", "나유진"],w:"2026|두 도시 이야기"},
+    {t:"〈두 도시 이야기〉",s:"2026-12-25",tm:"19:00",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",co:["카이", "선민", "김소향", "나유진"],w:"2026|두 도시 이야기"},
+    {t:"〈두 도시 이야기〉",s:"2026-12-26",tm:"19:00",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",co:["고은성", "김수연", "이영미", "최나래"],w:"2026|두 도시 이야기"},
+    {t:"〈두 도시 이야기〉",s:"2026-12-29",tm:"19:30",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",co:["카이", "이지혜", "김소향", "나유진"],w:"2026|두 도시 이야기"},
+    {t:"〈두 도시 이야기〉",s:"2026-12-31",tm:"19:30",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",co:["카이", "선민", "김소향", "최나래"],w:"2026|두 도시 이야기"},
+    {t:"〈두 도시 이야기〉",s:"2027-01-01",tm:"19:00",k:"출연 회차",pl:"광림아트센터 BBCH홀",note:"찰스 다네이 역",co:["신성록", "김수연", "김소향", "나유진"],w:"2026|두 도시 이야기"},
   ];
   const SK = {"공연":"#c9a46a","출연 회차":"#e4c58c","티켓팅":"#6f9be0","방송":"#c2413b","행사":"#4f9a90","기념일":"#a07ab8"};
   /* 티켓팅 예: {t:"〈작품〉 3차 티켓 오픈",s:"2026-12-01",tm:"14:00",k:"티켓팅",pl:"NOL 티켓",u:"예매 페이지 주소"} */
@@ -1306,9 +1323,34 @@
 
   /* 일정 탭: 월간 캘린더 */
   let calY=t0().getFullYear(), calM=t0().getMonth(), calSel=null;
+  /* 페어 필터: 출연 회차에 co:[시드니, 루시, 마담, 미스 프로스] 가 있으면 골라 볼 수 있어요 */
+  let pairSel=[];
+  const PAIRED=()=>SCHED.filter(e=>e.co);
+  const pairMatch=e=>e.co && pairSel.every(n=>e.co.includes(n));
+  function renderPairChips(){
+    const box=document.getElementById("pairBox"), ps=PAIRED();
+    if(!ps.length){ box.hidden=true; return; }
+    const cols=[0,1,2,3].map(i=>[...new Set(ps.map(e=>e.co[i]).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"ko")));
+    document.getElementById("pairChips").innerHTML=cols.map(c=>c.map(n=>`<button data-pn="${esc(n)}" class="${pairSel.includes(n)?'on':''}">${esc(n)}</button>`).join("")).join('<i></i>');
+    const n=pairSel.length?ps.filter(pairMatch).length:0;
+    document.getElementById("pairNote").textContent = pairSel.length ? `백형훈 × ${pairSel.join(" × ")} · ${n}회` : "배우를 고르면 함께 서는 회차만 보여요";
+    document.getElementById("pairReset").hidden=!pairSel.length;
+  }
+  document.getElementById("pairChips").addEventListener("click",e=>{
+    const b=e.target.closest("[data-pn]"); if(!b) return; const n=b.dataset.pn;
+    pairSel = pairSel.includes(n) ? pairSel.filter(x=>x!==n) : [...pairSel,n];
+    calSel=null;
+    if(pairSel.length){ /* 이번 달에 없으면 가장 가까운 회차가 있는 달로 이동 */
+      const m=PAIRED().filter(pairMatch).map(e=>e.s).sort(); const mk=`${calY}-${String(calM+1).padStart(2,"0")}`;
+      if(m.length && !m.some(x=>x.startsWith(mk))){ const key=ds(t0()); const f=pd(m.find(x=>x>=key)||m[0]); calY=f.getFullYear(); calM=f.getMonth(); }
+    }
+    renderCal();
+  });
+  document.getElementById("pairReset").addEventListener("click",()=>{ pairSel=[]; calSel=null; renderCal(); });
   function renderCal(){
     const first=new Date(calY,calM,1), start=new Date(first); start.setDate(1-first.getDay());
-    const list=allSched(calY-1,calY+1), key=ds(t0());
+    renderPairChips();
+    const list=allSched(calY-1,calY+1).filter(ev=>!pairSel.length || pairMatch(ev)), key=ds(t0());
     document.getElementById("calTitle").textContent=`${calY}년 ${calM+1}월`;
     document.getElementById("calLegend").innerHTML=Object.entries(SK).map(([k,c])=>`<span><i style="background:${c}"></i>${k}</span>`).join("");
     let h=WK.map((w,i)=>`<div class="wd ${i===0?'su':i===6?'sa':''}">${w}</div>`).join("");
@@ -1318,20 +1360,21 @@
       const k=ds(d), evs=list.filter(ev=>onDay(ev,d));
       const rg=evs.filter(ev=>ev.e).sort((a,b)=>a.s.localeCompare(b.s)).map(ev=>`<div class="rg" style="--c:${SK[ev.k]}" title="${esc(ev.t)}">${(k===ev.s||d.getDay()===0||d.getDate()===1)?esc(ev.t.replace(" 공연 기간","")):"&nbsp;"}</div>`).join("");
       const ch=evs.filter(ev=>!ev.e).map(ev=>`<div class="ch" style="--c:${SK[ev.k]}" title="${esc(ev.t)}">${ev.tm?ev.tm+" ":""}${esc(ev.t)}</div>`).join("");
-      h+=`<button class="d ${d.getMonth()!==calM?'out':''} ${d.getDay()===0?'su':d.getDay()===6?'sa':''} ${k===key?'td':''} ${k===calSel?'sel':''}" data-d="${k}"><span class="n">${d.getDate()}</span>${rg}${ch}</button>`;
+      h+=`<button class="d ${d.getMonth()!==calM?'out':''} ${d.getDay()===0?'su':d.getDay()===6?'sa':''} ${k===key?'td':''} ${k===calSel?'sel':''} ${pairSel.length&&evs.length?'pm':''}" data-d="${k}"><span class="n">${d.getDate()}</span>${rg}${ch}</button>`;
     }
     document.getElementById("cal").innerHTML=h;
     // 아래 목록: 선택한 날 또는 이번 달 전체
     const mS=ds(first), mE=ds(new Date(calY,calM+1,0));
     let items, title;
     if(calSel){ items=list.filter(ev=>onDay(ev,pd(calSel))); title=`${fmtD(calSel)} 일정`; }
+    else if(pairSel.length){ items=list.slice(); title=`백형훈 × ${pairSel.join(" × ")} 회차`; }
     else { items=list.filter(ev=>ev.e ? (ev.s<=mE && ev.e>=mS) : (ev.s>=mS && ev.s<=mE)); title=`${calM+1}월 일정`; }
     items.sort((a,b)=>a.s.localeCompare(b.s));
     document.getElementById("calSub").textContent=title+` · ${items.length}개`;
     document.getElementById("calList").innerHTML = items.length ? `<ul class="cal-list">${items.map(ev=>{
       const w=ev.w && works.find(x=>x.y+"|"+x.t===ev.w);
-      return `<li style="--c:${SK[ev.k]}"><div class="when">${ev.e?`${fmtD(ev.s)}<small>– ${fmtD(ev.e)}</small>`:`${fmtD(ev.s)}${ev.tm?`<small>${ev.tm}</small>`:""}`}</div><div><div class="t"><span class="k">${ev.k}</span>${esc(ev.t)}</div><div class="m">${[ev.note,ev.pl].filter(Boolean).map(esc).join(" · ")}${w?` · <a href="#" data-cw="${works.indexOf(w)}">작품 보기</a>`:""}${ev.u?` · <a href="${esc(ev.u)}" target="_blank" rel="noopener">자세히 ↗</a>`:""}</div></div></li>`;
-    }).join("")}</ul>` : `<div class="empty">${calSel?"이 날은 등록된 일정이 없어요.":"이번 달 등록된 일정이 없어요."}</div>`;
+      return `<li style="--c:${SK[ev.k]}"><div class="when">${ev.e?`${fmtD(ev.s)}<small>– ${fmtD(ev.e)}</small>`:`${fmtD(ev.s)}${ev.tm?`<small>${ev.tm}</small>`:""}`}</div><div><div class="t"><span class="k">${ev.k}</span>${esc(ev.t)}</div><div class="m">${[ev.note,ev.pl].filter(Boolean).map(esc).join(" · ")}${w?` · <a href="#" data-cw="${works.indexOf(w)}">작품 보기</a>`:""}${ev.u?` · <a href="${esc(ev.u)}" target="_blank" rel="noopener">자세히 ↗</a>`:""}</div>${ev.co?`<div class="pr">with ${ev.co.map(n=>pairSel.includes(n)?`<b>${esc(n)}</b>`:esc(n)).join(" · ")}</div>`:""}</div></li>`;
+    }).join("")}</ul>` : `<div class="empty">${pairSel.length?"선택한 배우들과 함께 서는 회차가 없어요.":calSel?"이 날은 등록된 일정이 없어요.":"이번 달 등록된 일정이 없어요."}</div>`;
   }
   document.getElementById("cal").addEventListener("click",e=>{const b=e.target.closest(".d"); if(!b)return; calSel = calSel===b.dataset.d?null:b.dataset.d; renderCal();});
   document.getElementById("calList").addEventListener("click",e=>{const a=e.target.closest("[data-cw]"); if(!a)return; e.preventDefault(); openWorkObj(works[+a.dataset.cw]);});
