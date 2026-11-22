@@ -1039,7 +1039,7 @@
       return;
     }
     const list=byNew(items.filter(x=> aCur==="all" ? true : aCur==="vid" ? (aSub==="all" ? VID.includes(x.k) : x.k===aSub) : x.k===aCur));
-    const fanNote = aCur==="vid" && aSub==="팬캠" ? `<p class="fan-note">무대인사 · 커튼콜 · 퇴근길</p>` : "";
+    const fanNote = aCur==="vid" && aSub==="팬캠" ? `<p class="fan-note">무대인사 · 커튼콜 · 퇴근길</p><div class="live-note">🎥 팬분들이 직접 찍어 올려주신 소중한 영상들을 <em>링크로만</em> 모아두었어요. 영상은 모두 원래 채널에서 재생돼요.<br>혹시 영상을 찍으신 분이 여기 소개되는 게 불편하시다면 <a href="#contact" style="color:var(--gold)">제보·문의</a>로 편하게 알려 주세요. 바로 내릴게요 🙏</div>` : "";
     const liveNote = fanNote + (aCur==="vid" && aSub==="인스타 라이브" ? `<div class="live-note">💌 인스타 라이브 영상은 켱덕분들만 편하게 즐기실 수 있도록 <em>링크 공개</em>로만 열어두었어요. 우리끼리만 소중히 보고, 다른 곳으로는 옮기지 않아 주시면 감사하겠습니다 🤍</div>` : "");
     box.innerHTML=liveNote+(list.length?`<ul class="alist">${list.map(l=>`<li>${isVid(l.k)?`<a href="${esc(l.u)}" target="_blank" rel="noopener" tabindex="-1">${thumbHTML(l,l.ws[0])}</a>`:""}<span class="tg ${tgCls(l.k)}">${esc(l.k)}</span><div class="main"><a href="${esc(l.u)}" target="_blank" rel="noopener">${esc(l.t)}</a><div class="wk">${l.sd?`<span class="dt">${sdFmt(l)}</span>`:""}${l.ch?`<span class="chn${isVid(l.k)?' v':''}">${esc(l.ch)}</span>`:""}${l.ws.length?l.ws.map(w=>`<button data-w="${works.indexOf(w)}">〈${esc(w.t)}〉</button>`).join(""):(()=>{const x=[l.sd?"":(l.dt||""),l.at?l.at+"부터 등장":""].filter(Boolean).join(" · "); return x?`<span>${esc(x)}</span>`:"";})()}</div></div><a class="ar" href="${esc(l.u)}" target="_blank" rel="noopener" aria-label="새 창으로 열기">↗</a></li>`).join("")}</ul>`:`<div class="empty">아직 자료가 없어요.</div>`);
   }
