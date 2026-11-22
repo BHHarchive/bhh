@@ -397,7 +397,7 @@
   .alist .wk button:hover{color:var(--gold)}
   .alist .wk span{font-size:12px;color:var(--mute)}
   .alist .wk .chn{color:var(--mute);margin-right:6px}
-  .alist .wk .chn::before{content:"▶ ";font-size:9px;vertical-align:1px;opacity:.7}
+  .alist .wk .chn.v::before{content:"▶ ";font-size:9px;vertical-align:1px;opacity:.7}
   .alist .wk .dt{color:var(--gold);font-variant-numeric:tabular-nums;margin-right:4px}
   .links .lt .ld{display:block;font-size:11.5px;color:var(--mute);margin-top:2px}
   .alist .ar{flex:none;color:var(--mute);text-decoration:none}
@@ -728,24 +728,24 @@
      d: 기간·장소 / gallery: 추가 사진 경로 / links: {k:"영상"|"인터뷰"|"기사", t:제목, u:주소} */
   const details = {
     "2026|두 도시 이야기": {d:"2026. 11. 11 – 2027. 2. 8 · 광림아트센터 BBCH홀", links:[
-      {k:"기사",t:"[노규민의 현장感] 전율과 여운의 〈두 도시 이야기〉 (뉴스컬처)",sd:"2026-11-21",u:"https://www.nc.press/news/articleView.html?idxno=631512"},
-      {k:"기사",t:"12년 만의 〈두 도시 이야기〉, 무엇이 달라졌나? (네이트 뉴스)",sd:"2026-11-18",u:"https://m.news.nate.com/view/20261118n07480"},
-      {k:"기사",t:"“브로드웨이서 문 닫았던 〈두 도시 이야기〉, 한국·일본에서 되살아났죠” (국민일보)",sd:"2026-11-17",u:"https://www.kmib.co.kr/article/20261117500012"},
-      {k:"기사",t:"〈두 도시 이야기〉 개막 앞두고 연습 현장 공개 (데일리안)",sd:"2026-11-06",u:"https://www.dailian.co.kr/news/view/1711628"},
-      {k:"기사",t:"〈두 도시 이야기〉 12년 만에 새 프로덕션·첫 대본 리딩 (데일리안)",ap:1,sd:"2026-09-16",u:"https://www.dailian.co.kr/news/view/1690965"},
-      {k:"기사",t:"〈두 도시 이야기〉 캐스팅 공개 (내외신문)",sd:"2026-09-01",u:"https://naewaynews.com/325558"},
+      {k:"기사",t:"[노규민의 현장感] 전율과 여운의 〈두 도시 이야기〉",ch:"뉴스컬처",sd:"2026-11-21",u:"https://www.nc.press/news/articleView.html?idxno=631512"},
+      {k:"기사",t:"12년 만의 〈두 도시 이야기〉, 무엇이 달라졌나?",ch:"네이트 뉴스",sd:"2026-11-18",u:"https://m.news.nate.com/view/20261118n07480"},
+      {k:"기사",t:"“브로드웨이서 문 닫았던 〈두 도시 이야기〉, 한국·일본에서 되살아났죠”",ch:"국민일보",sd:"2026-11-17",u:"https://www.kmib.co.kr/article/20261117500012"},
+      {k:"기사",t:"〈두 도시 이야기〉 개막 앞두고 연습 현장 공개",ch:"데일리안",sd:"2026-11-06",u:"https://www.dailian.co.kr/news/view/1711628"},
+      {k:"기사",t:"〈두 도시 이야기〉 12년 만에 새 프로덕션·첫 대본 리딩",ch:"데일리안",ap:1,sd:"2026-09-16",u:"https://www.dailian.co.kr/news/view/1690965"},
+      {k:"기사",t:"〈두 도시 이야기〉 캐스팅 공개",ch:"내외신문",sd:"2026-09-01",u:"https://naewaynews.com/325558"},
       {k:"영상",t:"〈두 도시 이야기〉 CASTING FILM",sd:"2026-09-01",u:"https://youtu.be/WCR0uOiwAuE"},
       {k:"영상",t:"〈두 도시 이야기〉 연습실 스케치 필름",sd:"2026-10-20",u:"https://youtu.be/m4W9sOXFxFA"},
       {k:"팬캠",t:"〈두 도시 이야기〉 첫공 무대인사",ch:"빠기",sd:"2026-11-11",u:"https://youtu.be/WG3JdJDed8Y"},
       {k:"영상",t:"〈두 도시 이야기〉 랜덤 인터뷰",sd:"2026-11-15",u:"https://youtu.be/K62tYlFsyps"},
       {k:"영상",t:"〈두 도시 이야기〉 릴레이 인터뷰",sd:"2026-11-16",u:"https://youtu.be/LUsGm1CWBSE"},
-      {k:"기사",t:"12년 만에 돌아온 〈두 도시 이야기〉의 변화 포인트 (위키더뮤지컬)",sd:"2026-10-01",u:"https://brunch.co.kr/@wikithemusical/16"},
-      {k:"기사",t:"〈두 도시 이야기〉 개막 리뷰 (연합뉴스)",sd:"2026-11-13",u:"https://supple.kr/news/cmwo32vs3rj6vkwp8pxxblcc9"}]},
+      {k:"기사",t:"12년 만에 돌아온 〈두 도시 이야기〉의 변화 포인트",ch:"위키더뮤지컬",sd:"2026-10-01",u:"https://brunch.co.kr/@wikithemusical/16"},
+      {k:"기사",t:"〈두 도시 이야기〉 개막 리뷰",ch:"연합뉴스",sd:"2026-11-13",u:"https://supple.kr/news/cmwo32vs3rj6vkwp8pxxblcc9"}]},
     "2026|곤 투모로우 (10주년)": {d:"2026. 9. 15 – 11. 29 · 홍익대 대학로 아트센터 · 백형훈 출연 9. 15 – 10. 15 (10/15 막공)", links:[
-      {k:"인터뷰",t:"[INTERVIEW] Two For Tomorrow_뮤지컬 〈곤 투모로우〉 배우 백형훈·원태민 (시어터플러스)",sd:"2026-09-14",u:"https://blog.naver.com/theatreplus/224411036904"},
-      {k:"기사",t:"신념의 흔적들 — 〈곤 투모로우〉 10주년 (시어터플러스)",sd:"2026-09-15",u:"https://theatreplus.co.kr/article/piece/12/732/"},
+      {k:"인터뷰",t:"[INTERVIEW] Two For Tomorrow_뮤지컬 〈곤 투모로우〉 배우 백형훈·원태민",ch:"시어터플러스",sd:"2026-09-14",u:"https://blog.naver.com/theatreplus/224411036904"},
+      {k:"기사",t:"신념의 흔적들 — 〈곤 투모로우〉 10주년",ch:"시어터플러스",sd:"2026-09-15",u:"https://theatreplus.co.kr/article/piece/12/732/"},
       {k:"영상",t:"〈곤 투모로우〉 10주년 CASTING FILM",ch:"PAGE1",ap:1,sd:"2026-08-01",u:"https://youtu.be/7nAUTKb40kw"},
-      {k:"기사",t:"[리뷰] 〈곤 투모로우〉 그들의 내일을 오늘로 산다는 것 (더뮤지컬)",sd:"2026-11-11",u:"https://www.themusical.co.kr/Magazine/Detail?num=5670"},
+      {k:"기사",t:"[리뷰] 〈곤 투모로우〉 그들의 내일을 오늘로 산다는 것",ch:"더뮤지컬",sd:"2026-11-11",u:"https://www.themusical.co.kr/Magazine/Detail?num=5670"},
       {k:"팬캠",t:"〈곤 투모로우〉 첫공 무대인사",ch:"빠기",sd:"2026-09-16a",u:"https://youtu.be/HPAiOWmQQ3I"},
       {k:"팬캠",t:"〈곤 투모로우〉 첫공 퇴근길",ch:"빠기",sd:"2026-09-16b",u:"https://youtu.be/zg3zAn5aOTc"},
       {k:"팬캠",t:"261001 〈곤 투모로우〉 스페셜 커튼콜 – 내일은 없다",ch:"빠기",sd:"2026-10-01",u:"https://youtu.be/GsutyjxIb_E"},
@@ -753,31 +753,31 @@
       {k:"팬캠",t:"〈곤 투모로우〉 막공 퇴근길",ch:"빠기",sd:"2026-10-15b",u:"https://youtu.be/iX-wtKyTpyo"}]},
     "2026|신과 함께_저승편": {d:"2026. 6. 13 – 7. 5 · NOL 씨어터 대학로 우리카드홀", links:[
       {k:"영상",t:"2026 창작가무극 〈신과함께_저승편〉 연습실 V-Log",ch:"서울예술단",ap:1,sd:"2026-06-01",u:"https://youtu.be/-cIoKCypwPU"},
-      {k:"기사",t:"〈신과 함께_저승편〉 6월 개막·캐스팅 (더뮤지컬)",sd:"2026-04-16",u:"https://www.themusical.co.kr/News/Detail?num=14656"}]},
+      {k:"기사",t:"〈신과 함께_저승편〉 6월 개막·캐스팅",ch:"더뮤지컬",sd:"2026-04-16",u:"https://www.themusical.co.kr/News/Detail?num=14656"}]},
     "2025|킹키부츠": {d:"2025. 12. 17 – 2026. 3. 29 · 샤롯데씨어터", links:[
       {k:"팬캠",t:"사탕처럼 달콤하다는데🍬 | 260314 〈킹키부츠〉 퇴근길 | 백형훈",ch:"파도",sd:"2026-03-14",u:"https://youtu.be/wVJ9dEOPMWo"},
       {k:"팬캠",t:"251109 〈킹키부츠〉 고양 밤공 퇴근길 | 백형훈 [4K]",ch:"no.harvey",sd:"2025-11-09",u:"https://youtu.be/0ohQl3lDgdo"},
-      {k:"인터뷰",t:"All I Wanna Be_뮤지컬 〈킹키부츠〉 배우 백형훈 (시어터플러스)",ap:1,sd:"2025-12-01",u:"https://theatreplus.co.kr/article/people/8/555/"},
+      {k:"인터뷰",t:"All I Wanna Be_뮤지컬 〈킹키부츠〉 배우 백형훈",ch:"시어터플러스",ap:1,sd:"2025-12-01",u:"https://theatreplus.co.kr/article/people/8/555/"},
       {k:"영상",t:"[FULL] 〈킹키부츠〉 이재환·백형훈 보는 라디오 | 12시엔 주현영",ch:"SBS",sd:"2025-11-06",u:"https://youtu.be/jdT5WMID2VA"},
       {k:"영상",t:"[월요라이브] 백형훈 ‘Hold Me in Your Heart’ Live",ch:"NOL",ap:1,sd:"2026-01-01",u:"https://youtu.be/pJNQWnbJLSA"},
       {k:"영상",t:"지금까지 이런 롤라는 없었다. 애교 롤라 백형훈의 ‘Sex Is in the Heel’",ch:"CJ ENM",ap:1,sd:"2026-01-02",u:"https://youtu.be/mqxM9JLZpWQ"},
       {k:"영상",t:"[월요라이브 S5 Ep.7] 〈킹키부츠〉 이재환·백형훈·한재아·허윤슬·엔젤 6인",ch:"NOL",ap:1,sd:"2026-01-01",u:"https://www.youtube.com/live/bDFHji0rTsg"},
-      {k:"기사",t:"백형훈·이재환, 〈킹키부츠〉의 뉴웨이브 [엑's 리뷰]",sd:"2026-01-02",u:"https://www.xportsnews.com/article/2096024"},
-      {k:"기사",t:"〈킹키부츠〉 상견례 현장 공개 — NEW 롤라 백형훈 (더뮤지컬)",sd:"2025-09-25",u:"https://www.themusical.co.kr/News/Detail?num=14510"}]},
+      {k:"기사",t:"백형훈·이재환, 〈킹키부츠〉의 뉴웨이브 [엑's 리뷰]",ch:"엑스포츠뉴스",sd:"2026-01-02",u:"https://www.xportsnews.com/article/2096024"},
+      {k:"기사",t:"〈킹키부츠〉 상견례 현장 공개 — NEW 롤라 백형훈",ch:"더뮤지컬",sd:"2025-09-25",u:"https://www.themusical.co.kr/News/Detail?num=14510"}]},
     "2025|명성황후 (30주년)": {d:"2025. 1. 21 – 3. 30 · 세종문화회관 대극장", links:[
-      {k:"기사",t:"30주년 〈명성황후〉 프레스콜 (더뮤지컬)",sd:"2025-02-06",u:"https://www.themusical.co.kr/Magazine/Detail?num=5410"},
-      {k:"기사",t:"〈명성황후〉 30주년 캐스팅 공개 (더뮤지컬)",sd:"2024-10-08",u:"https://www.themusical.co.kr/News/Detail?num=14227"}]},
+      {k:"기사",t:"30주년 〈명성황후〉 프레스콜",ch:"더뮤지컬",sd:"2025-02-06",u:"https://www.themusical.co.kr/Magazine/Detail?num=5410"},
+      {k:"기사",t:"〈명성황후〉 30주년 캐스팅 공개",ch:"더뮤지컬",sd:"2024-10-08",u:"https://www.themusical.co.kr/News/Detail?num=14227"}]},
     "2024|노트르담 드 파리": {d:"2024. 1. 24 – 3. 24 · 세종문화회관 대극장"},
     "2024|지저스 크라이스트 수퍼스타": {d:"2024. 11. 7 – 2025. 1. 12 · 광림아트센터 BBCH홀", links:[
       {k:"영상",t:"[쿨룩 LIVE] 백형훈 ‘Superstar’ — 이은지의 가요광장",ch:"KBS Cool FM",sd:"2024-10-29",u:"https://youtu.be/uVjAx2SSVx4"},
-      {k:"인터뷰",t:"마이클리·백형훈 “뛰어난 배우 모인 ‘지크수’ 새 시즌, 전 세계 통틀어 최고” (이데일리)",sd:"2024-11-29",u:"https://www.edaily.co.kr/News/Read?newsId=02368166639090640&mediaCodeNo=257"},
-      {k:"기사",t:"〈지저스 크라이스트 수퍼스타〉 11월 개막·캐스팅 (더뮤지컬)",sd:"2024-08-28",u:"https://www.themusical.co.kr/News/Detail?num=14186"}]},
+      {k:"인터뷰",t:"마이클리·백형훈 “뛰어난 배우 모인 ‘지크수’ 새 시즌, 전 세계 통틀어 최고”",ch:"이데일리",sd:"2024-11-29",u:"https://www.edaily.co.kr/News/Read?newsId=02368166639090640&mediaCodeNo=257"},
+      {k:"기사",t:"〈지저스 크라이스트 수퍼스타〉 11월 개막·캐스팅",ch:"더뮤지컬",sd:"2024-08-28",u:"https://www.themusical.co.kr/News/Detail?num=14186"}]},
     "2024|살리에르": {d:"2024. 7. 11 – 9. 21 · 세종문화회관 M씨어터"},
     "2023|렌트": {d:"2023. 11. 11 – 2024. 2. 25 · 코엑스 신한카드 아티움", links:[
       {k:"팬캠",t:"240225 〈렌트〉 밤공 퇴근길 | 백형훈 [4K]",ch:"no.harvey",sd:"2024-02-25",u:"https://youtu.be/DlsgMUeqvNM"},
       {k:"영상",t:"백형훈 직캠 ‘One Song Glory’ 〈렌트〉 프레스콜",ch:"매일일보TV",sd:"2023-11-15",u:"https://youtu.be/ciOZbmex_JI"},
-      {k:"기사",t:"〈렌트〉 2023 캐스팅 공개 (엑스포츠뉴스)",sd:"2023-09-01",u:"https://www.xportsnews.com/article/1769646"},
-      {k:"기사",t:"〈렌트〉 프레스콜 현장 (스타뉴스)",sd:"2023-11-15",u:"https://www.starnewskorea.com/pop-culture/2023/11/15/2023111516491168083"}]},
+      {k:"기사",t:"〈렌트〉 2023 캐스팅 공개",ch:"엑스포츠뉴스",sd:"2023-09-01",u:"https://www.xportsnews.com/article/1769646"},
+      {k:"기사",t:"〈렌트〉 프레스콜 현장",ch:"스타뉴스",sd:"2023-11-15",u:"https://www.starnewskorea.com/pop-culture/2023/11/15/2023111516491168083"}]},
     "2023|곤 투모로우 - 삼일천하 1884": {d:"2023. 8. 10 – 10. 22 · 광림아트센터 BBCH홀", links:[
       {k:"영상",t:"2023 〈곤투모로우〉 공연클립 ‘조선의 붕괴’ — 백형훈",ch:"PAGE1",ap:1,sd:"2023-09-02",u:"https://youtu.be/-MoUrQU-yq8"},
       {k:"영상",t:"2023 〈곤투모로우〉 공연클립 ‘갈 수 없는 나라’ — 백형훈",ch:"PAGE1",ap:1,sd:"2023-09-02",u:"https://youtu.be/PiPWQ3O-D_c"},
@@ -788,91 +788,91 @@
       {k:"영상",t:"[LIVE] 정영주·백형훈 ‘복수의 약속’ 〈킹아더〉 | 두시탈출 컬투쇼",ch:"SBS",sd:"2022-04-28",u:"https://youtu.be/DC2feHh_vaQ"},
       {k:"영상",t:"[LIVE] 백형훈 ‘빼앗긴 나의 시간’ 〈킹아더〉 | 두시탈출 컬투쇼",ch:"SBS",sd:"2022-04-28",u:"https://youtu.be/vAwH5Fen1KA"},
       {k:"영상",t:"[FULL] 〈킹아더〉 백형훈·이충주·정영주 보는 라디오 | 두시탈출 컬투쇼",ch:"SBS",sd:"2022-04-28",u:"https://youtu.be/f99_m_tKibc"},
-      {k:"기사",t:"〈킹아더〉 재연 캐스팅 공개 (스포츠경향)",sd:"2022-01-26",u:"https://sports.khan.co.kr/article/202201261655003"}]},
+      {k:"기사",t:"〈킹아더〉 재연 캐스팅 공개",ch:"스포츠경향",sd:"2022-01-26",u:"https://sports.khan.co.kr/article/202201261655003"}]},
     "2022|지저스 크라이스트 수퍼스타": {d:"2022. 11. 10 – 2023. 1. 15 · 광림아트센터 BBCH홀", links:[
       {k:"영상",t:"[클린버전] 백형훈 ‘Heaven On Their Minds’ — 국가가 부른다",ch:"TV CHOSUN",sd:"2022-11-17",u:"https://youtu.be/dAb904oW_q4"},
       {k:"영상",t:"〈지저스 크라이스트 수퍼스타〉 백형훈+앙상블 ‘Superstar’ [열린 음악회]",ch:"KBS",sd:"2023-03-19",u:"https://youtu.be/3xh6Xdkovqs"},
-      {k:"기사",t:"브로드웨이 초연 50주년 〈수퍼스타〉 캐스팅 (더뮤지컬)",sd:"2022-09-01",u:"https://www.themusical.co.kr/News/Detail?num=13317"}]},
+      {k:"기사",t:"브로드웨이 초연 50주년 〈수퍼스타〉 캐스팅",ch:"더뮤지컬",sd:"2022-09-01",u:"https://www.themusical.co.kr/News/Detail?num=13317"}]},
     "2021|팬레터": {d:"2021. 12. 10 – 2022. 3. 20 · 코엑스 신한카드 아티움"},
     "2021|더데빌": {d:"2021. 12. 10 – 2022. 2. 27 · 대학로 드림아트센터 1관", links:[
       {k:"영상",t:"〈더데빌〉 송스루데이 ⑥ No.26 피와 살 — 백형훈",ch:"R&D works",ap:1,sd:"2021-12-01",u:"https://youtu.be/i_Gh7Acibzg"}]},
     "2021|드라큘라": {d:"2021. 5. 18 – 8. 1 · 블루스퀘어 신한카드홀", links:[
       {k:"영상",t:"[두근두근 라이브 2탄] NEW 조나단! 백형훈의 ‘Whitby Bay’",ch:"NOL 티켓",ap:1,sd:"2021-05-01",u:"https://youtu.be/e6M0Hik0l44"},
-      {k:"기사",t:"〈드라큘라〉 2021 개막 현장 (엑스포츠뉴스)",sd:"2021-05-21",u:"https://www.xportsnews.com/article/1428398"}]},
+      {k:"기사",t:"〈드라큘라〉 2021 개막 현장",ch:"엑스포츠뉴스",sd:"2021-05-21",u:"https://www.xportsnews.com/article/1428398"}]},
     "2020|작은 아씨들": {d:"2020. 5. 8 – 5. 13 · 신촌 연희예술극장", links:[
-      {k:"기사",t:"연극 〈작은 아씨들〉 연습실 방문기 (더뮤지컬)",sd:"2020-05-18",u:"https://www.themusical.co.kr/Magazine/Detail?num=4545"}]},
+      {k:"기사",t:"연극 〈작은 아씨들〉 연습실 방문기",ch:"더뮤지컬",sd:"2020-05-18",u:"https://www.themusical.co.kr/Magazine/Detail?num=4545"}]},
     "2021|마마, 돈 크라이": {d:"2021. 5. 27 – 8. 22 · 두산아트센터 연강홀",links:[
       {k:"영상",t:"〈마마돈크라이〉 B대면인터뷰 — 백형훈 / 프로페서V",ch:"R&D works",ap:1,sd:"2021-05-01",u:"https://youtu.be/M-1We37zXmM"},
-      {k:"인터뷰",t:"데뷔 10년 백형훈 인터뷰 · 프로페서V 프로필 (문화일보)",sd:"2020-03-01",u:"https://www.munhwa.com/article/11174515"}]},
+      {k:"인터뷰",t:"데뷔 10년 백형훈 인터뷰 · 프로페서V 프로필",ch:"문화일보",sd:"2020-03-01",u:"https://www.munhwa.com/article/11174515"}]},
     "2020|고스트": {d:"2020. 10. 6 – 2021. 3. 14 · 디큐브아트센터", links:[
       {k:"영상",t:"김우형+박지연+백형훈 ‘Unchained Melody + I Had A Life’ [열린 음악회]",ch:"KBS",sd:"2020-11-29",u:"https://youtu.be/Oz-w3eGmRXw"},
-      {k:"기사",t:"데뷔 10주년 콘서트 · 〈고스트〉 칼 캐스팅 소식 (더뮤지컬)",sd:"2020-08-04",u:"https://www.themusical.co.kr/News/Detail?num=13160"}]},
+      {k:"기사",t:"데뷔 10주년 콘서트 · 〈고스트〉 칼 캐스팅 소식",ch:"더뮤지컬",sd:"2020-08-04",u:"https://www.themusical.co.kr/News/Detail?num=13160"}]},
     "2020|최후진술": {d:"2020. 3. 13 – 5. 31 · 예스24 스테이지 2관", links:[
-      {k:"인터뷰",t:"[NC인터뷰] 백형훈이 걸어온 10년, 걸어갈 10년 (뉴스컬처)",sd:"2020-04-19",u:"https://www.nc.press/news/articleView.html?idxno=308071"},
-      {k:"인터뷰",t:"“꿈 향한 열정, 장롱에서도 노래했어요” (한경 머니 2편)",sd:"2021-01-20",u:"https://magazine.hankyung.com/money/article/202101203256c"},
-      {k:"인터뷰",t:"“노래·연기 힘 조금 빼고, 상대와 호흡 늘렸죠” (한경 머니 1편)",sd:"2021-01-20",u:"https://magazine.hankyung.com/money/article/202101203257c"},
-      {k:"인터뷰",t:"데뷔 10년 백형훈, 〈최후진술〉 연습 현장 (문화일보)",sd:"2020-03-01",u:"https://www.munhwa.com/article/11174515"}]},
+      {k:"인터뷰",t:"[NC인터뷰] 백형훈이 걸어온 10년, 걸어갈 10년",ch:"뉴스컬처",sd:"2020-04-19",u:"https://www.nc.press/news/articleView.html?idxno=308071"},
+      {k:"인터뷰",t:"“꿈 향한 열정, 장롱에서도 노래했어요”",ch:"한경 머니 2편",sd:"2021-01-20",u:"https://magazine.hankyung.com/money/article/202101203256c"},
+      {k:"인터뷰",t:"“노래·연기 힘 조금 빼고, 상대와 호흡 늘렸죠”",ch:"한경 머니 1편",sd:"2021-01-20",u:"https://magazine.hankyung.com/money/article/202101203257c"},
+      {k:"인터뷰",t:"데뷔 10년 백형훈, 〈최후진술〉 연습 현장",ch:"문화일보",sd:"2020-03-01",u:"https://www.munhwa.com/article/11174515"}]},
     "2020|미드나잇 : 앤틀러스": {d:"2020. 2. 11 – 5. 3 · 대학로 아트원씨어터 2관 · 백형훈 출연 2. 11 – 3. 1 (3/1 막공)"},
     "2019|최후진술": {d:"2019. 3. 16 – 6. 9 · 예스24 스테이지 2관"},
     "2019|테레즈 라캥": {d:"2019. 6. 18 – 9. 1 · 예스24 스테이지 2관", links:[
-      {k:"인터뷰",t:"[NC스케치] 뮤지컬 〈테레즈 라캥〉 백형훈 인터뷰 (뉴스컬처)",sd:"2019-06-25",u:"https://www.nc.press/news/articleView.html?idxno=219155"}]},
+      {k:"인터뷰",t:"[NC스케치] 뮤지컬 〈테레즈 라캥〉 백형훈 인터뷰",ch:"뉴스컬처",sd:"2019-06-25",u:"https://www.nc.press/news/articleView.html?idxno=219155"}]},
     "2019|랭보": {d:"2019. 9. 7 – 12. 1 · 예스24 스테이지 1관", links:[
-      {k:"인터뷰",t:"뮤지컬 〈랭보〉의 배우 백형훈 (채널예스)",sd:"2019-09-04",u:"https://ch.yes24.com/Article/Details/39749"},
-      {k:"인터뷰",t:"[SPOTLIGHT] 〈랭보〉 백형훈, 반짝임에서 단단함으로 (더뮤지컬)",sd:"2019-09-29",u:"https://www.themusical.co.kr/Magazine/Detail?num=4283"}]},
+      {k:"인터뷰",t:"뮤지컬 〈랭보〉의 배우 백형훈",ch:"채널예스",sd:"2019-09-04",u:"https://ch.yes24.com/Article/Details/39749"},
+      {k:"인터뷰",t:"[SPOTLIGHT] 〈랭보〉 백형훈, 반짝임에서 단단함으로",ch:"더뮤지컬",sd:"2019-09-29",u:"https://www.themusical.co.kr/Magazine/Detail?num=4283"}]},
     "2019|팬레터": {d:"2019. 11. 7 – 2020. 2. 2 · 두산아트센터 연강홀", links:[
       {k:"영상",t:"〈팬레터〉 2019 프레스콜 ‘거짓말이 아니야’ — 김재범·백형훈·소정화 외",ch:"NOL 티켓",ap:1,sd:"2019-11-01",u:"https://youtu.be/8rmeyGZXh20"}]},
     "2019|에브리바디 원츠 힘 데드": {d:"2019. 7. 9 – 9. 29 · 대학로 드림아트센터 1관", links:[
-      {k:"인터뷰",t:"〈랭보〉 인터뷰에서 싱페이 역 언급 (더뮤지컬)",sd:"2019-09-29",u:"https://www.themusical.co.kr/Magazine/Detail?num=4283"}]},
+      {k:"인터뷰",t:"〈랭보〉 인터뷰에서 싱페이 역 언급",ch:"더뮤지컬",sd:"2019-09-29",u:"https://www.themusical.co.kr/Magazine/Detail?num=4283"}]},
     "2018|팬텀": {d:"2018. 12. 1 – 2019. 2. 17 · 충무아트센터 대극장"},
     "2018|록키호러쇼": {d:"2018. 8. 3 – 10. 21 · 홍익대 대학로 아트센터 대극장"},
     "2018|바람과 함께 사라지다": {d:"2018. 5. 18 – 7. 29 · 샤롯데씨어터"},
     "2017|에드거 앨런 포": {d:"2017. 11. 17 – 2018. 2. 4 · 광림아트센터 BBCH홀", links:[
-      {k:"인터뷰",t:"[라이브인터뷰] 〈에드거 앨런 포〉 이창섭·백형훈 “저희가 생각하는 최고의 명장면은…” (뉴스컬처)",sd:"2018-01-18",u:"https://www.nc.press/news/articleView.html?idxno=80315"},
-      {k:"인터뷰",t:"[LIVE TALK] 〈에드거 앨런 포〉 백형훈 (더뮤지컬)",sd:"2017-12-05",u:"https://www.themusical.co.kr/Magazine/Detail?num=3505"}]},
+      {k:"인터뷰",t:"[라이브인터뷰] 〈에드거 앨런 포〉 이창섭·백형훈 “저희가 생각하는 최고의 명장면은…”",ch:"뉴스컬처",sd:"2018-01-18",u:"https://www.nc.press/news/articleView.html?idxno=80315"},
+      {k:"인터뷰",t:"[LIVE TALK] 〈에드거 앨런 포〉 백형훈",ch:"더뮤지컬",sd:"2017-12-05",u:"https://www.themusical.co.kr/Magazine/Detail?num=3505"}]},
     "2017|나폴레옹": {d:"2017. 7. 13 – 10. 22 · 샤롯데씨어터", links:[
-      {k:"기사",t:"〈나폴레옹〉 단체 포스터 공개 (뉴데일리)",sd:"2017-06-05",u:"https://www.newdaily.co.kr/site/data/html/2017/06/05/2017060500091.amp.html"}]},
+      {k:"기사",t:"〈나폴레옹〉 단체 포스터 공개",ch:"뉴데일리",sd:"2017-06-05",u:"https://www.newdaily.co.kr/site/data/html/2017/06/05/2017060500091.amp.html"}]},
     "2016|트레이스 유": {d:"2016. 8. 3 – 9. 25 · 대학로 아트원씨어터 1관", links:[
-      {k:"인터뷰",t:"[FACE] 〈씨왓아이워너씨〉 백형훈 — 구본하 이야기 (더뮤지컬)",sd:"2016-09-28",u:"https://www.themusical.co.kr/Magazine/Detail?num=2936"},
-      {k:"인터뷰",t:"[매거진PS] 백형훈, 노력이 만들어 낼 무대 (더뮤지컬)",sd:"2016-09-20",u:"https://www.themusical.co.kr/Pick/Detail?num=8908"}]},
+      {k:"인터뷰",t:"[FACE] 〈씨왓아이워너씨〉 백형훈 — 구본하 이야기",ch:"더뮤지컬",sd:"2016-09-28",u:"https://www.themusical.co.kr/Magazine/Detail?num=2936"},
+      {k:"인터뷰",t:"[매거진PS] 백형훈, 노력이 만들어 낼 무대",ch:"더뮤지컬",sd:"2016-09-20",u:"https://www.themusical.co.kr/Pick/Detail?num=8908"}]},
     "2016|아들": {d:"2016. 6. 7 – 7. 24 · 대학로 아트원씨어터 1관", links:[
-      {k:"인터뷰",t:"천천히 오래오래, 〈아들〉 백형훈 (스테이지톡)",ap:1,sd:"2016-06-15",u:"http://m.stagetalk.co.kr/Column/Detail/36529?ExpertType=0"},
+      {k:"인터뷰",t:"천천히 오래오래, 〈아들〉 백형훈",ch:"스테이지톡",ap:1,sd:"2016-06-15",u:"http://m.stagetalk.co.kr/Column/Detail/36529?ExpertType=0"},
       {k:"영상",t:"〈아들〉 백형훈 스테이지톡 인터뷰 영상",ap:1,sd:"2016-06-15",u:"https://www.youtube.com/watch?v=tYg6z3tVf9o"},
-      {k:"인터뷰",t:"2016년 6월 연극 〈아들〉 언급 인터뷰 (더뮤지컬)",sd:"2016-09-28",u:"https://www.themusical.co.kr/Magazine/Detail?num=2936"}]},
+      {k:"인터뷰",t:"2016년 6월 연극 〈아들〉 언급 인터뷰",ch:"더뮤지컬",sd:"2016-09-28",u:"https://www.themusical.co.kr/Magazine/Detail?num=2936"}]},
     "2015|쓰루 더 도어": {d:"2015. 3. 13 – 6. 7 · 대학로 유니플렉스 1관", links:[
-      {k:"기사",t:"'쓰루더도어' 백형훈 “캐릭터 색깔 다 달라” 프레스콜 (이데일리)",sd:"2015-03-25",u:"http://www.edaily.co.kr/news/newspath.asp?newsid=02446886609306928"},
-      {k:"기사",t:"[HOT MUSICAL] 〈쓰루 더 도어〉 (더뮤지컬)",sd:"2015-04-01",u:"https://www.themusical.co.kr/Magazine/Detail?num=2323"}]},
+      {k:"기사",t:"'쓰루더도어' 백형훈 “캐릭터 색깔 다 달라” 프레스콜",ch:"이데일리",sd:"2015-03-25",u:"http://www.edaily.co.kr/news/newspath.asp?newsid=02446886609306928"},
+      {k:"기사",t:"[HOT MUSICAL] 〈쓰루 더 도어〉",ch:"더뮤지컬",sd:"2015-04-01",u:"https://www.themusical.co.kr/Magazine/Detail?num=2323"}]},
     "2014|쓰릴 미": {d:"2014. 12. 10 – 2015. 3. 1 · DCF 대명문화공장 2관 라이프웨이홀", links:[
-      {k:"인터뷰",t:"‘쓰릴 미’ 백형훈, “나를 성장하게 하는 작품” (뉴스컬처)",sd:"2015-02-03",u:"https://www.nc.press/news/articleView.html?idxno=40940"},
-      {k:"인터뷰",t:"[더하기컷] “‘쓰릴 미’ 하길 참 잘했다”, 백형훈 (뉴스컬처)",sd:"2015-02-23",u:"http://newsculture.heraldcorp.com/sub_read.html?uid=42805&section=sc169"},
-      {k:"인터뷰",t:"〈쓰릴 미〉 웹진 인터뷰 (에버노트 보관본)",ap:1,sd:"2015-02-01",u:"http://www.evernote.com/l/ANJ7b5f6CPRKdL9YiR-5KjygRtSh_uqR29I/"}]},
+      {k:"인터뷰",t:"‘쓰릴 미’ 백형훈, “나를 성장하게 하는 작품”",ch:"뉴스컬처",sd:"2015-02-03",u:"https://www.nc.press/news/articleView.html?idxno=40940"},
+      {k:"인터뷰",t:"[더하기컷] “‘쓰릴 미’ 하길 참 잘했다”, 백형훈",ch:"뉴스컬처",sd:"2015-02-23",u:"http://newsculture.heraldcorp.com/sub_read.html?uid=42805&section=sc169"},
+      {k:"인터뷰",t:"〈쓰릴 미〉 웹진 인터뷰",ch:"에버노트 보관본",ap:1,sd:"2015-02-01",u:"http://www.evernote.com/l/ANJ7b5f6CPRKdL9YiR-5KjygRtSh_uqR29I/"}]},
     "2017|서른 즈음에": {d:"2017. 10. 20 – 12. 2 · 이화여자대학교 삼성홀"},
     "2017|록키호러쇼": {d:"2017. 5. 26 – 8. 6 · 홍익대 대학로 아트센터 대극장", links:[
       {k:"인터뷰",t:"더뮤지컬 5월호 ‘록키호러쇼’ 마이클 리, 조형균, 백형훈 — 완연한 자유, 끝없는 파격",ap:1,sd:"2017-05-01",u:"http://navercast.naver.com/magazine_contents.nhn?rid=1487&contents_id=135854"},
-      {k:"인터뷰",t:"[매거진PS] 각도의 중요성 (더뮤지컬 No.164)",ap:1,sd:"2017-05-02",u:"http://www.themusical.co.kr/Pick/Detail?enc_num=271ndRkjQTzBEiIBIon8YQ=="},
-      {k:"인터뷰",t:"[매거진PS] 백형훈, 모든 것은 사랑 (더뮤지컬 No.164)",ap:1,sd:"2017-05-03",u:"http://www.themusical.co.kr/Pick/Detail?enc_num=bp0NyngcmkmRiEFl4FC1wQ=="},
+      {k:"인터뷰",t:"[매거진PS] 각도의 중요성",ch:"더뮤지컬 No.164",ap:1,sd:"2017-05-02",u:"http://www.themusical.co.kr/Pick/Detail?enc_num=271ndRkjQTzBEiIBIon8YQ=="},
+      {k:"인터뷰",t:"[매거진PS] 백형훈, 모든 것은 사랑",ch:"더뮤지컬 No.164",ap:1,sd:"2017-05-03",u:"http://www.themusical.co.kr/Pick/Detail?enc_num=bp0NyngcmkmRiEFl4FC1wQ=="},
       {k:"영상",t:"〈록키호러쇼〉 더뮤지컬 커버스토리 영상",ch:"네이버TV",ap:1,sd:"2017-05-01",u:"http://tv.naver.com/v/1925538"}]},
     "2017|미드나잇": {d:"2017. 1. 8 – 2. 26 · 대학로 아트원씨어터 2관", links:[
-      {k:"인터뷰",t:"[AT인터뷰①] ‘미드나잇’ 백형훈 “난 배두훈 형보다 귀여운 연하남편” (아시아투데이)",sd:"2017-01-23",u:"https://www.asiatoday.co.kr/kn/view.php?key=20170123002048083"},
-      {k:"인터뷰",t:"[AT인터뷰②] 백형훈 “‘뮤지컬배우’ 하면 떠오르는 사람 중 한 명 되고파” (아시아투데이)",sd:"2017-01-24",u:"https://www.asiatoday.co.kr/kn/view.php?key=20170124000318296"},
-      {k:"인터뷰",t:"[AT인터뷰③] ‘팬텀싱어’ 백형훈 “우승 공약? 이동신과 윈드밀 하겠다” (아시아투데이)",sd:"2017-01-24",u:"https://www.asiatoday.co.kr/kn/view.php?key=20170124002324366"},
-      {k:"인터뷰",t:"뮤지컬배우 백형훈 “학교 아닌 무대에서 최고의 레슨받았죠” (포커스뉴스 · 에버노트 보관본)",ap:1,sd:"2017-01-20",u:"http://www.evernote.com/l/ANL4wWMfQ4pNdbQNEpaUa71y1_DbUFfR2wI/"},
-      {k:"인터뷰",t:"아름다운 궤도로 비행하는 목소리 (노블레스맨)",ap:1,sd:"2017-02-01",u:"http://www.noblesse.com/home/news/magazine/detail.php?no=5319"}]},
+      {k:"인터뷰",t:"[AT인터뷰①] ‘미드나잇’ 백형훈 “난 배두훈 형보다 귀여운 연하남편”",ch:"아시아투데이",sd:"2017-01-23",u:"https://www.asiatoday.co.kr/kn/view.php?key=20170123002048083"},
+      {k:"인터뷰",t:"[AT인터뷰②] 백형훈 “‘뮤지컬배우’ 하면 떠오르는 사람 중 한 명 되고파”",ch:"아시아투데이",sd:"2017-01-24",u:"https://www.asiatoday.co.kr/kn/view.php?key=20170124000318296"},
+      {k:"인터뷰",t:"[AT인터뷰③] ‘팬텀싱어’ 백형훈 “우승 공약? 이동신과 윈드밀 하겠다”",ch:"아시아투데이",sd:"2017-01-24",u:"https://www.asiatoday.co.kr/kn/view.php?key=20170124002324366"},
+      {k:"인터뷰",t:"뮤지컬배우 백형훈 “학교 아닌 무대에서 최고의 레슨받았죠”",ch:"포커스뉴스 · 에버노트 보관본",ap:1,sd:"2017-01-20",u:"http://www.evernote.com/l/ANL4wWMfQ4pNdbQNEpaUa71y1_DbUFfR2wI/"},
+      {k:"인터뷰",t:"아름다운 궤도로 비행하는 목소리",ch:"노블레스맨",ap:1,sd:"2017-02-01",u:"http://www.noblesse.com/home/news/magazine/detail.php?no=5319"}]},
     "2015|넥스트 투 노멀": {d:"2015. 12. 16 – 2016. 3. 13 · 두산아트센터 연강홀", gallery:["photos/2015-next-to-normal-gabe.jpg"], links:[
-      {k:"인터뷰",t:"〈넥스트 투 노멀〉 백형훈, ‘이젠 증명해야 할 시간’ (플레이DB)",sd:"2015-11-27",u:"http://www.playdb.co.kr/magazine/magazine_temp_view.asp?kindno=8&no=594"},
-      {k:"인터뷰",t:"‘넥스트 투 노멀’ 백형훈 “수능 기다리는 고3 수험생처럼, 게이브 준비했어요” (뉴스컬처 · 스포 주의)",ap:1,sd:"2015-12-01",u:"http://newsculture.heraldcorp.com/sub_read.html?uid=76791"}]},
+      {k:"인터뷰",t:"〈넥스트 투 노멀〉 백형훈, ‘이젠 증명해야 할 시간’",ch:"플레이DB",sd:"2015-11-27",u:"http://www.playdb.co.kr/magazine/magazine_temp_view.asp?kindno=8&no=594"},
+      {k:"인터뷰",t:"‘넥스트 투 노멀’ 백형훈 “수능 기다리는 고3 수험생처럼, 게이브 준비했어요”",ch:"뉴스컬처 · 스포 주의",ap:1,sd:"2015-12-01",u:"http://newsculture.heraldcorp.com/sub_read.html?uid=76791"}]},
     "2013|명성황후": {d:"2013. 12. 6 – 12. 29 · 계명아트센터"},
     "2013|더 프로미스": {d:"2013. 1. 8 – 1. 20 · 국립극장 해오름극장"},
     "2011|화랑": {d:"2011. 7. 3 – 9. 4 · 예술의전당 자유소극장 (문노 7. 3 – 7. 9 · 기파랑 8. 20 – 9. 4)"},
     "2016|씨왓아이워너씨": {d:"2015. 10. 30 – 11. 15 · 프로젝트박스 시야 / 2016. 9. 27 – 11. 20 · 홍익대 대학로 아트센터 소극장", links:[
-      {k:"인터뷰",t:"[FACE] 〈씨왓아이워너씨〉 백형훈 (더뮤지컬)",sd:"2016-09-28",u:"https://www.themusical.co.kr/Magazine/Detail?num=2936"}]},
+      {k:"인터뷰",t:"[FACE] 〈씨왓아이워너씨〉 백형훈",ch:"더뮤지컬",sd:"2016-09-28",u:"https://www.themusical.co.kr/Magazine/Detail?num=2936"}]},
     "2014|여신님이 보고 계셔": {d:"2014. 4. 26 – 7. 27 · 두산아트센터 연강홀", links:[
-      {k:"인터뷰",t:"'여신님이 보고계셔' 백형훈, “뮤지컬이 진짜 내 길인가보다” (마이데일리)",sd:"2014-05-19",u:"http://www.mydaily.co.kr/new_yk/html/read.php?newsid=201405191131454424&ext=na"},
-      {k:"인터뷰",t:"'여신님' 백형훈 “아직은 별책부록, 공연하는 자체로 행복해” (다음 연예)",sd:"2014-05-21",u:"http://m.media.daum.net/m/entertain/newsview/20140521185109751"},
-      {k:"인터뷰",t:"백형훈, 〈여신님이 보고 계셔〉의 FM 동현 (ize)",sd:"2014-09-04",u:"http://ize.co.kr/articleView.html?no=2014090102437290216"}]},
+      {k:"인터뷰",t:"'여신님이 보고계셔' 백형훈, “뮤지컬이 진짜 내 길인가보다”",ch:"마이데일리",sd:"2014-05-19",u:"http://www.mydaily.co.kr/new_yk/html/read.php?newsid=201405191131454424&ext=na"},
+      {k:"인터뷰",t:"'여신님' 백형훈 “아직은 별책부록, 공연하는 자체로 행복해”",ch:"다음 연예",sd:"2014-05-21",u:"http://m.media.daum.net/m/entertain/newsview/20140521185109751"},
+      {k:"인터뷰",t:"백형훈, 〈여신님이 보고 계셔〉의 FM 동현",ch:"ize",sd:"2014-09-04",u:"http://ize.co.kr/articleView.html?no=2014090102437290216"}]},
     "2011|모차르트!": {d:"2011. 5. 24 – 7. 3 · 성남아트센터"},
     "2015|엘리자벳": {d:"2015. 6. 13 – 9. 6 · 블루스퀘어 삼성전자홀"},
     "2010|화랑": {d:"2010. 1. 15 – 5. 30 · 대학로 열린극장 · 뮤지컬 데뷔작", links:[
-      {k:"인터뷰",t:"화랑 — 서라벌 탐구생활 문노편 (에버노트 보관본)",ap:1,sd:"2010-03-01",u:"http://www.evernote.com/l/ANKJYccChMlJhKJ_OmQ9iPtWQll3zpFdCXs/"}]}
+      {k:"인터뷰",t:"화랑 — 서라벌 탐구생활 문노편",ch:"에버노트 보관본",ap:1,sd:"2010-03-01",u:"http://www.evernote.com/l/ANKJYccChMlJhKJ_OmQ9iPtWQll3zpFdCXs/"}]}
   };
   const detOf = w => details[w.y+"|"+w.t] || {};
   const eras = [
@@ -927,13 +927,13 @@
     {k:"인스타 라이브",t:"2026. 2. 25 인스타 라이브",dt:"2026. 2. 25",sd:"2026-02-25",u:"https://youtu.be/25rWYySNP90",th:"https://i.ytimg.com/vi/25rWYySNP90/hqdefault.jpg"},
     {k:"인스타 라이브",t:"2026. 3. 1 인스타 라이브",dt:"2026. 3. 1",sd:"2026-03-01",u:"https://youtu.be/dXuEL9UnuA8",th:"https://i.ytimg.com/vi/dXuEL9UnuA8/hqdefault.jpg"},
     {k:"인스타 라이브",t:"2026. 11. 11 인스타 라이브",dt:"2026. 11. 11",sd:"2026-11-11",u:"https://youtu.be/Hei_Yswrcfc",th:"https://i.ytimg.com/vi/Hei_Yswrcfc/hqdefault.jpg"},
-    {k:"기사",t:"〈팬텀싱어〉 결승 진출자 기자간담회 (iMBC)",dt:"2017. 1. 19",sd:"2017-01-19",u:"https://enews.imbc.com/News/RetrieveNewsInfo/197343"},
-    {k:"인터뷰",t:"때론 격려하고 때론 경쟁하며 꿈 키우죠 — 전성우·백형훈·문성일 (파이낸셜뉴스)",dt:"2015. 5. 25",sd:"2015-05-25",u:"http://www.fnnews.com/news/201505251658018134"},
-    {k:"기사",t:"뮤지컬 스타 6명이 전하는 팬텀의 사랑…대구문예진흥원 메세나 콘서트 (매일신문)",dt:"2026. 11. 10",sd:"2026-11-10",u:"https://www.imaeil.com/page/view/2026111010273047361"},
-    {k:"기사",t:"[TV컷Q] ‘불후의 명곡’ 백형훈X기세중, ‘Uptown Girl’ 완벽한 재해석 (뉴스Q)",dt:"2018. 5. 12",sd:"2018-05-12",u:"https://www.newsq.co.kr/news/articleView.html?idxno=285078"},
-    {k:"기사",t:"‘팬텀싱어’ 윤상·윤종신, 백형훈 무대에 ‘극찬’… 뉴시즈 ‘산타페’ 열창 (뉴스Q)",dt:"2016. 11. 18",sd:"2016-11-18",u:"https://www.newsq.co.kr/news/articleView.html?idxno=212093"},
-    {k:"인터뷰",t:"브릿지경제 백형훈 인터뷰 ①",dt:"2023. 6. 4",sd:"2023-06-04",u:"https://www.viva100.com/20230604010000911"},
-    {k:"인터뷰",t:"브릿지경제 백형훈 인터뷰 ②",dt:"2023. 6. 4",sd:"2023-06-04",u:"https://www.viva100.com/20230604010000912"},
+    {k:"기사",t:"〈팬텀싱어〉 결승 진출자 기자간담회",ch:"iMBC",dt:"2017. 1. 19",sd:"2017-01-19",u:"https://enews.imbc.com/News/RetrieveNewsInfo/197343"},
+    {k:"인터뷰",t:"때론 격려하고 때론 경쟁하며 꿈 키우죠 — 전성우·백형훈·문성일",ch:"파이낸셜뉴스",dt:"2015. 5. 25",sd:"2015-05-25",u:"http://www.fnnews.com/news/201505251658018134"},
+    {k:"기사",t:"뮤지컬 스타 6명이 전하는 팬텀의 사랑…대구문예진흥원 메세나 콘서트",ch:"매일신문",dt:"2026. 11. 10",sd:"2026-11-10",u:"https://www.imaeil.com/page/view/2026111010273047361"},
+    {k:"기사",t:"[TV컷Q] ‘불후의 명곡’ 백형훈X기세중, ‘Uptown Girl’ 완벽한 재해석",ch:"뉴스Q",dt:"2018. 5. 12",sd:"2018-05-12",u:"https://www.newsq.co.kr/news/articleView.html?idxno=285078"},
+    {k:"기사",t:"‘팬텀싱어’ 윤상·윤종신, 백형훈 무대에 ‘극찬’… 뉴시즈 ‘산타페’ 열창",ch:"뉴스Q",dt:"2016. 11. 18",sd:"2016-11-18",u:"https://www.newsq.co.kr/news/articleView.html?idxno=212093"},
+    {k:"인터뷰",t:"백형훈 인터뷰 ①",ch:"브릿지경제",dt:"2023. 6. 4",sd:"2023-06-04",u:"https://www.viva100.com/20230604010000911"},
+    {k:"인터뷰",t:"백형훈 인터뷰 ②",ch:"브릿지경제",dt:"2023. 6. 4",sd:"2023-06-04",u:"https://www.viva100.com/20230604010000912"},
     {k:"영상",t:"[복면가왕] ‘오빠는 풍각쟁이’의 정체는 흉스프레소 백형훈!",ch:"MBC",dt:"2022. 1. 23",sd:"2022-01-23",u:"https://youtu.be/lPa3yoSNtEU"},
     {k:"영상",t:"[나홀로 동창회] EP.3 뮤지컬배우 백형훈 비하인드",ch:"더뮤지컬 · 예스24",u:"https://youtu.be/2qhD4CsaaHM"},
     {k:"영상",t:"백형훈 x 기세중 ‘Uptown Girl’ [불후의 명곡]",ch:"KBS",dt:"2018. 5. 12",sd:"2018-05-12",u:"https://youtu.be/9LsRfddfBNE"},
@@ -1041,7 +1041,7 @@
     const list=byNew(items.filter(x=> aCur==="all" ? true : aCur==="vid" ? (aSub==="all" ? VID.includes(x.k) : x.k===aSub) : x.k===aCur));
     const fanNote = aCur==="vid" && aSub==="팬캠" ? `<p class="fan-note">무대인사 · 커튼콜 · 퇴근길</p>` : "";
     const liveNote = fanNote + (aCur==="vid" && aSub==="인스타 라이브" ? `<div class="live-note">💌 인스타 라이브 영상은 켱덕분들만 편하게 즐기실 수 있도록 <em>링크 공개</em>로만 열어두었어요. 우리끼리만 소중히 보고, 다른 곳으로는 옮기지 않아 주시면 감사하겠습니다 🤍</div>` : "");
-    box.innerHTML=liveNote+(list.length?`<ul class="alist">${list.map(l=>`<li>${isVid(l.k)?`<a href="${esc(l.u)}" target="_blank" rel="noopener" tabindex="-1">${thumbHTML(l,l.ws[0])}</a>`:""}<span class="tg ${tgCls(l.k)}">${esc(l.k)}</span><div class="main"><a href="${esc(l.u)}" target="_blank" rel="noopener">${esc(l.t)}</a><div class="wk">${l.sd?`<span class="dt">${sdFmt(l)}</span>`:""}${l.ch?`<span class="chn">${esc(l.ch)}</span>`:""}${l.ws.length?l.ws.map(w=>`<button data-w="${works.indexOf(w)}">〈${esc(w.t)}〉</button>`).join(""):(()=>{const x=[l.sd?"":(l.dt||""),l.at?l.at+"부터 등장":""].filter(Boolean).join(" · "); return x?`<span>${esc(x)}</span>`:"";})()}</div></div><a class="ar" href="${esc(l.u)}" target="_blank" rel="noopener" aria-label="새 창으로 열기">↗</a></li>`).join("")}</ul>`:`<div class="empty">아직 자료가 없어요.</div>`);
+    box.innerHTML=liveNote+(list.length?`<ul class="alist">${list.map(l=>`<li>${isVid(l.k)?`<a href="${esc(l.u)}" target="_blank" rel="noopener" tabindex="-1">${thumbHTML(l,l.ws[0])}</a>`:""}<span class="tg ${tgCls(l.k)}">${esc(l.k)}</span><div class="main"><a href="${esc(l.u)}" target="_blank" rel="noopener">${esc(l.t)}</a><div class="wk">${l.sd?`<span class="dt">${sdFmt(l)}</span>`:""}${l.ch?`<span class="chn${isVid(l.k)?' v':''}">${esc(l.ch)}</span>`:""}${l.ws.length?l.ws.map(w=>`<button data-w="${works.indexOf(w)}">〈${esc(w.t)}〉</button>`).join(""):(()=>{const x=[l.sd?"":(l.dt||""),l.at?l.at+"부터 등장":""].filter(Boolean).join(" · "); return x?`<span>${esc(x)}</span>`:"";})()}</div></div><a class="ar" href="${esc(l.u)}" target="_blank" rel="noopener" aria-label="새 창으로 열기">↗</a></li>`).join("")}</ul>`:`<div class="empty">아직 자료가 없어요.</div>`);
   }
   document.getElementById("aFilters").addEventListener("click",e=>{const b=e.target.closest("button"); if(!b)return; aCur=b.dataset.a; aSub="all"; renderArchive();});
   document.getElementById("aSub").addEventListener("click",e=>{const b=e.target.closest("button"); if(!b)return; aSub=b.dataset.s; renderArchive();});
@@ -1584,7 +1584,7 @@
     STAGE.forEach(x=>out.push({g:"콘서트·방송",stage:1,t:x.t,s:[x.sd.slice(0,4)+". "+x.d,x.k,x.pl].filter(Boolean).join(" · "),hay:[x.t,x.k,x.pl,x.sd].join(" "),sd:x.sd}));
     const key=ds(t0());
     allSched(t0().getFullYear(),t0().getFullYear()+1).filter(e=>e.k!=="출연 회차" && (e.e||e.s)>=key).sort((a,b)=>a.s.localeCompare(b.s)).forEach(e=>out.push({g:"다가오는 일정",cal:e.s,t:e.t,s:[fmtD(e.s)+(e.tm?" "+e.tm:""),e.k,e.pl||e.note].filter(Boolean).join(" · "),hay:[e.t,e.k,e.pl,e.note].join(" ")}));
-    byNew(archiveItems()).forEach(l=>out.push({g:"영상·자료",u:l.u,l,t:l.t,s:[l.ws.map(w=>"〈"+w.t+"〉").join(" "),l.ch?l.ch+" 채널":"",l.dt||""].filter(Boolean).join(" · "),hay:[l.t,l.k,l.ch,l.ws.map(w=>w.t+" "+w.r).join(" ")].join(" ")}));
+    byNew(archiveItems()).forEach(l=>out.push({g:"영상·자료",u:l.u,l,t:l.t,s:[l.ws.map(w=>"〈"+w.t+"〉").join(" "),l.ch||"",l.dt||""].filter(Boolean).join(" · "),hay:[l.t,l.k,l.ch,l.ws.map(w=>w.t+" "+w.r).join(" ")].join(" ")}));
     out.forEach(o=>o.n=nz(o.hay));
     return out;
   }
