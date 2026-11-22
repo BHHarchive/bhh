@@ -160,6 +160,7 @@
   .t-item::before{content:"";position:absolute;left:-33px;top:9px;width:11px;height:11px;border-radius:50%;border:1px solid var(--gold);background:var(--bg)}
   .t-item.live::before{background:var(--gold)}
   .t-date{font-size:13px;color:var(--gold);letter-spacing:.05em}
+  .t-date .lc{font-size:11.5px;color:var(--mute);letter-spacing:0}
   .t-date .pe{display:block;font-size:11.5px;color:var(--mute);letter-spacing:0;margin-top:1px}
   .t-title{font-family:var(--serif);font-size:22px;margin:2px 0}
   .t-meta{font-size:14px;color:var(--mute)}
@@ -1237,7 +1238,7 @@
         const w=it.w && works.find(x=>x.y+"|"+x.t===it.w);
         const det=w?detOf(w).d:"", place=det&&det.includes(" · ")?det.split(" · ")[1]:"";
         const meta=[it.r+" 역",TLK[it.c],place].filter(Boolean).join(" · ");
-        h+=`<div class="t-item${live?' live':''}" data-tli="${i}"><div class="t-date">${fmtD2(it.s)} – ${fmtD2(it.e)}${it.pe?`<small class="pe">백형훈 막공 · 공연은 ${fmtD2(it.pe)}까지</small>`:""}</div><div class="t-title">〈${esc(it.t)}〉</div><div class="t-meta">${esc(meta)}</div></div>`;
+        h+=`<div class="t-item${live?' live':''}" data-tli="${i}"><div class="t-date">${fmtD2(it.s)} – ${fmtD2(it.e)}${it.pe?`<small class="lc"> (백형훈 막공)</small><small class="pe">공연 기간 ${fmtD2(it.s)} – ${fmtD2(it.pe)}</small>`:""}</div><div class="t-title">〈${esc(it.t)}〉</div><div class="t-meta">${esc(meta)}</div></div>`;
       });
       h+="</div>";
     });
