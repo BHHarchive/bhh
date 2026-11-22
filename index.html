@@ -4,12 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="백형훈 아카이브">
+<meta name="apple-mobile-web-app-title" content="켱카이브">
+<meta name="application-name" content="켱카이브">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="theme-color" content="#0f0d0c">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=4">
 <link rel="icon" type="image/png" href="favicon.png?v=4">
-<title>백형훈 아카이브</title>
+<title>켱카이브 · 백형훈 아카이브</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@300;400;600&family=Cormorant+Garamond:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
@@ -29,7 +30,7 @@
   /* ---------- menu ---------- */
   nav{position:sticky;top:0;z-index:20;background:rgba(15,13,12,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
   nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
-  .logo{font-family:var(--latin);font-style:italic;font-size:22px;letter-spacing:.02em;background:none;border:0;cursor:pointer}
+  .logo{font-family:var(--serif);font-weight:700;font-size:21px;letter-spacing:.04em;background:none;border:0;cursor:pointer}
   .logo span{color:var(--gold)}
   .menu{display:flex;gap:4px;list-style:none}
   .menu button{background:none;border:0;cursor:pointer;font-size:14px;color:var(--mute);padding:8px 14px;border-radius:999px;transition:all .2s;position:relative}
@@ -488,7 +489,7 @@
 
 <nav id="nav">
   <div class="wrap">
-    <button class="logo" data-go="home">Baek <span>Hyeong Hun</span></button>
+    <button class="logo" data-go="home" aria-label="켱카이브 홈"><span>켱</span>카이브</button>
     <ul class="menu" id="menu">
       <li><button data-go="home">홈</button></li>
       <li><button data-go="works">필모그래피</button></li>
