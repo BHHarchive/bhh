@@ -680,7 +680,7 @@
 <script>
   /* 출연작 데이터 — img 에 사진 파일 경로(예: "photos/kinky-lola.jpg")를 넣으면 카드에 사진이 표시됩니다 */
   const works = [
-    {y:2027,t:"쉐도우",r:"영조",k:"뮤지컬"},
+    {y:2027,t:"쉐도우",r:"영조",k:"뮤지컬",img:"photos/2027-shadow-yeongjo.jpg",pos:"50% 15%"},
     {y:2026,t:"두 도시 이야기",r:"찰스 다네이",k:"뮤지컬",img:"photos/2026-two-cities-darnay.jpg",pos:"50% 30%"},
     {y:2026,t:"곤 투모로우 (10주년)",r:"한정훈",k:"뮤지컬",img:"photos/2026-gone-tomorrow.jpg"},
     {y:2026,t:"신과 함께_저승편",r:"강림",k:"가무극",img:"photos/2026-gangrim.jpg",pos:"50% 10%"},
@@ -733,7 +733,7 @@
   /* 작품별 상세 정보 — 키는 "연도|제목".
      d: 기간·장소 / gallery: 추가 사진 경로 / links: {k:"영상"|"인터뷰"|"기사", t:제목, u:주소} */
   const details = {
-    "2027|쉐도우": {d:"2027. 2. 13 – 5. 2 · 대학로 링크아트센터 페이코홀", links:[
+    "2027|쉐도우": {d:"2027. 2. 13 – 5. 2 · 대학로 링크아트센터 페이코홀", gallery:["photos/2027-shadow-poster.jpg"], links:[
       {k:"영상",t:"2027 뮤지컬 쉐도우 (SHADOW The Musical) | CASTING SPOT",ch:"블루스테이지",sd:"2026-11-24",u:"https://youtu.be/vxtqA1eHiOs"},
       {k:"기사",t:"진호·한지상·임규형·백형훈, 뮤지컬 '쉐도우' 캐스팅…초연 배우 전원 귀환",ch:"싱글리스트",sd:"2026-11-24",u:"https://www.slist.kr/news/articleView.html?idxno=784263"},
       {k:"기사",t:"뮤지컬 '쉐도우', 2027년 재연 캐스팅 공개…임규형·백형훈 합류",ch:"국제뉴스",sd:"2026-11-24",u:"https://www.gukjenews.com/news/articleView.html?idxno=3761126"}]},
