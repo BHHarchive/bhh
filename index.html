@@ -546,6 +546,11 @@
   .wr-stat b{color:var(--gold);font-weight:600;font-size:15px;margin-right:2px}
   .wr-list{max-height:340px;overflow:auto;border-top:1px solid var(--line)}
   .wr-row{display:grid;grid-template-columns:1fr 112px 28px;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:13px}
+  .wr-miss-h{font-size:13px;color:var(--mute);margin-bottom:6px}.wr-miss-h b{color:var(--gold)}
+  .wr-miss{list-style:none;margin:0;padding:0;max-height:220px;overflow:auto;font-size:12.5px;line-height:1.9}
+  .wr-miss span{color:var(--mute);margin-right:8px;font-variant-numeric:tabular-nums}
+  .wr-ok{font-size:13px;color:var(--gold)}
+  .wr-pr{text-align:right;font-size:13px;color:var(--ink);font-variant-numeric:tabular-nums}
   .wr-row small{display:block;color:var(--mute);font-size:11.5px}
   .wr-row input{background:var(--bg);border:1px solid var(--line);color:var(--ink);font:inherit;font-size:13px;padding:6px 8px;border-radius:6px;width:100%;text-align:right}
   .wr-row .wr-x{background:none;border:0;color:var(--mute);font-size:16px;cursor:pointer}
@@ -738,8 +743,8 @@
           <input class="wr-in" id="wrNick" maxlength="12" placeholder="영상에 나올 이름">
         </div>
         <div class="wr-box">
-          <h3>다녀온 회차 · 티켓값</h3>
-          <p class="hint">일정 탭에서 체크한 회차예요. 티켓값을 적으면 켱수증에 들어가요. 비워 둬도 괜찮아요.</p>
+          <h3>티켓값</h3>
+          <p class="hint">티켓값은 일정 탭에서 도장 찍은 회차 아래에 적을 수 있어요. 적은 금액은 켱수증에 들어가요.</p>
           <div class="wr-list" id="wrList"></div>
         </div>
         <div class="wr-box">
@@ -2858,15 +2863,16 @@
     const D=wrData(wrYs);
     document.getElementById("wrStat").innerHTML=`<span><b>${D.perf.length}</b>회 공연</span><span><b>${D.off.length}</b>개 행사</span><span><b>${D.posters.length}</b>개 작품</span>`;
     const nk=document.getElementById("wrNick"); if(document.activeElement!==nk) nk.value=WR.get("nick","");
-    document.getElementById("wrList").innerHTML=D.all.length?D.all.map(e=>`<div class="wr-row"><div>${esc(e.t)}<small>${fmtD(e.s)}${e.tm?" "+e.tm:""}${e.pl?" · "+esc(e.pl):""}</small></div><input inputmode="numeric" placeholder="₩ 티켓값" data-pk="${esc(evKey(e))}" value="${seen[evKey(e)].p?wn(seen[evKey(e)].p):""}"><button class="wr-x" data-un="${esc(evKey(e))}" aria-label="체크 해제">×</button></div>`).join(""):`<div class="wr-empty">아직 체크한 회차가 없어요. 일정 탭에서 다녀온 회차에 봤어요를 눌러 켱 도장을 찍어 주세요.</div>`;
+    const miss=D.all.filter(e=>!seen[evKey(e)].p);
+    document.getElementById("wrList").innerHTML=!D.all.length?`<div class="wr-empty">아직 도장을 찍은 회차가 없어요. 일정 탭에서 다녀온 회차에 봤어요를 눌러 주세요.</div>`
+      :!miss.length?`<div class="wr-ok">도장 찍은 ${D.all.length}회 모두 티켓값을 적었어요.</div>`
+      :`<div class="wr-miss-h">티켓값을 안 적은 회차 <b>${miss.length}</b> / ${D.all.length}</div><ul class="wr-miss">${miss.map(e=>`<li><span>${D.multi?e.s.slice(2,4)+". ":""}${fmtD(e.s)}${e.tm?" "+e.tm:""}</span>${esc(e.t)}</li>`).join("")}</ul>`;
     const av=new Set(wrScenes(Object.assign({},D))); document.getElementById("wrScenes").innerHTML=WR_SC.map(([id,nm,sub,fx])=>`<label class="wr-sw ${!fx&&!wrOff[id]&&!av.has(id)?"na":""}"><span class="nm">${nm}${sub?`<small>${sub}</small>`:""}</span><input type="checkbox" data-sc="${id}" ${wrOff[id]?"":"checked"} ${fx?"disabled":""}><span class="tg"></span></label>`).join("");
     wrPlay();
   }
   document.getElementById("wrYears").addEventListener("click",e=>{ const b=e.target.closest("[data-y]"); if(!b) return; const y=+b.dataset.y; if(wrYs.includes(y)){ if(wrYs.length>1) wrYs=wrYs.filter(v=>v!==y); } else wrYs=[...wrYs,y].sort(); renderWrap(); });
   document.getElementById("wrNick").addEventListener("input",e=>{ WR.set("nick",e.target.value); });
   document.getElementById("wrNick").addEventListener("change",()=>wrPlay());
-  document.getElementById("wrList").addEventListener("change",e=>{ const k=e.target.dataset.pk; if(k==null) return; const v=parseInt(e.target.value.replace(/[^\d]/g,""))||0; if(seen[k]){ seen[k].p=v||undefined; saveSeen(); } e.target.value=v?wn(v):""; wrPlay(); });
-  document.getElementById("wrList").addEventListener("click",e=>{ const k=e.target.dataset.un; if(k==null) return; delete seen[k]; saveSeen(); renderWrap(); });
   document.getElementById("wrScenes").addEventListener("change",e=>{ const id=e.target.dataset.sc; if(!id) return; if(e.target.checked) delete wrOff[id]; else wrOff[id]=1; WR.set("off",wrOff); renderWrap(); });
   document.getElementById("wrExport").onclick=async()=>{ const code="KC1:"+btoa(unescape(encodeURIComponent(JSON.stringify({seen,nick:WR.get("nick","")}))));
     try{ await navigator.clipboard.writeText(code); alert("백업 코드를 복사했어요. 메모장 등에 붙여 넣어 보관해 주세요."); }catch(e){ prompt("아래 백업 코드를 복사해 보관해 주세요.",code); } };
