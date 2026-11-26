@@ -2779,7 +2779,7 @@
       tx(c,nick,CW/2-(w1+w2)/2,1050+o3,`400 40px ${F.sans}`,GOLD,"left",a3); tx(c," 님의 관극 정산",CW/2-(w1+w2)/2+w1,1050+o3,`400 40px ${F.sans}`,INK,"left",a3);
       const [a4,o4]=up(t,.3); c.save(); c.globalAlpha=a4; c.strokeStyle="rgba(201,164,106,.4)"; c.lineWidth=2; c.beginPath(); c.moveTo(CW/2-260,1110+o4); c.lineTo(CW/2+260,1110+o4); c.stroke(); c.restore();
       const now=D.end===ds(t0()), ed=`${D.end.slice(5,7)*1}. ${D.end.slice(8)*1}`; tx(c,D.multi?`${D.y0}. 1. 1 – ${D.end.slice(0,4)}. ${ed}${now?" 기준":""}`:`${D.Y}. 1. 1 – ${ed}${now?" 기준":""}`,CW/2,1180+o4,`500 ${D.multi?40:48}px ${F.latin}`,MUTE,"center",a4); },
-    total(c,t,D){ bgPhoto(c,D.top&&D.top.w,t); kicker(c,`${D.yl} 함께한 무대`,1450,t); big(c,D.perf.length,"회",1770,t); },
+    total(c,t,D){ bgPhoto(c,D.top&&D.top.w,t); kicker(c,`${D.yl} 함께한 무대`,1450,t); big(c,D.all.length,"회",1770,t); if(D.perf.length&&D.off.length) para(c,[`공연 ${D.perf.length} · 행사 ${D.off.length}`],1840,t,.3,36); },
     posters(c,t,D){ bgGlow(c,.6); kicker(c,`${D.yl} 만난 작품`,200,t); head(c,`${D.posters.length}편`,310,t);
       const n=D.posters.length, cols=n<=4?2:n<=9?3:4, gap=36, x0=72, w=(CW-144-gap*(cols-1))/cols, h=w*4/3, rows=Math.ceil(n/cols), top=Math.max(400,(CH-140-rows*h-(rows-1)*gap)/2+120);
       D.posters.forEach((p,i)=>{ const a=seg(t,.18+i*.07,.42+i*.07); if(a<=0) return; const x=x0+(i%cols)*(w+gap), y=top+Math.floor(i/cols)*(h+gap); c.save(); c.globalAlpha=a; c.translate(x+w/2,y+h/2-(1-a)*120); c.rotate(((i%2?1:-1)*(1+i%3))*Math.PI/180); c.shadowColor="rgba(0,0,0,.7)"; c.shadowBlur=40; c.shadowOffsetY=20; rr(c,-w/2,-h/2,w,h,12); c.fillStyle="#1a1613"; c.fill(); c.shadowColor="transparent"; c.clip(); cover(c,p.w.img,-w/2,-h/2,w,h,p.w.pos); c.restore(); }); },
@@ -2822,7 +2822,7 @@
       head(c,nm,1270,t,.4,96,"center",CW/2); para(c,[ds2],1370,t,.5,38,"center",CW/2); }
   };
   function tiles(c,L,y0,t){ const w=(CW-144-30)/2, h=190; L.forEach(([k,v],i)=>{ const a=seg(t,.25+i*.08,.45+i*.08); if(a<=0) return; const x=72+(i%2)*(w+30), y=y0+Math.floor(i/2)*(h+30), s=.85+.15*a; c.save(); c.globalAlpha=a; c.translate(x+w/2,y+h/2); c.scale(s,s); rr(c,-w/2,-h/2,w,h,22); c.fillStyle="rgba(23,19,17,.8)"; c.fill(); c.strokeStyle="#4a4038"; c.lineWidth=2; c.stroke(); tx(c,String(v),-w/2+36,8,`500 110px ${F.latin}`,GOLD); tx(c,k,-w/2+38,66,`300 32px ${F.sans}`,"#d9cfc2"); c.restore(); }); }
-  function wrScenes(D){ return WR_SC.map(x=>x[0]).filter(id=>{ if(id!=="open"&&wrOff[id]) return false; if(id==="open") return true; if(!D.perf.length) return id==="offstage"?D.off.length>0:id==="type"?false:(id==="money"&&D.total>0)||(id==="hours"&&D.min>0);
+  function wrScenes(D){ return WR_SC.map(x=>x[0]).filter(id=>{ if(id!=="open"&&wrOff[id]) return false; if(id==="open") return true; if(!D.perf.length) return id==="offstage"||id==="total"?D.off.length>0:id==="type"?false:(id==="money"&&D.total>0)||(id==="hours"&&D.min>0);
       return ({posters:D.posters.length>0,hours:D.min>0,top:!!D.top,rank:D.rank.length>1,theater:D.theaters.length>0,special:Object.values(D.special).some(Boolean),offstage:D.off.length>0,money:D.total>0})[id]??true; }); }
   function wrFrame(c,id,t,D,i,n,p){ c.save(); SC[id](c,t,D); c.restore();
     const lg=wImg["photos/logo2.png"]; if(lg&&lg.naturalWidth){ const w=190,h=w*lg.naturalHeight/lg.naturalWidth; c.globalAlpha=.85; c.drawImage(lg,CW-w-36,CH-h-36,w,h); c.globalAlpha=1; }
