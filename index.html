@@ -731,9 +731,6 @@
           <h3>다녀온 회차 · 티켓값</h3>
           <p class="hint">일정 탭에서 체크한 회차예요. 티켓값을 적으면 켱수증에 들어가요. 비워 둬도 괜찮아요.</p>
           <div class="wr-list" id="wrList"></div>
-          <p class="hint" style="margin:14px 0 0">MD·굿즈 같은 기타 지출</p>
-          <div id="wrExtra"></div>
-          <div class="wr-add"><input id="wrExN" placeholder="항목 (예: MD)"><input id="wrExA" inputmode="numeric" placeholder="금액"><button id="wrExAdd">추가</button></div>
         </div>
         <div class="wr-box">
           <h3>영상에 넣을 장면</h3>
@@ -797,7 +794,6 @@
     set(k,v){ try{ localStorage.setItem("kc_"+k,JSON.stringify(v)); }catch(e){} }
   };
   let seen=WR.get("seen",{});           /* key → {p:가격} */
-  let wrExtra=WR.get("extra",{});       /* 연도 → [{n,a}] */
   let wrOff=WR.get("off",{});           /* 꺼둔 장면 */
   const evKey=ev=>ev.s+"|"+(ev.tm||"")+"|"+ev.t;
   const seenable=ev=>!ev.e && (ev.k==="출연 회차"||ev.k==="행사") && ev.s<=ds(t0());
@@ -2701,7 +2697,7 @@
   /* 러닝타임(분, 인터미션 포함). 값이 없는 작품·행사는 '함께한 시간'에서 빠져요 */
   const RT_W={"2025|킹키부츠":155,"2026|신과 함께_저승편":165,"2026|곤 투모로우 (10주년)":150,"2026|두 도시 이야기":170,"2025|명성황후 (30주년)":165};
   const RT_D={"2026-04-15":100,"2026-05-19":120,"2026-05-20":120,"2026-05-27":70,"2026-11-15":100,"2026-11-30":100};
-  const WR_SC=[["open","오프닝","닉네임 · 정산 기간",1],["total","총 회차","올해 함께한 무대"],["posters","올해 본 작품 포스터",""],["hours","함께한 시간","러닝타임 × 회차"],["top","가장 많이 만난 작품",""],["rank","작품 순위",""],["firstlast","첫 만남 · 마지막 만남",""],["theater","가장 많이 간 극장",""],["month","가장 바빴던 달","월별 그래프 · 낮공/밤공"],["special","특별 회차","첫공 · 막공 · 전관 · 투어"],["offstage","공연 외 일정","콘서트 · 팬미팅 · 행사"],["money","켱수증","티켓값 · 기타 지출"],["type","나의 켱 유형","기록 보고 칭호 자동 부여"]];
+  const WR_SC=[["open","오프닝","닉네임 · 정산 기간",1],["total","총 회차","올해 함께한 무대"],["posters","올해 본 작품 포스터",""],["hours","함께한 시간","러닝타임 × 회차"],["top","가장 많이 만난 작품",""],["rank","작품 순위",""],["firstlast","첫 만남 · 마지막 만남",""],["theater","가장 많이 간 극장",""],["month","가장 바빴던 달","월별 그래프 · 낮공/밤공"],["special","특별 회차","첫공 · 막공 · 전관 · 투어"],["offstage","공연 외 일정","콘서트 · 팬미팅 · 행사"],["money","켱수증","회차별 티켓값"],["type","나의 켱 유형","기록 보고 칭호 자동 부여"]];
   let wrY=t0().getFullYear(); if(wrY<2021) wrY=2021;
   const wn=n=>n.toLocaleString("ko-KR");
   const wImg={}; const wrLoad=src=>{ if(!src) return null; if(!wImg[src]){ const im=new Image(); im.onload=()=>{im.ok=1;}; im.src=src; wImg[src]=im; } return wImg[src]; };
@@ -2727,7 +2723,6 @@
     const offT={"팬미팅":fm,"콘서트·행사":off.length-fm};
     let tix=0; const mItems=[]; rank.forEach(r=>{ let s=0,c=0; perf.filter(e=>e.w===r.w.y+"|"+r.w.t).forEach(e=>{ const p=+(seen[evKey(e)].p||0); if(p){s+=p;c++;} }); if(s){ mItems.push([`〈${r.w.t}〉 x ${c}`,s]); tix+=s; } });
     let offSum=0,offC=0; off.forEach(e=>{ const p=+(seen[evKey(e)].p||0); if(p){offSum+=p;offC++;} }); if(offSum) mItems.push([`콘서트·행사 x ${offC}`,offSum]);
-    const ex=(wrExtra[Y]||[]).filter(x=>+x.a>0); ex.forEach(x=>mItems.push([x.n||"기타",+x.a]));
     const paidN=all.filter(e=>+(seen[evKey(e)].p||0)>0).length;
     const total=mItems.reduce((a,b)=>a+b[1],0);
     const top=rank[0];
@@ -2800,7 +2795,7 @@
       const ink="#2a2420", sub="#7a6f64", dash=yy=>{ c.save(); c.strokeStyle="#a69a8c"; c.setLineDash([10,8]); c.lineWidth=3; c.beginPath(); c.moveTo(x+50,yy); c.lineTo(x+w-50,yy); c.stroke(); c.restore(); };
       tx(c,"켱수증",CW/2,y+120,`92px ${F.name}`,ink,"center"); tx(c,`KYEONGCHIVE · ${D.Y}`,CW/2,y+175,`500 28px ${F.latin}`,sub,"center"); dash(y+220);
       rows.forEach((r,i)=>{ const a=seg(t,.35+i*.05,.5+i*.05); tx(c,r[0],x+50,y+290+i*62,fit(c,r[0],w-330,32,F.sans,"400"),"#3a322b","left",a); tx(c,"₩"+wn(r[1]),x+w-50,y+290+i*62,`500 34px ${F.latin}`,ink,"right",a); });
-      let yy=y+290+rows.length*62-20; dash(yy); const a2=seg(t,.6,.75); if(D.paidN) tx(c,`한 회당 평균  ₩${wn(Math.round((D.total-(wrExtra[D.Y]||[]).reduce((s,x)=>s+(+x.a||0),0))/D.paidN))}`,x+50,yy+60,`300 28px ${F.sans}`,"#6b6157","left",a2);
+      let yy=y+290+rows.length*62-20; dash(yy); const a2=seg(t,.6,.75); if(D.paidN) tx(c,`한 회당 평균  ₩${wn(Math.round(D.total/D.paidN))}`,x+50,yy+60,`300 28px ${F.sans}`,"#6b6157","left",a2);
       yy+=(D.paidN?90:30); dash(yy); tx(c,"TOTAL",x+50,yy+80,`600 34px ${F.sans}`,ink,"left",a2); tx(c,"₩"+wn(Math.round(D.total*seg(t,.62,.95)/1000)*1000||0),x+w-50,yy+86,`700 64px ${F.serif}`,ink,"right",a2);
       for(let k=0,bx=x+110;bx<x+w-110;k++){ const bw=[3,2,5,2,4,3,6,2][k%8]; c.fillStyle=ink; c.globalAlpha=a2; c.fillRect(bx,yy+130,bw,70); c.globalAlpha=1; bx+=bw+[4,6,3,5][k%4]; }
       tx(c,"KYEONGCHIVE.GITHUB.IO/BHH",CW/2,yy+250,`400 24px ${F.sans}`,sub,"center",a2); },
@@ -2847,7 +2842,6 @@
     document.getElementById("wrStat").innerHTML=`<span><b>${D.perf.length}</b>회 공연</span><span><b>${D.off.length}</b>개 행사</span><span><b>${D.posters.length}</b>개 작품</span>`;
     const nk=document.getElementById("wrNick"); if(document.activeElement!==nk) nk.value=WR.get("nick","");
     document.getElementById("wrList").innerHTML=D.all.length?D.all.map(e=>`<div class="wr-row"><div>${esc(e.t)}<small>${fmtD(e.s)}${e.tm?" "+e.tm:""}${e.pl?" · "+esc(e.pl):""}</small></div><input inputmode="numeric" placeholder="₩ 티켓값" data-pk="${esc(evKey(e))}" value="${seen[evKey(e)].p||""}"><button class="wr-x" data-un="${esc(evKey(e))}" aria-label="체크 해제">×</button></div>`).join(""):`<div class="wr-empty">아직 체크한 회차가 없어요. 일정 탭에서 다녀온 회차에 ✓ 봤어요를 눌러 주세요.</div>`;
-    const ex=wrExtra[wrY]||[]; document.getElementById("wrExtra").innerHTML=ex.map((x,i)=>`<div class="wr-row"><div>${esc(x.n||"기타")}</div><div style="text-align:right">₩${wn(+x.a||0)}</div><button class="wr-x" data-exd="${i}" aria-label="삭제">×</button></div>`).join("");
     const av=new Set(wrScenes(Object.assign({},D))); document.getElementById("wrScenes").innerHTML=WR_SC.map(([id,nm,sub,fx])=>`<label class="wr-sw ${!fx&&!wrOff[id]&&!av.has(id)?"na":""}"><span class="nm">${nm}${sub?`<small>${sub}</small>`:""}</span><input type="checkbox" data-sc="${id}" ${wrOff[id]?"":"checked"} ${fx?"disabled":""}><span class="tg"></span></label>`).join("");
     wrPlay();
   }
@@ -2856,12 +2850,10 @@
   document.getElementById("wrNick").addEventListener("change",()=>wrPlay());
   document.getElementById("wrList").addEventListener("change",e=>{ const k=e.target.dataset.pk; if(k==null) return; const v=parseInt(e.target.value.replace(/[^\d]/g,""))||0; if(seen[k]){ seen[k].p=v||undefined; saveSeen(); } e.target.value=v||""; wrPlay(); });
   document.getElementById("wrList").addEventListener("click",e=>{ const k=e.target.dataset.un; if(k==null) return; delete seen[k]; saveSeen(); renderWrap(); });
-  document.getElementById("wrExtra").addEventListener("click",e=>{ const i=e.target.dataset.exd; if(i==null) return; (wrExtra[wrY]||[]).splice(+i,1); WR.set("extra",wrExtra); renderWrap(); });
-  document.getElementById("wrExAdd").onclick=()=>{ const n=document.getElementById("wrExN"), a=document.getElementById("wrExA"), v=parseInt(a.value.replace(/[^\d]/g,""))||0; if(!v) return; (wrExtra[wrY]=wrExtra[wrY]||[]).push({n:n.value.trim()||"기타",a:v}); WR.set("extra",wrExtra); n.value=""; a.value=""; renderWrap(); };
   document.getElementById("wrScenes").addEventListener("change",e=>{ const id=e.target.dataset.sc; if(!id) return; if(e.target.checked) delete wrOff[id]; else wrOff[id]=1; WR.set("off",wrOff); renderWrap(); });
-  document.getElementById("wrExport").onclick=async()=>{ const code="KC1:"+btoa(unescape(encodeURIComponent(JSON.stringify({seen,extra:wrExtra,nick:WR.get("nick","")}))));
+  document.getElementById("wrExport").onclick=async()=>{ const code="KC1:"+btoa(unescape(encodeURIComponent(JSON.stringify({seen,nick:WR.get("nick","")}))));
     try{ await navigator.clipboard.writeText(code); alert("백업 코드를 복사했어요. 메모장 등에 붙여 넣어 보관해 주세요."); }catch(e){ prompt("아래 백업 코드를 복사해 보관해 주세요.",code); } };
-  document.getElementById("wrImport").onclick=()=>{ const s=prompt("백업 코드를 붙여 넣어 주세요."); if(!s) return; try{ const o=JSON.parse(decodeURIComponent(escape(atob(s.trim().replace(/^KC1:/,""))))); seen=Object.assign(seen,o.seen||{}); wrExtra=Object.assign(wrExtra,o.extra||{}); saveSeen(); WR.set("extra",wrExtra); if(o.nick) WR.set("nick",o.nick); renderWrap(); alert("기록을 불러왔어요."); }catch(e){ alert("백업 코드를 읽지 못했어요. 코드 전체를 정확히 붙여 넣었는지 확인해 주세요."); } };
+  document.getElementById("wrImport").onclick=()=>{ const s=prompt("백업 코드를 붙여 넣어 주세요."); if(!s) return; try{ const o=JSON.parse(decodeURIComponent(escape(atob(s.trim().replace(/^KC1:/,""))))); seen=Object.assign(seen,o.seen||{}); saveSeen(); if(o.nick) WR.set("nick",o.nick); renderWrap(); alert("기록을 불러왔어요."); }catch(e){ alert("백업 코드를 읽지 못했어요. 코드 전체를 정확히 붙여 넣었는지 확인해 주세요."); } };
   /* 일정 탭: ✓ 봤어요 */
   document.getElementById("calList").addEventListener("click",e=>{ const b=e.target.closest("[data-seen]"); if(!b) return; const k=b.dataset.seen; if(seen[k]) delete seen[k]; else seen[k]={}; saveSeen(); renderCal(); });
   window.addEventListener("hashchange",()=>show(location.hash.slice(1)));
