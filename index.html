@@ -2445,10 +2445,13 @@
   const PAIRED=()=>SCHED.filter(e=>e.co&&e.w===pairW);
   const pairMatch=e=>e.co && e.w===pairW && pairSel.every(n=>e.co.includes(n));
   function renderPairChips(){
-    const box=document.getElementById("pairBox"), ps=PAIRED();
-    if(!ps.length){ box.hidden=true; return; }
+    const box=document.getElementById("pairBox"), mk=`${calY}-${String(calM+1).padStart(2,"0")}`;
+    const mws=PAIR_WS.filter(w=>SCHED.some(e=>e.co&&e.w===w&&e.s.slice(0,7)===mk));
+    if(!mws.length){ box.hidden=true; if(pairSel.length){ pairSel=[]; } return; }
+    box.hidden=false; if(!mws.includes(pairW)){ pairW=mws[0]; pairSel=[]; }
+    const ps=PAIRED();
     const wt=w=>w.split("|")[1];
-    document.getElementById("pairW").innerHTML=PAIR_WS.length>1?PAIR_WS.map(w=>`<button data-pw="${esc(w)}" class="${w===pairW?'on':''}">〈${esc(wt(w))}〉</button>`).join(""):"";
+    document.getElementById("pairW").innerHTML=mws.length>1?mws.map(w=>`<button data-pw="${esc(w)}" class="${w===pairW?'on':''}">〈${esc(wt(w))}〉</button>`).join(""):"";
     document.getElementById("pairTitle").textContent=`〈${wt(pairW)}〉 페어로 보기`;
     const cols=[0,1,2,3].map(i=>[...new Set(ps.map(e=>e.co[i]).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"ko")));
     document.getElementById("pairChips").innerHTML=cols.map(c=>c.map(n=>`<button data-pn="${esc(n)}" class="${pairSel.includes(n)?'on':''}">${esc(n)}</button>`).join("")).join('<i></i>');
