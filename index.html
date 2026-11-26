@@ -556,6 +556,19 @@
   .wr-row .wr-x{background:none;border:0;color:var(--mute);font-size:16px;cursor:pointer}
   .wr-row .wr-x:hover{color:#d98a83}
   .wr-empty{font-size:13px;color:var(--mute);padding:14px 0}
+  .im-btns{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .im-up{display:inline-block;background:var(--gold);color:#17130f;border:0;border-radius:999px;padding:8px 16px;font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+  .im-link{background:none;border:1px solid var(--line);color:var(--mute);border-radius:999px;padding:7px 14px;font:inherit;font-size:13px;cursor:pointer}
+  .im-link:hover{border-color:var(--gold);color:var(--gold)}
+  #imTxtBox{margin-top:10px}
+  .im-stat{font-size:12.5px;color:var(--mute);margin-top:10px;line-height:1.6}
+  .im-row{display:grid;grid-template-columns:22px 1fr 104px;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:13px}
+  .im-row small{display:block;color:var(--mute);font-size:11.5px}
+  .im-row input[type=checkbox]{accent-color:var(--gold);width:16px;height:16px}
+  .im-row .p{background:var(--bg);border:1px solid var(--line);color:var(--ink);font:inherit;font-size:12.5px;padding:5px 8px;border-radius:6px;width:100%;text-align:right}
+  .im-tag{display:inline-block;font-size:10.5px;border:1px solid var(--line);border-radius:999px;padding:0 6px;margin-left:6px;color:var(--mute)}
+  .im-tag.g{border-color:var(--gold);color:var(--gold)}
+  .im-go{margin-top:12px;width:100%}
   .wr-add{display:grid;grid-template-columns:1fr 112px 56px;gap:8px;margin-top:10px}
   .wr-add input{background:var(--bg);border:1px solid var(--line);color:var(--ink);font:inherit;font-size:13px;padding:7px 9px;border-radius:6px;width:100%}
   .wr-add button{background:none;border:1px solid var(--gold);color:var(--gold);border-radius:6px;font:inherit;font-size:13px;cursor:pointer}
@@ -737,6 +750,14 @@
           <p class="hint">여러 해를 고르면 합쳐서 한 번에 정산해요.</p>
           <div class="wr-years" id="wrYears"></div>
           <div class="wr-stat" id="wrStat"></div>
+        </div>
+        <div class="wr-box" id="imBox">
+          <h3>예매내역으로 도장 찍기</h3>
+          <p class="hint">예매처 예매내역(상세내역) 캡쳐를 올리면 관람일시를 읽어서 백형훈 회차를 찾아 드려요. 사진은 서버로 보내지 않고 이 기기 안에서만 읽어요. 처음 한 번은 글자 인식 데이터를 받느라 조금 걸려요.</p>
+          <div class="im-btns"><label class="im-up">캡쳐 올리기<input type="file" id="imFile" accept="image/*" multiple hidden></label><button id="imTxtGo" class="im-link">텍스트 붙여넣기</button></div>
+          <div id="imTxtBox" hidden><textarea id="imTxt" class="wr-in" rows="4" placeholder="PC에서 예매내역 페이지를 전체 선택(Ctrl+A)해 복사한 뒤 붙여 넣어 주세요."></textarea><button id="imTxtRun" class="im-up" style="margin-top:8px">이 내용에서 찾기</button></div>
+          <div id="imStat" class="im-stat"></div>
+          <div id="imRes"></div>
         </div>
         <div class="wr-box">
           <h3>닉네임</h3>
@@ -2877,6 +2898,55 @@
   document.getElementById("wrExport").onclick=async()=>{ const code="KC1:"+btoa(unescape(encodeURIComponent(JSON.stringify({seen,nick:WR.get("nick","")}))));
     try{ await navigator.clipboard.writeText(code); alert("백업 코드를 복사했어요. 메모장 등에 붙여 넣어 보관해 주세요."); }catch(e){ prompt("아래 백업 코드를 복사해 보관해 주세요.",code); } };
   document.getElementById("wrImport").onclick=()=>{ const s=prompt("백업 코드를 붙여 넣어 주세요."); if(!s) return; try{ const o=JSON.parse(decodeURIComponent(escape(atob(s.trim().replace(/^KC1:/,""))))); seen=Object.assign(seen,o.seen||{}); saveSeen(); if(o.nick) WR.set("nick",o.nick); renderWrap(); alert("기록을 불러왔어요."); }catch(e){ alert("백업 코드를 읽지 못했어요. 코드 전체를 정확히 붙여 넣었는지 확인해 주세요."); } };
+  /* ---------- 예매내역(캡쳐·텍스트)으로 도장 찍기 ---------- */
+  const imDT=/(20\d\d)\s*[.\-\/년]\s*(\d{1,2})\s*[.\-\/월]\s*(\d{1,2})\s*일?\s*(?:[(\[][^)\]]{0,4}[)\]])?\s*(오전|오후|AM|PM|am|pm)?\s*(\d{1,2})\s*[:시]\s*(\d{2})?/g;
+  function imParse(txt){
+    txt=String(txt).replace(/[Oo](?=\d)|(?<=\d)[Oo]/g,"0");
+    const hits=[]; let m; imDT.lastIndex=0;
+    while((m=imDT.exec(txt))){ const d=`${m[1]}-${m[2].padStart(2,"0")}-${m[3].padStart(2,"0")}`, ap=m[4]||"", h0=+m[5]; let hh=h0; if(/오후|pm/i.test(ap)&&h0<12) hh=h0+12; if(/오전|am/i.test(ap)&&h0===12) hh=0; const tm=`${String(hh).padStart(2,"0")}:${m[6]||"00"}`; hits.push({d,tm}); }
+    const amts=[...txt.matchAll(/(\d{1,3}(?:[,.]\d{3})+|\d{4,7})\s*원/g)].map(x=>+x[1].replace(/[,.]/g,"")).filter(v=>v>=10000&&v<=2000000);
+    const lab=txt.match(/티켓\s*금액[^\d]{0,12}(\d{1,3}(?:[,.]\d{3})+)/);
+    const price=lab?+lab[1].replace(/[,.]/g,""):(amts.length?Math.min(...amts):0);
+    return {hits,price};
+  }
+  function imMatch(hits){
+    const out=[], seenK=new Set();
+    hits.forEach(h=>{ const same=SCHED.filter(e=>!e.e&&(e.k==="출연 회차"||e.k==="행사")&&e.s===h.d);
+      let ex=same.filter(e=>(e.tm||"")===h.tm); const sure=ex.length>0; if(!sure) ex=same;
+      ex.forEach(e=>{ const k=evKey(e); if(seenK.has(k)) return; seenK.add(k); out.push({e,k,sure}); }); });
+    return out.some(x=>x.sure)?out.filter(x=>x.sure):out;
+  }
+  let imCands=[];
+  function imShow(found,note){
+    const stat=document.getElementById("imStat"), res=document.getElementById("imRes");
+    found.forEach(f=>{ const o=imCands.find(x=>x.k===f.k); if(o){ if(!o.price&&f.price) o.price=f.price; } else imCands.push(f); });
+    imCands.sort((a,b)=>a.k.localeCompare(b.k));
+    stat.textContent=note||"";
+    if(!imCands.length){ res.innerHTML=""; return; }
+    const today=ds(t0());
+    res.innerHTML=imCands.map((c,i)=>`<label class="im-row"><input type="checkbox" data-i="${i}" ${c.sure?"checked":""}><span>${esc(c.e.t)}${seen[c.k]?`<span class="im-tag g">이미 도장</span>`:""}${!c.sure?`<span class="im-tag">시간 다름 · 확인</span>`:""}${c.e.s>today?`<span class="im-tag">예정</span>`:""}<small>${c.e.s.slice(2,4)}. ${fmtD(c.e.s)}${c.e.tm?" "+c.e.tm:""}${c.e.pl?" · "+esc(c.e.pl):""}</small></span><input class="p" data-ip="${i}" inputmode="numeric" placeholder="₩ 티켓값" value="${c.price?wn(c.price):""}"></label>`).join("")
+      +`<button class="wr-btn fill im-go" id="imApply">선택한 회차에 도장 찍기</button>`;
+  }
+  async function imOCR(files){
+    const stat=document.getElementById("imStat");
+    if(!window.Tesseract){ stat.textContent="글자 인식 도구를 불러오는 중이에요…";
+      try{ await new Promise((ok,no)=>{ const sc=document.createElement("script"); sc.src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"; sc.onload=ok; sc.onerror=no; document.head.appendChild(sc); }); }
+      catch(e){ stat.textContent="글자 인식 도구를 불러오지 못했어요. 인터넷 연결을 확인하거나 텍스트 붙여넣기를 이용해 주세요."; return; } }
+    let worker; try{ stat.textContent="글자 인식 준비 중이에요… (처음엔 1분 정도 걸릴 수 있어요)"; worker=await Tesseract.createWorker("kor+eng"); await worker.setParameters({tessedit_pageseg_mode:"11"}); }
+    catch(e){ stat.textContent="글자 인식을 시작하지 못했어요. 텍스트 붙여넣기를 이용해 주세요."; return; }
+    let found=[], miss=0;
+    for(let i=0;i<files.length;i++){ stat.textContent=`캡쳐 읽는 중… (${i+1}/${files.length})`;
+      try{ const {data}=await worker.recognize(files[i]); const P=imParse(data.text), M=imMatch(P.hits); if(!M.length) miss++; M.forEach(x=>x.price=M.length===1?P.price:0); found=found.concat(M); }catch(e){ miss++; } }
+    await worker.terminate();
+    imShow(found,`${files.length}장 중 ${files.length-miss}장에서 회차를 찾았어요.${miss?" 못 찾은 캡쳐는 관람일시가 잘 보이게 다시 찍어 주세요.":""} 확인 후 도장을 찍어 주세요.`);
+  }
+  document.getElementById("imFile").addEventListener("change",e=>{ const f=[...e.target.files]; e.target.value=""; if(f.length) imOCR(f); });
+  document.getElementById("imTxtGo").onclick=()=>{ const b=document.getElementById("imTxtBox"); b.hidden=!b.hidden; };
+  document.getElementById("imTxtRun").onclick=()=>{ const P=imParse(document.getElementById("imTxt").value), M=imMatch(P.hits); M.forEach(x=>x.price=M.length===1?P.price:0); imShow(M,M.length?`${M.length}개 회차를 찾았어요. 확인 후 도장을 찍어 주세요.`:"관람일시에 맞는 백형훈 회차를 찾지 못했어요."); };
+  document.getElementById("imRes").addEventListener("click",e=>{ if(e.target.id!=="imApply") return; let n=0;
+    document.querySelectorAll("#imRes [data-i]").forEach(cb=>{ if(!cb.checked) return; const c=imCands[+cb.dataset.i], pv=parseInt((document.querySelector(`#imRes [data-ip="${cb.dataset.i}"]`).value||"").replace(/[^\d]/g,""))||0;
+      seen[c.k]=Object.assign(seen[c.k]||{}, pv?{p:pv}:{}); n++; });
+    saveSeen(); imCands=[]; document.getElementById("imRes").innerHTML=""; document.getElementById("imStat").textContent=n?`${n}개 회차에 도장을 찍었어요. 공연일이 아직 안 지난 회차는 공연이 끝나면 정산에 들어가요.`:"선택한 회차가 없어요."; renderWrap(); });
   /* 일정 탭: ✓ 봤어요 */
   document.getElementById("calList").addEventListener("click",e=>{ const b=e.target.closest("[data-seen]"); if(!b) return; const k=b.dataset.seen; if(seen[k]) delete seen[k]; else seen[k]={}; saveSeen(); renderCal(); if(seen[k]){ const i=[...document.querySelectorAll("#calList .seen-p")].find(x=>x.dataset.pk===k); if(i) i.focus({preventScroll:true}); } });
   document.getElementById("calList").addEventListener("change",e=>{ const k=e.target.dataset.pk; if(k==null||!seen[k]) return; const v=parseInt(e.target.value.replace(/[^\d]/g,""))||0; seen[k].p=v||undefined; saveSeen(); e.target.value=v?wn(v):""; });
