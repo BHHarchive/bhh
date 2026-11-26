@@ -571,15 +571,16 @@
   .rec-y{margin:0 0 26px}
   .rec-y h3{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--serif);font-size:18px;border-bottom:1px solid var(--gold);padding-bottom:8px;margin-bottom:2px}
   .rec-y h3 small{font-family:var(--sans);font-size:12.5px;color:var(--mute);font-weight:400}
-  .rec-row{display:grid;grid-template-columns:118px 1fr 110px 30px;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+  .rec-row{display:grid;grid-template-columns:118px 1fr 130px 30px;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);font-size:13.5px}
   .rec-row .d{color:var(--mute);font-variant-numeric:tabular-nums;font-size:12.5px}
   .rec-row .t small{display:block;color:var(--mute);font-size:11.5px;margin-top:2px}
-  .rec-row .pr{text-align:right;font-variant-numeric:tabular-nums}
-  .rec-row .pr.no{color:var(--mute);font-size:12px}
+  .rec-row .pr{text-align:right;font-variant-numeric:tabular-nums;width:100%;background:var(--bg);border:1px solid var(--line);border-radius:999px;color:var(--ink);font:inherit;font-size:13px;padding:5px 11px}
+  .rec-row .pr:focus{outline:none;border-color:var(--gold)}
+  .rec-row .pr::placeholder{color:var(--mute);font-size:12px}
   .rec-row .rx{background:none;border:1px solid transparent;border-radius:50%;width:28px;height:28px;color:var(--mute);font-size:16px;cursor:pointer}
   .rec-row .rx:hover{border-color:#d98a83;color:#d98a83}
   .rec-tag{display:inline-block;font-size:10.5px;border:1px dotted var(--gold);color:var(--gold);border-radius:999px;padding:0 6px;margin-left:6px;vertical-align:1px}
-  @media(max-width:640px){.rec-row{grid-template-columns:1fr 92px 28px;gap:8px}.rec-row .d{grid-column:1/-1;margin-bottom:-6px}}
+  @media(max-width:640px){.rec-row{grid-template-columns:1fr 108px 28px;gap:8px}.rec-row .d{grid-column:1/-1;margin-bottom:-6px}}
   .im-btns{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
   .im-up{display:inline-block;background:var(--gold);color:#17130f;border:0;border-radius:999px;padding:8px 16px;font:inherit;font-size:13px;font-weight:600;cursor:pointer}
   .im-link{background:none;border:1px solid var(--line);color:var(--mute);border-radius:999px;padding:7px 14px;font:inherit;font-size:13px;cursor:pointer}
@@ -790,7 +791,7 @@
         </div>
         <div class="wr-box">
           <h3>티켓값</h3>
-          <p class="hint">티켓값은 일정 탭에서 도장 찍은 회차 아래에 적을 수 있어요. 적은 금액은 켱수증에 들어가요.</p>
+          <p class="hint">티켓값은 일정 탭이나 위의 내 관극 기록 탭에서 적을 수 있어요. 적은 금액은 켱수증에 들어가요.</p>
           <div class="wr-list" id="wrList"></div>
         </div>
         <div class="wr-box">
@@ -2956,12 +2957,14 @@
     if(!all.length){ document.getElementById("recList").innerHTML=`<div class="wr-empty">아직 도장을 찍은 회차가 없어요. 일정 탭에서 봤어요 / 볼 예정을 눌러 주세요.</div>`; return; }
     const ys=[...new Set(all.map(e=>e.s.slice(0,4)))];
     document.getElementById("recList").innerHTML=ys.map(y=>{ const L=all.filter(e=>e.s.startsWith(y)), ys2=L.reduce((a,e)=>a+P(e),0);
-      return `<section class="rec-y"><h3>${y}<small>${L.length}회 · ₩${wn(ys2)}</small></h3>${L.map(e=>`<div class="rec-row"><span class="d">${fmtD(e.s)}${e.tm?" "+e.tm:""}</span><span class="t">${esc(e.t)}${e.s>today?`<span class="rec-tag">예정</span>`:""}${e.pl?`<small>${esc(e.pl)}</small>`:""}</span><span class="pr${P(e)?"":" no"}">${P(e)?"₩"+wn(P(e)):"티켓값 없음"}</span><button class="rx" data-rx="${esc(evKey(e))}" aria-label="기록 삭제" title="기록 삭제">×</button></div>`).join("")}</section>`; }).join("");
+      return `<section class="rec-y"><h3>${y}<small>${L.length}회 · ₩${wn(ys2)}</small></h3>${L.map(e=>`<div class="rec-row"><span class="d">${fmtD(e.s)}${e.tm?" "+e.tm:""}</span><span class="t">${esc(e.t)}${e.s>today?`<span class="rec-tag">예정</span>`:""}${e.pl?`<small>${esc(e.pl)}</small>`:""}</span><input class="pr" inputmode="numeric" placeholder="₩ 티켓값" data-rp="${esc(evKey(e))}" value="${P(e)?wn(P(e)):""}" aria-label="티켓값"><button class="rx" data-rx="${esc(evKey(e))}" aria-label="기록 삭제" title="기록 삭제">×</button></div>`).join("")}</section>`; }).join("");
   }
   document.getElementById("wrTabs").addEventListener("click",e=>{ const b=e.target.closest("[data-wt]"); if(!b) return; wrTab=b.dataset.wt;
     document.querySelectorAll("#wrTabs button").forEach(x=>x.classList.toggle("on",x===b));
     document.getElementById("wrMain").hidden=wrTab!=="main"; document.getElementById("wrRecView").hidden=wrTab!=="rec";
     if(wrTab==="rec"){ cancelAnimationFrame(wrRaf); renderRec(); } else renderWrap(); });
+  document.getElementById("recList").addEventListener("change",e=>{ const k=e.target.dataset.rp; if(k==null||!seen[k]) return; const v=parseInt(e.target.value.replace(/[^\d]/g,""))||0; if(v) seen[k].p=v; else delete seen[k].p; saveSeen(); const y=document.scrollingElement.scrollTop; renderRec(); document.scrollingElement.scrollTop=y; });
+  document.getElementById("recList").addEventListener("keydown",e=>{ if(e.key==="Enter"&&e.target.dataset.rp!=null) e.target.blur(); });
   document.getElementById("recList").addEventListener("click",e=>{ const k=e.target.dataset.rx; if(k==null) return; delete seen[k]; saveSeen(); renderRec(); });
   /* ---------- 예매내역(캡쳐·텍스트)으로 도장 찍기 ---------- */
   const imDT=/(20\d\d)\s*[.\-\/년]\s*(\d{1,2})\s*[.\-\/월]\s*(\d{1,2})\s*일?\s*(?:[(\[][^)\]]{0,4}[)\]])?\s*(오전|오후|AM|PM|am|pm)?\s*(\d{1,2})\s*[:시]\s*(\d{2})?/g;
