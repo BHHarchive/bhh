@@ -513,6 +513,9 @@
   /* ===== 관극 정산 ===== */
   .seen-b{float:right;margin-left:10px;background:none;border:1px solid var(--line);border-radius:999px;color:var(--mute);font:inherit;font-size:12px;padding:3px 10px;cursor:pointer;transition:all .15s}
   .seen-b:hover{border-color:var(--gold);color:var(--gold)}
+  .seen-pr{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:12px;color:var(--gold)}
+  .seen-p{width:200px;max-width:70%;background:var(--bg);border:1px solid var(--line);border-radius:999px;color:var(--ink);font:inherit;font-size:12px;padding:3px 10px;text-align:right}
+  .seen-p:focus{outline:none;border-color:var(--gold)}
   .seen-b.on{background:var(--gold);border-color:var(--gold);color:#17130f;font-weight:600}
   .cal-wrapgo{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid rgba(201,164,106,.45);background:rgba(201,164,106,.07);border-radius:12px;padding:12px 16px;margin:0 0 18px;font-size:13.5px}
   .cal-wrapgo b{color:var(--gold);font-weight:600}
@@ -798,6 +801,7 @@
   const evKey=ev=>ev.s+"|"+(ev.tm||"")+"|"+ev.t;
   const seenable=ev=>!ev.e && (ev.k==="출연 회차"||ev.k==="행사") && ev.s<=ds(t0());
   const saveSeen=()=>WR.set("seen",seen);
+  const wn=n=>n.toLocaleString("ko-KR");
   /* 출연작 데이터 — img 에 사진 파일 경로(예: "photos/kinky-lola.jpg")를 넣으면 카드에 사진이 표시됩니다 */
   const works = [
     {y:2027,t:"쉐도우",r:"영조",k:"뮤지컬",img:"photos/2027-shadow-yeongjo.jpg",pos:"50% 15%"},
@@ -2441,7 +2445,7 @@
     document.getElementById("calSub").textContent=title+` · ${items.length}개`;
     document.getElementById("calList").innerHTML = items.length ? `<ul class="cal-list">${items.map(ev=>{
       const w=ev.w && works.find(x=>x.y+"|"+x.t===ev.w);
-      return `<li style="--c:${SK[ev.k]}"><div class="when">${ev.e?`${fmtD(ev.s)}<small>– ${fmtD(ev.e)}</small>`:`${fmtD(ev.s)}${ev.tm?`<small>${ev.tm}</small>`:""}`}</div><div>${seenable(ev)?`<button class="seen-b${seen[evKey(ev)]?" on":""}" data-seen="${esc(evKey(ev))}">${seen[evKey(ev)]?"✓ 봤어요":"봤어요"}</button>`:""}<div class="t"><span class="k">${ev.k}</span>${esc(ev.t)}</div><div class="m">${[ev.note,ev.pl].filter(Boolean).map(esc).join(" · ")}${w?` · <a href="#" data-cw="${works.indexOf(w)}">작품 보기</a>`:""}${ev.u?` · <a href="${esc(ev.u)}" target="_blank" rel="noopener">자세히 ↗</a>`:""}</div>${ev.co?`<div class="pr">with ${ev.co.map(n=>pairSel.includes(n)?`<b>${esc(n)}</b>`:esc(n)).join(" · ")}</div>`:""}</div></li>`;
+      return `<li style="--c:${SK[ev.k]}"><div class="when">${ev.e?`${fmtD(ev.s)}<small>– ${fmtD(ev.e)}</small>`:`${fmtD(ev.s)}${ev.tm?`<small>${ev.tm}</small>`:""}`}</div><div>${seenable(ev)?`<button class="seen-b${seen[evKey(ev)]?" on":""}" data-seen="${esc(evKey(ev))}">${seen[evKey(ev)]?"✓ 봤어요":"봤어요"}</button>`:""}<div class="t"><span class="k">${ev.k}</span>${esc(ev.t)}</div><div class="m">${[ev.note,ev.pl].filter(Boolean).map(esc).join(" · ")}${w?` · <a href="#" data-cw="${works.indexOf(w)}">작품 보기</a>`:""}${ev.u?` · <a href="${esc(ev.u)}" target="_blank" rel="noopener">자세히 ↗</a>`:""}</div>${ev.co?`<div class="pr">with ${ev.co.map(n=>pairSel.includes(n)?`<b>${esc(n)}</b>`:esc(n)).join(" · ")}</div>`:""}${seenable(ev)&&seen[evKey(ev)]?`<label class="seen-pr">티켓값 <input class="seen-p" inputmode="numeric" placeholder="입력하면 켱수증에 들어가요" data-pk="${esc(evKey(ev))}" value="${seen[evKey(ev)].p?wn(seen[evKey(ev)].p):""}"></label>`:""}</div></li>`;
     }).join("")}</ul>` : `<div class="empty">${pairSel.length?"선택한 배우들과 함께 서는 회차가 없어요.":calSel?"이 날은 등록된 일정이 없어요.":"이번 달 등록된 일정이 없어요."}</div>`;
   }
   document.getElementById("cal").addEventListener("click",e=>{const b=e.target.closest(".d"); if(!b)return; calSel = calSel===b.dataset.d?null:b.dataset.d; renderCal();});
@@ -2699,7 +2703,6 @@
   const RT_D={"2026-04-15":100,"2026-05-19":120,"2026-05-20":120,"2026-05-27":70,"2026-11-15":100,"2026-11-30":100};
   const WR_SC=[["open","오프닝","닉네임 · 정산 기간",1],["total","총 회차","올해 함께한 무대"],["posters","올해 본 작품 포스터",""],["hours","함께한 시간","러닝타임 × 회차"],["top","가장 많이 만난 작품",""],["rank","작품 순위",""],["firstlast","첫 만남 · 마지막 만남",""],["theater","가장 많이 간 극장",""],["month","가장 바빴던 달","월별 그래프 · 낮공/밤공"],["special","특별 회차","첫공 · 막공 · 전관 · 투어"],["offstage","공연 외 일정","콘서트 · 팬미팅 · 행사"],["money","켱수증","회차별 티켓값"],["type","나의 켱 유형","기록 보고 칭호 자동 부여"]];
   let wrY=t0().getFullYear(); if(wrY<2021) wrY=2021;
-  const wn=n=>n.toLocaleString("ko-KR");
   const wImg={}; const wrLoad=src=>{ if(!src) return null; if(!wImg[src]){ const im=new Image(); im.onload=()=>{im.ok=1;}; im.src=src; wImg[src]=im; } return wImg[src]; };
   wrLoad("photos/logo2.png");
 
@@ -2844,21 +2847,23 @@
     const D=wrData(wrY);
     document.getElementById("wrStat").innerHTML=`<span><b>${D.perf.length}</b>회 공연</span><span><b>${D.off.length}</b>개 행사</span><span><b>${D.posters.length}</b>개 작품</span>`;
     const nk=document.getElementById("wrNick"); if(document.activeElement!==nk) nk.value=WR.get("nick","");
-    document.getElementById("wrList").innerHTML=D.all.length?D.all.map(e=>`<div class="wr-row"><div>${esc(e.t)}<small>${fmtD(e.s)}${e.tm?" "+e.tm:""}${e.pl?" · "+esc(e.pl):""}</small></div><input inputmode="numeric" placeholder="₩ 티켓값" data-pk="${esc(evKey(e))}" value="${seen[evKey(e)].p||""}"><button class="wr-x" data-un="${esc(evKey(e))}" aria-label="체크 해제">×</button></div>`).join(""):`<div class="wr-empty">아직 체크한 회차가 없어요. 일정 탭에서 다녀온 회차에 ✓ 봤어요를 눌러 주세요.</div>`;
+    document.getElementById("wrList").innerHTML=D.all.length?D.all.map(e=>`<div class="wr-row"><div>${esc(e.t)}<small>${fmtD(e.s)}${e.tm?" "+e.tm:""}${e.pl?" · "+esc(e.pl):""}</small></div><input inputmode="numeric" placeholder="₩ 티켓값" data-pk="${esc(evKey(e))}" value="${seen[evKey(e)].p?wn(seen[evKey(e)].p):""}"><button class="wr-x" data-un="${esc(evKey(e))}" aria-label="체크 해제">×</button></div>`).join(""):`<div class="wr-empty">아직 체크한 회차가 없어요. 일정 탭에서 다녀온 회차에 ✓ 봤어요를 눌러 주세요.</div>`;
     const av=new Set(wrScenes(Object.assign({},D))); document.getElementById("wrScenes").innerHTML=WR_SC.map(([id,nm,sub,fx])=>`<label class="wr-sw ${!fx&&!wrOff[id]&&!av.has(id)?"na":""}"><span class="nm">${nm}${sub?`<small>${sub}</small>`:""}</span><input type="checkbox" data-sc="${id}" ${wrOff[id]?"":"checked"} ${fx?"disabled":""}><span class="tg"></span></label>`).join("");
     wrPlay();
   }
   document.getElementById("wrYears").addEventListener("click",e=>{ const b=e.target.closest("[data-y]"); if(!b) return; wrY=+b.dataset.y; renderWrap(); });
   document.getElementById("wrNick").addEventListener("input",e=>{ WR.set("nick",e.target.value); });
   document.getElementById("wrNick").addEventListener("change",()=>wrPlay());
-  document.getElementById("wrList").addEventListener("change",e=>{ const k=e.target.dataset.pk; if(k==null) return; const v=parseInt(e.target.value.replace(/[^\d]/g,""))||0; if(seen[k]){ seen[k].p=v||undefined; saveSeen(); } e.target.value=v||""; wrPlay(); });
+  document.getElementById("wrList").addEventListener("change",e=>{ const k=e.target.dataset.pk; if(k==null) return; const v=parseInt(e.target.value.replace(/[^\d]/g,""))||0; if(seen[k]){ seen[k].p=v||undefined; saveSeen(); } e.target.value=v?wn(v):""; wrPlay(); });
   document.getElementById("wrList").addEventListener("click",e=>{ const k=e.target.dataset.un; if(k==null) return; delete seen[k]; saveSeen(); renderWrap(); });
   document.getElementById("wrScenes").addEventListener("change",e=>{ const id=e.target.dataset.sc; if(!id) return; if(e.target.checked) delete wrOff[id]; else wrOff[id]=1; WR.set("off",wrOff); renderWrap(); });
   document.getElementById("wrExport").onclick=async()=>{ const code="KC1:"+btoa(unescape(encodeURIComponent(JSON.stringify({seen,nick:WR.get("nick","")}))));
     try{ await navigator.clipboard.writeText(code); alert("백업 코드를 복사했어요. 메모장 등에 붙여 넣어 보관해 주세요."); }catch(e){ prompt("아래 백업 코드를 복사해 보관해 주세요.",code); } };
   document.getElementById("wrImport").onclick=()=>{ const s=prompt("백업 코드를 붙여 넣어 주세요."); if(!s) return; try{ const o=JSON.parse(decodeURIComponent(escape(atob(s.trim().replace(/^KC1:/,""))))); seen=Object.assign(seen,o.seen||{}); saveSeen(); if(o.nick) WR.set("nick",o.nick); renderWrap(); alert("기록을 불러왔어요."); }catch(e){ alert("백업 코드를 읽지 못했어요. 코드 전체를 정확히 붙여 넣었는지 확인해 주세요."); } };
   /* 일정 탭: ✓ 봤어요 */
-  document.getElementById("calList").addEventListener("click",e=>{ const b=e.target.closest("[data-seen]"); if(!b) return; const k=b.dataset.seen; if(seen[k]) delete seen[k]; else seen[k]={}; saveSeen(); renderCal(); });
+  document.getElementById("calList").addEventListener("click",e=>{ const b=e.target.closest("[data-seen]"); if(!b) return; const k=b.dataset.seen; if(seen[k]) delete seen[k]; else seen[k]={}; saveSeen(); renderCal(); if(seen[k]){ const i=[...document.querySelectorAll("#calList .seen-p")].find(x=>x.dataset.pk===k); if(i) i.focus({preventScroll:true}); } });
+  document.getElementById("calList").addEventListener("change",e=>{ const k=e.target.dataset.pk; if(k==null||!seen[k]) return; const v=parseInt(e.target.value.replace(/[^\d]/g,""))||0; seen[k].p=v||undefined; saveSeen(); e.target.value=v?wn(v):""; });
+  document.getElementById("calList").addEventListener("keydown",e=>{ if(e.key==="Enter"&&e.target.classList.contains("seen-p")) e.target.blur(); });
   window.addEventListener("hashchange",()=>show(location.hash.slice(1)));
   show(location.hash.slice(1));
 
