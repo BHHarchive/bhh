@@ -2774,7 +2774,7 @@
 
   const SC={
     open(c,t,D){ bgGlow(c,.42); const [a,o]=up(t,0); tx(c,`${D.Y} Wrapped`,CW/2,800+o,`italic 500 66px ${F.latin}`,GOLD,"center",a);
-      const [a2,o2]=up(t,.1); tx(c,D.multi?"그동안의 백형훈":"올해의 백형훈",CW/2,950+o2,`120px ${F.name}`,INK,"center",a2);
+      const [a2,o2]=up(t,.1); tx(c,D.multi?`${D.Ys.length}년간의 백형훈`:"올해의 백형훈",CW/2,950+o2,`120px ${F.name}`,INK,"center",a2);
       const nick=(document.getElementById("wrNick").value||"켱러버").trim(); const [a3,o3]=up(t,.2); c.save(); c.font=`400 40px ${F.sans}`; const w1=c.measureText(nick).width, w2=c.measureText(" 님의 관극 정산").width; c.restore();
       tx(c,nick,CW/2-(w1+w2)/2,1050+o3,`400 40px ${F.sans}`,GOLD,"left",a3); tx(c," 님의 관극 정산",CW/2-(w1+w2)/2+w1,1050+o3,`400 40px ${F.sans}`,INK,"left",a3);
       const [a4,o4]=up(t,.3); c.save(); c.globalAlpha=a4; c.strokeStyle="rgba(201,164,106,.4)"; c.lineWidth=2; c.beginPath(); c.moveTo(CW/2-260,1110+o4); c.lineTo(CW/2+260,1110+o4); c.stroke(); c.restore();
