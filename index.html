@@ -226,6 +226,10 @@
   .cal-nav:hover,.cal-today:hover{border-color:var(--gold);color:var(--gold)}
   .cal-today{margin-left:auto;border:1px solid var(--line);background:none;color:var(--ink);padding:8px 16px;border-radius:999px;cursor:pointer;font-size:13px}
   .pair{border:1px solid var(--line);border-radius:14px;padding:14px 16px 12px;margin:0 0 18px;background:rgba(255,255,255,.015)}
+  .pair-w{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+  .pair-w:empty{display:none}
+  .pair-w button{background:none;border:0;border-bottom:2px solid transparent;color:var(--mute);font:inherit;font-size:13.5px;padding:2px 4px 5px;cursor:pointer}
+  .pair-w button.on{color:var(--gold);border-bottom-color:var(--gold);font-weight:600}
   .pair-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;margin-bottom:10px}
   .pair-h b{font-size:14px;font-weight:600}
   .pair-h span{font-size:12px;color:var(--mute)}
@@ -714,7 +718,8 @@
       <button class="cal-today" id="calToday">오늘</button>
     </div>
     <div class="pair" id="pairBox">
-      <div class="pair-h"><b>〈두 도시 이야기〉 페어로 보기</b><span id="pairNote">배우를 고르면 함께 서는 회차만 보여요</span><button id="pairReset" hidden>선택 해제</button></div>
+      <div class="pair-w" id="pairW"></div>
+      <div class="pair-h"><b id="pairTitle">페어로 보기</b><span id="pairNote">배우를 고르면 함께 서는 회차만 보여요</span><button id="pairReset" hidden>선택 해제</button></div>
       <div class="pair-chips" id="pairChips"></div>
     </div>
     <div class="cal-legend" id="calLegend"></div>
@@ -2435,11 +2440,16 @@
   let calY=t0().getFullYear(), calM=t0().getMonth(), calSel=null;
   /* 페어 필터: 출연 회차에 co:[시드니, 루시, 마담, 미스 프로스] 가 있으면 골라 볼 수 있어요 */
   let pairSel=[];
-  const PAIRED=()=>SCHED.filter(e=>e.co);
-  const pairMatch=e=>e.co && pairSel.every(n=>e.co.includes(n));
+  const PAIR_WS=[...new Set(SCHED.filter(e=>e.co&&e.w).sort((a,b)=>b.s.localeCompare(a.s)).map(e=>e.w))];
+  let pairW=PAIR_WS[0];
+  const PAIRED=()=>SCHED.filter(e=>e.co&&e.w===pairW);
+  const pairMatch=e=>e.co && e.w===pairW && pairSel.every(n=>e.co.includes(n));
   function renderPairChips(){
     const box=document.getElementById("pairBox"), ps=PAIRED();
     if(!ps.length){ box.hidden=true; return; }
+    const wt=w=>w.split("|")[1];
+    document.getElementById("pairW").innerHTML=PAIR_WS.length>1?PAIR_WS.map(w=>`<button data-pw="${esc(w)}" class="${w===pairW?'on':''}">〈${esc(wt(w))}〉</button>`).join(""):"";
+    document.getElementById("pairTitle").textContent=`〈${wt(pairW)}〉 페어로 보기`;
     const cols=[0,1,2,3].map(i=>[...new Set(ps.map(e=>e.co[i]).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"ko")));
     document.getElementById("pairChips").innerHTML=cols.map(c=>c.map(n=>`<button data-pn="${esc(n)}" class="${pairSel.includes(n)?'on':''}">${esc(n)}</button>`).join("")).join('<i></i>');
     const n=pairSel.length?ps.filter(pairMatch).length:0;
@@ -2456,6 +2466,7 @@
     }
     renderCal();
   });
+  document.getElementById("pairW").addEventListener("click",e=>{ const b=e.target.closest("[data-pw]"); if(!b||b.dataset.pw===pairW) return; pairW=b.dataset.pw; pairSel=[]; calSel=null; renderCal(); });
   document.getElementById("pairReset").addEventListener("click",()=>{ pairSel=[]; calSel=null; renderCal(); });
   function renderCal(){
     const first=new Date(calY,calM,1), start=new Date(first); start.setDate(1-first.getDay());
