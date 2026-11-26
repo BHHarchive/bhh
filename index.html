@@ -412,6 +412,8 @@
   .pgrid button:hover img{transform:scale(1.04)}
   .pgrid .cp{font-size:12px;color:var(--mute);margin-top:6px;line-height:1.4}
   .pgrid .cp b{color:var(--ink);font-weight:400;display:block;font-size:13px}
+  .mph{grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;margin-top:6px}
+  .mph-h{font-size:12px;letter-spacing:.2em;color:var(--mute);margin:22px 0 8px}
   .pgrid .alb .im{position:relative}
   .pgrid .alb .cnt{position:absolute;right:8px;bottom:8px;background:rgba(10,9,8,.78);color:var(--ink);font-size:11.5px;padding:3px 9px;border-radius:999px}
   .alb-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:0 0 16px}
@@ -681,8 +683,8 @@
       <h3 id="mTitle"></h3>
       <div class="role" id="mRole"></div>
       <div class="when" id="mWhen"></div>
-      <div id="mGalWrap"><h4>사진</h4><div class="gal" id="mGal"></div></div>
-      <h4>영상 · 인터뷰 · 기사</h4>
+      <div id="mGalWrap" style="display:none"><div class="gal" id="mGal"></div></div>
+      <h4>영상 · 인터뷰 · 기사 · 사진</h4>
       <div id="mLinks"></div>
       <div class="nav2"><button id="mPrev">← 이전 작품</button><button id="mNext">다음 작품 →</button></div>
     </div>
@@ -1215,18 +1217,23 @@
     document.getElementById("mRole").textContent = roleTxt(w.r);
     const wh=document.getElementById("mWhen"); wh.textContent=d.d||""; wh.style.display=d.d?"":"none";
     const gal=[w.img,...(d.gallery||[])].filter(Boolean);
-    document.getElementById("mGalWrap").style.display = gal.length>1?"":"none";
-    document.getElementById("mGal").innerHTML = gal.map((g,j)=>`<button class="${j?'':'on'}" data-g="${esc(g)}"><img src="${esc(g)}" alt="" loading="lazy"></button>`).join("");
+    const phHTML=()=>gal.length?`<div class="pgrid mph">${gal.map((g,j)=>`<button data-mph="${j}"><div class="im"><img src="${esc(g)}" style="object-position:${j?"50% 30%":(w.pos||"50% 20%")}" alt="〈${esc(w.t)}〉 사진 ${j+1}" loading="lazy"></div></button>`).join("")}</div>`:"";
     const L=byNew(d.links||[]);
     const liOf=l=>`<li><a href="${esc(l.u)}" target="_blank" rel="noopener">${thumbHTML(l,w)}<span class="tg ${tgCls(l.k)}">${esc(l.k)}</span><span class="lt">${esc(l.t)}${(l.sd||l.ch)?`<small class="ld">${[l.sd?sdFmt(l):"",l.ch?esc(l.ch):""].filter(Boolean).join(" · ")}</small>`:""}</span><span class="ar">↗</span></a></li>`;
     const ORD=["영상","인스타 라이브","깨알켱","인터뷰","기사","사진"];
     const grp=k=>k==="팬캠"?"영상":k;
     const ks=[...new Set(L.map(l=>grp(l.k)))].sort((a,b)=>(ORD.indexOf(a)+99)%99-(ORD.indexOf(b)+99)%99);
-    const draw=f=>{const M=f?L.filter(l=>grp(l.k)===f):L; document.getElementById("mList").innerHTML=`<ul class="links">${M.map(liOf).join("")}</ul>`;};
-    document.getElementById("mLinks").innerHTML = L.length
-      ? (ks.length>1?`<div class="pair-chips mfilt"><button class="on" data-f="">전체 ${L.length}</button>${ks.map(k=>`<button data-f="${esc(k)}">${esc(k)} ${L.filter(l=>grp(l.k)===k).length}</button>`).join("")}</div>`:"")+`<div id="mList"></div>`
-      : `<div class="empty">아직 등록된 영상·인터뷰·기사가 없어요.</div>`;
-    if(L.length) draw("");
+    const draw=f=>{ const el=document.getElementById("mList");
+      if(f==="사진"){ el.innerHTML=phHTML(); return; }
+      const M=f?L.filter(l=>grp(l.k)===f):L;
+      el.innerHTML=(M.length?`<ul class="links">${M.map(liOf).join("")}</ul>`:"")+(!f&&gal.length?`<div class="mph-h">사진</div>`+phHTML():"");
+    };
+    const nChip=ks.length+(gal.length?1:0);
+    document.getElementById("mLinks").innerHTML = (L.length||gal.length)
+      ? (nChip>1?`<div class="pair-chips mfilt"><button class="on" data-f="">전체 ${L.length+gal.length}</button>${ks.map(k=>`<button data-f="${esc(k)}">${esc(k)} ${L.filter(l=>grp(l.k)===k).length}</button>`).join("")}${gal.length?`<button data-f="사진">사진 ${gal.length}</button>`:""}</div>`:"")+`<div id="mList"></div>`
+      : `<div class="empty">아직 등록된 자료가 없어요.</div>`;
+    if(L.length||gal.length) draw("");
+    document.getElementById("mList")&&(document.getElementById("mList").onclick=e=>{const b=e.target.closest("[data-mph]"); if(!b) return; lbList=gal.map(g=>({g,c:`〈${w.t}〉 ${w.y}`})); lbOpen(+b.dataset.mph);});
     const mf=document.querySelector("#mLinks .mfilt");
     if(mf) mf.onclick=e=>{const b=e.target.closest("button"); if(!b) return; mf.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b)); draw(b.dataset.f);};
     modal.classList.add("on"); modal.setAttribute("aria-hidden","false"); document.body.classList.add("lock");
@@ -1246,6 +1253,7 @@
   });
   document.addEventListener("keydown",e=>{
     if(!modal.classList.contains("on")) return;
+    const pl=document.querySelector(".plb"); if(pl && !pl.hidden) return;
     if(e.key==="Escape") closeWork();
     if(e.key==="ArrowLeft") openWork(mi-1);
     if(e.key==="ArrowRight") openWork(mi+1);
