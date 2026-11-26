@@ -533,6 +533,7 @@
   .cal-wrapgo b{color:var(--gold);font-weight:600}
   .cal-wrapgo button{background:var(--gold);color:#17130f;border:0;border-radius:999px;padding:7px 14px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
   .wr-intro{color:var(--mute);font-size:14px;line-height:1.75;margin:-6px 0 22px}
+  .wr-grid[hidden]{display:none}
   .wr-grid{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:34px;align-items:start}
   .wr-player{position:sticky;top:76px}
   .wr-player canvas{width:100%;aspect-ratio:9/16;border-radius:16px;background:#0a0908;display:block;cursor:pointer;box-shadow:0 20px 50px rgba(0,0,0,.45)}
@@ -562,6 +563,23 @@
   .wr-row .wr-x{background:none;border:0;color:var(--mute);font-size:16px;cursor:pointer}
   .wr-row .wr-x:hover{color:#d98a83}
   .wr-empty{font-size:13px;color:var(--mute);padding:14px 0}
+  .wr-tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:0 0 22px}
+  .wr-tabs button{background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;color:var(--mute);font:inherit;font-size:14.5px;padding:8px 14px;cursor:pointer}
+  .wr-tabs button.on{color:var(--gold);border-bottom-color:var(--gold);font-weight:600}
+  .rec-sum{display:flex;gap:22px;flex-wrap:wrap;font-size:13.5px;color:var(--mute);margin-bottom:18px}
+  .rec-sum b{color:var(--gold);font-size:17px;font-weight:600;margin-right:3px}
+  .rec-y{margin:0 0 26px}
+  .rec-y h3{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--serif);font-size:18px;border-bottom:1px solid var(--gold);padding-bottom:8px;margin-bottom:2px}
+  .rec-y h3 small{font-family:var(--sans);font-size:12.5px;color:var(--mute);font-weight:400}
+  .rec-row{display:grid;grid-template-columns:118px 1fr 110px 30px;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+  .rec-row .d{color:var(--mute);font-variant-numeric:tabular-nums;font-size:12.5px}
+  .rec-row .t small{display:block;color:var(--mute);font-size:11.5px;margin-top:2px}
+  .rec-row .pr{text-align:right;font-variant-numeric:tabular-nums}
+  .rec-row .pr.no{color:var(--mute);font-size:12px}
+  .rec-row .rx{background:none;border:1px solid transparent;border-radius:50%;width:28px;height:28px;color:var(--mute);font-size:16px;cursor:pointer}
+  .rec-row .rx:hover{border-color:#d98a83;color:#d98a83}
+  .rec-tag{display:inline-block;font-size:10.5px;border:1px dotted var(--gold);color:var(--gold);border-radius:999px;padding:0 6px;margin-left:6px;vertical-align:1px}
+  @media(max-width:640px){.rec-row{grid-template-columns:1fr 92px 28px;gap:8px}.rec-row .d{grid-column:1/-1;margin-bottom:-6px}}
   .im-btns{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
   .im-up{display:inline-block;background:var(--gold);color:#17130f;border:0;border-radius:999px;padding:8px 16px;font:inherit;font-size:13px;font-weight:600;cursor:pointer}
   .im-link{background:none;border:1px solid var(--line);color:var(--mute);border-radius:999px;padding:7px 14px;font:inherit;font-size:13px;cursor:pointer}
@@ -740,7 +758,8 @@
   <div class="view" id="v-wrap"><div class="wrap page">
     <div class="sec-head"><span class="num">05</span><h2>관극 정산</h2></div>
     <p class="wr-intro">일정 탭에서 다녀온 회차에 <b style="color:var(--gold)">봤어요</b>를 눌러 켱 도장을 찍어 두면, 한 해 동안의 관극을 영상으로 정리해 드려요. 기록은 이 기기의 브라우저에만 저장돼요.</p>
-    <div class="wr-grid">
+    <div class="wr-tabs" id="wrTabs"><button data-wt="main" class="on">영상 정산</button><button data-wt="rec">내 관극 기록</button></div>
+    <div class="wr-grid" id="wrMain">
       <div class="wr-player">
         <canvas id="wrCv" width="1080" height="1920" aria-label="관극 정산 영상 미리보기"></canvas>
         <div class="wr-cap" id="wrCap">화면을 누르면 다음 장면으로 넘어가요</div>
@@ -785,6 +804,10 @@
           <div class="wr-bk"><button id="wrExport">백업 코드 복사</button><button id="wrImport">백업 코드 불러오기</button></div>
         </div>
       </div>
+    </div>
+    <div id="wrRecView" hidden>
+      <div class="rec-sum" id="recSum"></div>
+      <div id="recList"></div>
     </div>
   </div></div>
   <div class="view" id="v-contact"><div class="wrap page">
@@ -2904,6 +2927,7 @@
 
   /* ---------- 정산 페이지 ---------- */
   function renderWrap(){
+    if(typeof wrTab!=="undefined"&&wrTab==="rec"){ renderRec(); return; }
     const ny=t0().getFullYear(), ys=[]; for(let y=ny;y>=2021;y--) ys.push(y);
     document.getElementById("wrYears").innerHTML=ys.map(y=>`<button data-y="${y}" class="${wrYs.includes(y)?"on":""}">${y}</button>`).join("");
     const D=wrData(wrYs);
@@ -2923,6 +2947,22 @@
   document.getElementById("wrExport").onclick=async()=>{ const code="KC1:"+btoa(unescape(encodeURIComponent(JSON.stringify({seen,nick:WR.get("nick","")}))));
     try{ await navigator.clipboard.writeText(code); alert("백업 코드를 복사했어요. 메모장 등에 붙여 넣어 보관해 주세요."); }catch(e){ prompt("아래 백업 코드를 복사해 보관해 주세요.",code); } };
   document.getElementById("wrImport").onclick=()=>{ const s=prompt("백업 코드를 붙여 넣어 주세요."); if(!s) return; try{ const o=JSON.parse(decodeURIComponent(escape(atob(s.trim().replace(/^KC1:/,""))))); seen=Object.assign(seen,o.seen||{}); saveSeen(); if(o.nick) WR.set("nick",o.nick); renderWrap(); alert("기록을 불러왔어요."); }catch(e){ alert("백업 코드를 읽지 못했어요. 코드 전체를 정확히 붙여 넣었는지 확인해 주세요."); } };
+  /* ---------- 내 관극 기록 탭 ---------- */
+  var wrTab="main";
+  function renderRec(){
+    const today=ds(t0()), all=SCHED.filter(e=>markable(e)&&seen[evKey(e)]).sort((a,b)=>(b.s+(b.tm||"")).localeCompare(a.s+(a.tm||"")));
+    const P=e=>+(seen[evKey(e)].p||0), sum=all.reduce((a,e)=>a+P(e),0), done=all.filter(e=>e.s<=today).length;
+    document.getElementById("recSum").innerHTML=all.length?`<span><b>${done}</b>회 관극</span>${all.length>done?`<span><b>${all.length-done}</b>회 예정</span>`:""}<span><b>₩${wn(sum)}</b>티켓값 합계</span>`:"";
+    if(!all.length){ document.getElementById("recList").innerHTML=`<div class="wr-empty">아직 도장을 찍은 회차가 없어요. 일정 탭에서 봤어요 / 볼 예정을 눌러 주세요.</div>`; return; }
+    const ys=[...new Set(all.map(e=>e.s.slice(0,4)))];
+    document.getElementById("recList").innerHTML=ys.map(y=>{ const L=all.filter(e=>e.s.startsWith(y)), ys2=L.reduce((a,e)=>a+P(e),0);
+      return `<section class="rec-y"><h3>${y}<small>${L.length}회 · ₩${wn(ys2)}</small></h3>${L.map(e=>`<div class="rec-row"><span class="d">${fmtD(e.s)}${e.tm?" "+e.tm:""}</span><span class="t">${esc(e.t)}${e.s>today?`<span class="rec-tag">예정</span>`:""}${e.pl?`<small>${esc(e.pl)}</small>`:""}</span><span class="pr${P(e)?"":" no"}">${P(e)?"₩"+wn(P(e)):"티켓값 없음"}</span><button class="rx" data-rx="${esc(evKey(e))}" aria-label="기록 삭제" title="기록 삭제">×</button></div>`).join("")}</section>`; }).join("");
+  }
+  document.getElementById("wrTabs").addEventListener("click",e=>{ const b=e.target.closest("[data-wt]"); if(!b) return; wrTab=b.dataset.wt;
+    document.querySelectorAll("#wrTabs button").forEach(x=>x.classList.toggle("on",x===b));
+    document.getElementById("wrMain").hidden=wrTab!=="main"; document.getElementById("wrRecView").hidden=wrTab!=="rec";
+    if(wrTab==="rec"){ cancelAnimationFrame(wrRaf); renderRec(); } else renderWrap(); });
+  document.getElementById("recList").addEventListener("click",e=>{ const k=e.target.dataset.rx; if(k==null) return; delete seen[k]; saveSeen(); renderRec(); });
   /* ---------- 예매내역(캡쳐·텍스트)으로 도장 찍기 ---------- */
   const imDT=/(20\d\d)\s*[.\-\/년]\s*(\d{1,2})\s*[.\-\/월]\s*(\d{1,2})\s*일?\s*(?:[(\[][^)\]]{0,4}[)\]])?\s*(오전|오후|AM|PM|am|pm)?\s*(\d{1,2})\s*[:시]\s*(\d{2})?/g;
   function imParse(txt){
