@@ -2845,7 +2845,7 @@
       let yy=y+290+rows.length*62-20; dash(yy); const a2=seg(t,.6,.75); if(D.paidN) tx(c,`한 회당 평균  ₩${wn(Math.round(D.total/D.paidN))}`,x+50,yy+60,`300 28px ${F.sans}`,"#6b6157","left",a2);
       yy+=(D.paidN?90:30); dash(yy); tx(c,"TOTAL",x+50,yy+80,`600 34px ${F.sans}`,ink,"left",a2); tx(c,"₩"+wn(Math.round(D.total*seg(t,.62,.95)/1000)*1000||0),x+w-50,yy+86,`700 64px ${F.serif}`,ink,"right",a2);
       for(let k=0,bx=x+110;bx<x+w-110;k++){ const bw=[3,2,5,2,4,3,6,2][k%8]; c.fillStyle=ink; c.globalAlpha=a2; c.fillRect(bx,yy+130,bw,70); c.globalAlpha=1; bx+=bw+[4,6,3,5][k%4]; }
-      tx(c,"KYEONGCHIVE.GITHUB.IO/BHH",CW/2,yy+250,`400 24px ${F.sans}`,sub,"center",a2); },
+      },
     type(c,t,D){ bgGlow(c,.42); const [e,en,nm,ds2]=D.type; kicker(c,`${D.Y} 나의 켱 유형은`,620,t,0,"center",CW/2); const a=seg(t,.12,.45), s=.6+.4*a;
       c.save(); c.globalAlpha=a; c.translate(CW/2,880); c.scale(s,s); c.rotate((1-a)*-.2); c.strokeStyle=GOLD; c.lineWidth=4; c.beginPath(); c.arc(0,0,250,0,Math.PI*2); c.stroke(); c.setLineDash([10,10]); c.lineWidth=2; c.strokeStyle="rgba(201,164,106,.55)"; c.beginPath(); c.arc(0,0,228,0,Math.PI*2); c.stroke(); c.setLineDash([]);
       tx(c,e,0,40,`120px ${F.sans}`,INK,"center"); tx(c,en,0,130,`italic 500 38px ${F.latin}`,GOLD,"center"); c.restore();
