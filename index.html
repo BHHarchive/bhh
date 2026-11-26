@@ -766,7 +766,7 @@
       {k:"영상",t:"〈두 도시 이야기〉 릴레이 인터뷰",sd:"2026-11-16",u:"https://youtu.be/LUsGm1CWBSE"},
       {k:"기사",t:"12년 만에 돌아온 〈두 도시 이야기〉의 변화 포인트",ch:"위키더뮤지컬",sd:"2026-10-01",u:"https://brunch.co.kr/@wikithemusical/16"},
       {k:"기사",t:"〈두 도시 이야기〉 개막 리뷰",ch:"연합뉴스",sd:"2026-11-13",u:"https://supple.kr/news/cmwo32vs3rj6vkwp8pxxblcc9"}]},
-    "2026|곤 투모로우 (10주년)": {d:"2026. 9. 15 – 11. 29 · 홍익대 대학로 아트센터 · 백형훈 출연 9. 15 – 10. 15 (10/15 막공)", gallery:["photos/2026-gone-tomorrow-2.jpg","photos/2026-gone-tomorrow-3.jpg","photos/2026-gone-tomorrow-4.jpg","photos/2026-gone-tomorrow-5.jpg","photos/2026-gone-tomorrow-6.jpg"], links:[
+    "2026|곤 투모로우 (10주년)": {d:"2026. 9. 15 – 11. 29 · 홍익대 대학로 아트센터 · 백형훈 출연 9. 15 – 10. 15 (10/15 막공)", gallery:["photos/2026-gone-tomorrow-2.jpg","photos/2026-gone-tomorrow-3.jpg","photos/2026-gone-tomorrow-4.jpg","photos/2026-gone-tomorrow-5.jpg","photos/2026-gone-tomorrow-6.jpg","photos/2026-gone-tomorrow-7.jpg"], links:[
       {k:"인터뷰",t:"[INTERVIEW] Two For Tomorrow_뮤지컬 〈곤 투모로우〉 배우 백형훈·원태민",ch:"시어터플러스",sd:"2026-09-14",u:"https://blog.naver.com/theatreplus/224411036904"},
       {k:"기사",t:"신념의 흔적들 — 〈곤 투모로우〉 10주년",ch:"시어터플러스",sd:"2026-09-15",u:"https://theatreplus.co.kr/article/piece/12/732/"},
       {k:"영상",t:"〈곤 투모로우〉 10주년 CASTING FILM",ch:"PAGE1",sd:"2026-09-14",u:"https://youtu.be/7nAUTKb40kw"},
@@ -1275,7 +1275,7 @@
     return out;
   }
   /* 가로 사진 썸네일에서 배우님 쪽이 보이도록 위치 지정 (사진 경로: "가로% 세로%") */
-  const GPOS={"photos/2026-gone-tomorrow-4.jpg":"24% 50%","photos/2026-gone-tomorrow-5.jpg":"68% 40%","photos/2026-gone-tomorrow-6.jpg":"26% 50%"};
+  const GPOS={"photos/2026-gone-tomorrow-4.jpg":"24% 50%","photos/2026-gone-tomorrow-5.jpg":"68% 40%","photos/2026-gone-tomorrow-6.jpg":"26% 50%","photos/2026-gone-tomorrow-7.jpg":"57% 30%"};
   let aAlbum=null, lbList=[], lbI=0;
   function albums(){ return works.map(w=>({w,ph:[w.img,...(detOf(w).gallery||[])].filter(Boolean)})).filter(a=>a.ph.length); }
   const sdFmt=l=>{ if(!l.sd) return ""; const [y,m,d]=l.sd.slice(0,10).split("-").map(n=>parseInt(n,10)); return l.ap?`${y}. ${m}.`:`${y}. ${m}. ${d}`; };
