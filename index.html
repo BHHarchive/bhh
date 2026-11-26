@@ -2765,8 +2765,8 @@
     const special={"첫공":perf.filter(e=>has(e,"첫공")).length,"막공":perf.filter(e=>has(e,"막공")).length,"전관":perf.filter(e=>has(e,"전관")).length,"지방 투어":tour};
     const fm=off.filter(e=>/팬미팅|팬서트|인사/.test(e.t)).length;
     const offT={"팬미팅":fm,"콘서트·행사":off.length-fm};
-    let tix=0; const mItems=[]; rank.forEach(r=>{ let s=0,c=0; perf.filter(e=>e.w===r.w.y+"|"+r.w.t).forEach(e=>{ const p=+(seen[evKey(e)].p||0); if(p){s+=p;c++;} }); if(s){ mItems.push([`〈${r.w.t}〉 x ${c}`,s]); tix+=s; } });
-    let offSum=0,offC=0; off.forEach(e=>{ const p=+(seen[evKey(e)].p||0); if(p){offSum+=p;offC++;} }); if(offSum) mItems.push([`콘서트·행사 x ${offC}`,offSum]);
+    let tix=0; const mItems=[]; rank.forEach(r=>{ let s=0,c=0; perf.filter(e=>e.w===r.w.y+"|"+r.w.t).forEach(e=>{ const p=+(seen[evKey(e)].p||0); if(p){s+=p;c++;} }); if(s){ mItems.push([`〈${r.w.t}〉 x ${c}`,s,c,1]); tix+=s; } });
+    let offSum=0,offC=0; off.forEach(e=>{ const p=+(seen[evKey(e)].p||0); if(p){offSum+=p;offC++;} }); if(offSum) mItems.push([`콘서트·행사 x ${offC}`,offSum,offC,0]);
     const paidN=all.filter(e=>+(seen[evKey(e)].p||0)>0).length;
     const total=mItems.reduce((a,b)=>a+b[1],0);
     const top=rank[0];
@@ -2837,7 +2837,8 @@
     special(c,t,D){ bgPhoto(c,D.rank[1]?D.rank[1].w:D.top.w,t,.65); kicker(c,"특별한 회차들",1000,t); head(c,"놓치지 않은 순간",1110,t); const L=Object.entries(D.special).filter(x=>x[1]); tiles(c,L,1190,t); },
     offstage(c,t,D){ bgGlow(c,.35); kicker(c,"무대 밖에서도",300,t); head(c,"공연 말고도",410,t); head(c,`${D.off.length}번 더 만났어요`,520,t,.12); tiles(c,Object.entries(D.offT).filter(x=>x[1]),640,t); },
     money(c,t,D){ c.fillStyle="#0a0908"; c.fillRect(0,0,CW,CH); if(D.top){ cover(c,D.top.w.img,0,0,CW,CH,D.top.w.pos); c.fillStyle="rgba(10,9,8,.78)"; c.fillRect(0,0,CW,CH); }
-      const rows=D.mItems.slice(0,8), w=800, x=(CW-w)/2, h=560+rows.length*62+60, y=Math.max(120,(CH-h)/2)-(1-seg(t,0,.45))*(h+300);
+      const MAXR=12, wk=D.mItems.filter(x=>x[3]), ot=D.mItems.filter(x=>!x[3]); let rows=D.mItems; if(rows.length>MAXR){ const keep=MAXR-1-ot.length, rest=wk.slice(keep); rows=wk.slice(0,keep).concat([[`그 외 ${rest.length}작품 x ${rest.reduce((a,b)=>a+b[2],0)}`,rest.reduce((a,b)=>a+b[1],0)]],ot); }
+      const w=800, x=(CW-w)/2, h=560+rows.length*62+60, y=Math.max(120,(CH-h)/2)-(1-seg(t,0,.45))*(h+300);
       c.save(); c.shadowColor="rgba(0,0,0,.6)"; c.shadowBlur=60; c.shadowOffsetY=30; c.fillStyle="#f3ece0"; c.beginPath(); c.moveTo(x,y); c.lineTo(x+w,y); c.lineTo(x+w,y+h); for(let k=w;k>0;k-=40){ c.arc(x+k-20,y+h,20,0,Math.PI,false);} c.lineTo(x,y); c.fill(); c.restore();
       const ink="#2a2420", sub="#7a6f64", dash=yy=>{ c.save(); c.strokeStyle="#a69a8c"; c.setLineDash([10,8]); c.lineWidth=3; c.beginPath(); c.moveTo(x+50,yy); c.lineTo(x+w-50,yy); c.stroke(); c.restore(); };
       tx(c,"켱수증",CW/2,y+120,`92px ${F.name}`,ink,"center"); tx(c,`${(document.getElementById("wrNick").value||"켱러버").trim()} · ${D.Y}`,CW/2,y+175,`400 28px ${F.sans}`,sub,"center"); dash(y+220);
