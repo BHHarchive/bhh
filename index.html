@@ -2916,10 +2916,11 @@
   const cv=document.getElementById("wrCv"), cx=cv.getContext("2d");
   function wrTick(now){ const e=now-wrT0; if(e>=wrDur[wrIdx]){ if(wrIdx+1>=wrSeq.length){ wrDone=true; wrDraw(1); if(wrRecOn) wrStopRec(); return; } wrIdx++; wrT0=now; }
     wrDraw(Math.min(1,(now-wrT0)/wrDur[wrIdx])); wrRaf=requestAnimationFrame(wrTick); }
-  function wrDraw(p){ wrFrame(cx,wrSeq[wrIdx],Math.min(1,p*1.25),wrD,wrIdx,wrSeq.length,p); }
-  async function wrPlay(){ cancelAnimationFrame(wrRaf); wrD=wrData(wrYs); wrSeq=wrScenes(wrD); wrDur=wrSeq.map(id=>id==="money"?WDUR+Math.max(0,moneyH(wrD)-(CH-240))/300*1000:WDUR); wrIdx=0; wrDone=false;
+  function wrDraw(p){ const id=wrSeq[wrIdx]; wrFrame(cx,id,id==="open"?1:Math.min(1,p*1.25),wrD,wrIdx,wrSeq.length,p); }
+  async function wrPlay(beforeStart){ cancelAnimationFrame(wrRaf); wrD=wrData(wrYs); wrSeq=wrScenes(wrD); wrDur=wrSeq.map(id=>id==="money"?WDUR+Math.max(0,moneyH(wrD)-(CH-240))/300*1000:WDUR); wrIdx=0; wrDone=false;
     try{ await Promise.all([`120px ${F.name}`,`700 40px ${F.serif}`,`500 60px ${F.latin}`,`italic 500 60px ${F.latin}`,`300 30px ${F.sans}`,`400 30px ${F.sans}`].map(f=>document.fonts.load(f,"켱가A1"))); }catch(e){}
     const srcs=[...wrD.posters.map(p=>p.w.img)]; await Promise.all(srcs.map(s=>new Promise(r=>{ const im=wrLoad(s); if(im.complete) r(); else { im.addEventListener("load",r,{once:true}); im.addEventListener("error",r,{once:true}); } })));
+    wrIdx=0; wrDraw(0); if(beforeStart){ beforeStart(); await new Promise(r=>setTimeout(r,120)); }
     wrT0=performance.now(); wrRaf=requestAnimationFrame(wrTick); }
   cv.addEventListener("click",()=>{ if(wrRecOn) return; if(wrDone){ wrPlay(); return; } if(wrIdx+1<wrSeq.length){ wrIdx++; wrT0=performance.now(); } });
   document.getElementById("wrPlay").onclick=wrPlay;
@@ -2933,7 +2934,7 @@
     const types=["video/mp4;codecs=avc1","video/mp4","video/webm;codecs=vp9","video/webm"]; const mime=types.find(m=>MediaRecorder.isTypeSupported(m))||"";
     wrChunks=[]; wrRec=new MediaRecorder(cv.captureStream(30),mime?{mimeType:mime,videoBitsPerSecond:8e6}:{}); wrRec.ondataavailable=e=>{ if(e.data.size) wrChunks.push(e.data); };
     wrRec.onstop=()=>{ const ty=wrRec.mimeType||mime||"video/webm"; wrDown(new Blob(wrChunks,{type:ty}),`kyeongchive-${wrLab(wrYs)}.${ty.includes("mp4")?"mp4":"webm"}`); wrUI(false); };
-    wrRecOn=true; wrUI(true); wrRec.start(); await wrPlay(); };
+    wrRecOn=true; wrUI(true); await wrPlay(()=>wrRec.start()); };
   function wrStopRec(){ wrRecOn=false; setTimeout(()=>wrRec&&wrRec.state!=="inactive"&&wrRec.stop(),300); }
   function wrUI(on){ ["wrPlay","wrRec","wrShot"].forEach(id=>document.getElementById(id).disabled=on); document.getElementById("wrCap").textContent=on?"영상을 만드는 중이에요… 끝날 때까지 이 화면을 켜 두세요":"화면을 누르면 다음 장면으로 넘어가요"; }
 
