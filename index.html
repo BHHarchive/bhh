@@ -226,6 +226,13 @@
   .cal-nav:hover,.cal-today:hover{border-color:var(--gold);color:var(--gold)}
   .cal-today{margin-left:auto;border:1px solid var(--line);background:none;color:var(--ink);padding:8px 16px;border-radius:999px;cursor:pointer;font-size:13px}
   .pair{border:1px solid var(--line);border-radius:14px;padding:14px 16px 12px;margin:0 0 18px;background:rgba(255,255,255,.015)}
+  .pair-tog{display:flex;align-items:center;gap:8px;width:100%;background:none;border:0;color:var(--ink);font:inherit;font-size:14px;font-weight:600;padding:0;cursor:pointer;text-align:left}
+  .pair-tog i{font-style:normal;color:var(--gold);font-size:11px;transition:transform .2s}
+  .pair-tog b{font-weight:400;font-size:12px;color:var(--gold);margin-left:auto}
+  .pair:not(.open){padding:11px 16px}
+  .pair:not(.open) .pair-h,.pair:not(.open) .pair-chips{display:none}
+  .pair.open .pair-tog{display:none}
+  .pair-h .pair-x{margin:0;background:none;border:0;color:var(--gold);font-size:12px;cursor:pointer;padding:0 8px 0 0;vertical-align:2px;text-decoration:none}
   .pair-sel{position:relative;display:inline-block}
   .pair-sel select{appearance:none;-webkit-appearance:none;background:transparent;border:1px solid var(--gold);border-radius:999px;color:var(--gold);font:inherit;font-weight:600;font-size:14px;padding:3px 28px 3px 12px;cursor:pointer}
   .pair-sel::after{content:"▾";position:absolute;right:11px;top:50%;transform:translateY(-50%);color:var(--gold);font-size:11px;pointer-events:none}
@@ -737,6 +744,7 @@
       <button class="cal-today" id="calToday">오늘</button>
     </div>
     <div class="pair" id="pairBox">
+      <button class="pair-tog" id="pairTog" aria-expanded="false"><span>페어로 보기</span><i>▾</i></button>
       <div class="pair-h"><b id="pairTitle">페어로 보기</b><span id="pairNote">배우를 고르면 함께 서는 회차만 보여요</span><button id="pairReset" hidden>선택 해제</button></div>
       <div class="pair-chips" id="pairChips"></div>
     </div>
@@ -2462,7 +2470,7 @@
   /* 일정 탭: 월간 캘린더 */
   let calY=t0().getFullYear(), calM=t0().getMonth(), calSel=null;
   /* 페어 필터: 출연 회차에 co:[시드니, 루시, 마담, 미스 프로스] 가 있으면 골라 볼 수 있어요 */
-  let pairSel=[];
+  let pairSel=[], pairOpen=false;
   const PAIR_WS=[...new Set(SCHED.filter(e=>e.co&&e.w).sort((a,b)=>b.s.localeCompare(a.s)).map(e=>e.w))];
   let pairW=PAIR_WS[0];
   const PAIRED=()=>SCHED.filter(e=>e.co&&e.w===pairW);
@@ -2470,9 +2478,10 @@
   function renderPairChips(){
     const box=document.getElementById("pairBox");
     if(!PAIR_WS.length){ box.hidden=true; return; }
+    box.classList.toggle("open",pairOpen||pairSel.length>0);
     const ps=PAIRED();
     const wt=w=>w.split("|")[1];
-    document.getElementById("pairTitle").innerHTML=PAIR_WS.length>1?`<span class="pair-sel"><select id="pairWSel" aria-label="작품 선택">${PAIR_WS.map(w=>`<option value="${esc(w)}"${w===pairW?" selected":""}>〈${esc(wt(w))}〉</option>`).join("")}</select></span> 페어로 보기`:`〈${esc(wt(pairW))}〉 페어로 보기`;
+    document.getElementById("pairTitle").innerHTML=PAIR_WS.length>1?`<button class="pair-x" id="pairClose" aria-label="페어로 보기 닫기">▴</button><span class="pair-sel"><select id="pairWSel" aria-label="작품 선택">${PAIR_WS.map(w=>`<option value="${esc(w)}"${w===pairW?" selected":""}>〈${esc(wt(w))}〉</option>`).join("")}</select></span> 페어로 보기`:`<button class="pair-x" id="pairClose" aria-label="페어로 보기 닫기">▴</button>〈${esc(wt(pairW))}〉 페어로 보기`;
     const cols=[0,1,2,3].map(i=>[...new Set(ps.map(e=>e.co[i]).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"ko")));
     document.getElementById("pairChips").innerHTML=cols.map(c=>c.map(n=>`<button data-pn="${esc(n)}" class="${pairSel.includes(n)?'on':''}">${esc(n)}</button>`).join("")).join('<i></i>');
     const n=pairSel.length?ps.filter(pairMatch).length:0;
@@ -2489,6 +2498,8 @@
     }
     renderCal();
   });
+  document.getElementById("pairTog").addEventListener("click",()=>{ pairOpen=true; renderPairChips(); });
+  document.getElementById("pairBox").addEventListener("click",e=>{ if(e.target.id!=="pairClose") return; pairOpen=false; if(pairSel.length){ pairSel=[]; calSel=null; renderCal(); } else renderPairChips(); });
   document.getElementById("pairBox").addEventListener("change",e=>{ if(e.target.id!=="pairWSel") return; pairW=e.target.value; pairSel=[]; calSel=null; renderCal(); });
   document.getElementById("pairReset").addEventListener("click",()=>{ pairSel=[]; calSel=null; renderCal(); });
   function renderCal(){
