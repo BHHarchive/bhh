@@ -729,6 +729,7 @@
       <div>
         <div class="wr-box">
           <h3>연도</h3>
+          <p class="hint">여러 해를 고르면 합쳐서 한 번에 정산해요.</p>
           <div class="wr-years" id="wrYears"></div>
           <div class="wr-stat" id="wrStat"></div>
         </div>
@@ -2709,13 +2710,15 @@
   const RT_W={"2025|킹키부츠":155,"2026|신과 함께_저승편":165,"2026|곤 투모로우 (10주년)":150,"2026|두 도시 이야기":170,"2025|명성황후 (30주년)":165};
   const RT_D={"2026-04-15":100,"2026-05-19":120,"2026-05-20":120,"2026-05-27":70,"2026-11-15":100,"2026-11-30":100};
   const WR_SC=[["open","오프닝","닉네임 · 정산 기간",1],["total","총 회차","올해 함께한 무대"],["posters","올해 본 작품 포스터",""],["hours","함께한 시간","러닝타임 × 회차"],["top","가장 많이 만난 작품",""],["rank","작품 순위",""],["firstlast","첫 만남 · 마지막 만남",""],["theater","가장 많이 간 극장",""],["month","가장 바빴던 달","월별 그래프 · 낮공/밤공"],["special","특별 회차","첫공 · 막공 · 전관 · 투어"],["offstage","공연 외 일정","콘서트 · 팬미팅 · 행사"],["money","켱수증","회차별 티켓값"],["type","나의 켱 유형","기록 보고 칭호 자동 부여"]];
-  let wrY=t0().getFullYear(); if(wrY<2021) wrY=2021;
+  let wrYs=[Math.max(2021,t0().getFullYear())];
+  const wrLab=Ys=>{ const y=[...Ys].sort(); if(y.length===1) return String(y[0]); const run=y.every((v,i)=>!i||v===y[i-1]+1); return run?`${y[0]}–${y[y.length-1]}`:y.join("·"); };
   const wImg={}; const wrLoad=src=>{ if(!src) return null; if(!wImg[src]){ const im=new Image(); im.onload=()=>{im.ok=1;}; im.src=src; wImg[src]=im; } return wImg[src]; };
   wrLoad("photos/logo2.png");
 
-  function wrData(Y){
-    const today=ds(t0()), end=Y<t0().getFullYear()?`${Y}-12-31`:today;
-    const all=SCHED.filter(e=>seenable(e)&&seen[evKey(e)]&&e.s>=`${Y}-01-01`&&e.s<=end).sort((a,b)=>(a.s+(a.tm||"")).localeCompare(b.s+(b.tm||"")));
+  function wrData(Ys){
+    Ys=[...Ys].sort(); const Y=wrLab(Ys), multi=Ys.length>1, y0=Ys[0], yN=Ys[Ys.length-1];
+    const today=ds(t0()), end=yN<t0().getFullYear()?`${yN}-12-31`:today, yl=multi?`${Ys.length}년 동안`:"올해";
+    const all=SCHED.filter(e=>seenable(e)&&seen[evKey(e)]&&Ys.includes(+e.s.slice(0,4))&&e.s<=end).sort((a,b)=>(a.s+(a.tm||"")).localeCompare(b.s+(b.tm||"")));
     const perf=all.filter(e=>e.k==="출연 회차"), off=all.filter(e=>e.k==="행사");
     const W=e=>works.find(x=>x.y+"|"+x.t===e.w);
     const byW={}; perf.forEach(e=>{ (byW[e.w]=byW[e.w]||{w:W(e),n:0,first:e.s,price:0,paid:0}).n++; });
@@ -2724,6 +2727,7 @@
     let min=0, miss=0; all.forEach(e=>{ const r=e.k==="출연 회차"?RT_W[e.w]:RT_D[e.s]; if(r) min+=r; else miss++; });
     const th={}; perf.forEach(e=>{ if(e.pl) th[e.pl]=(th[e.pl]||0)+1; }); const theaters=Object.entries(th).sort((a,b)=>b[1]-a[1]);
     const mon=Array(12).fill(0); perf.forEach(e=>mon[+e.s.slice(5,7)-1]++);
+    const bars=multi?Ys.map(y=>[String(y),perf.filter(e=>+e.s.slice(0,4)===y).length]):mon.map((v,i)=>[String(i+1),v]);
     const matinee=perf.filter(e=>e.tm&&e.tm<"17:00").length, night=perf.length-matinee;
     const wkend=perf.filter(e=>{const d=pd(e.s).getDay();return d===0||d===6;}).length;
     const has=(e,w)=>(e.note||"").includes(w);
@@ -2745,7 +2749,7 @@
     else if(perf.length>=4&&matinee/perf.length>=.6) type=["☀️","MATINEE FAIRY","낮공 요정","햇살 아래 낮공을 사랑하는 관객."];
     else if(perf.length>=4&&night/perf.length>=.7) type=["🌙","NIGHT OWL","밤공 올빼미","밤공의 공기를 좋아하는 관객."];
     else if(rank.length>=3) type=["📚","COLLECTOR","작품 컬렉터","켱의 여러 얼굴을 모으는 관객."];
-    return {Y,end,all,perf,off,rank,posters,min,miss,theaters,mon,matinee,night,wkend,special,offT,mItems,total,paidN,top,type};
+    return {Y,Ys,multi,y0,yl,bars,end,all,perf,off,rank,posters,min,miss,theaters,mon,matinee,night,wkend,special,offT,mItems,total,paidN,top,type};
   }
 
   /* ---------- 캔버스 그리기 ---------- */
@@ -2770,13 +2774,13 @@
 
   const SC={
     open(c,t,D){ bgGlow(c,.42); const [a,o]=up(t,0); tx(c,`${D.Y} Wrapped`,CW/2,800+o,`italic 500 66px ${F.latin}`,GOLD,"center",a);
-      const [a2,o2]=up(t,.1); tx(c,"올해의 백형훈",CW/2,950+o2,`120px ${F.name}`,INK,"center",a2);
+      const [a2,o2]=up(t,.1); tx(c,D.multi?"그동안의 백형훈":"올해의 백형훈",CW/2,950+o2,`120px ${F.name}`,INK,"center",a2);
       const nick=(document.getElementById("wrNick").value||"켱러버").trim(); const [a3,o3]=up(t,.2); c.save(); c.font=`400 40px ${F.sans}`; const w1=c.measureText(nick).width, w2=c.measureText(" 님의 관극 정산").width; c.restore();
       tx(c,nick,CW/2-(w1+w2)/2,1050+o3,`400 40px ${F.sans}`,GOLD,"left",a3); tx(c," 님의 관극 정산",CW/2-(w1+w2)/2+w1,1050+o3,`400 40px ${F.sans}`,INK,"left",a3);
       const [a4,o4]=up(t,.3); c.save(); c.globalAlpha=a4; c.strokeStyle="rgba(201,164,106,.4)"; c.lineWidth=2; c.beginPath(); c.moveTo(CW/2-260,1110+o4); c.lineTo(CW/2+260,1110+o4); c.stroke(); c.restore();
-      const now=D.Y===t0().getFullYear(); tx(c,`${D.Y}. 1. 1 – ${D.end.slice(5,7)*1}. ${D.end.slice(8)*1}${now?" 기준":""}`,CW/2,1180+o4,`500 48px ${F.latin}`,MUTE,"center",a4); },
-    total(c,t,D){ bgPhoto(c,D.top&&D.top.w,t); kicker(c,"올해 함께한 무대",1450,t); big(c,D.perf.length,"회",1770,t); },
-    posters(c,t,D){ bgGlow(c,.6); kicker(c,"올해 만난 작품",200,t); head(c,`${D.posters.length}편의 무대`,310,t);
+      const now=D.end===ds(t0()), ed=`${D.end.slice(5,7)*1}. ${D.end.slice(8)*1}`; tx(c,D.multi?`${D.y0}. 1. 1 – ${D.end.slice(0,4)}. ${ed}${now?" 기준":""}`:`${D.Y}. 1. 1 – ${ed}${now?" 기준":""}`,CW/2,1180+o4,`500 ${D.multi?40:48}px ${F.latin}`,MUTE,"center",a4); },
+    total(c,t,D){ bgPhoto(c,D.top&&D.top.w,t); kicker(c,`${D.yl} 함께한 무대`,1450,t); big(c,D.perf.length,"회",1770,t); },
+    posters(c,t,D){ bgGlow(c,.6); kicker(c,`${D.yl} 만난 작품`,200,t); head(c,`${D.posters.length}편의 무대`,310,t);
       const n=D.posters.length, cols=n<=4?2:n<=9?3:4, gap=36, x0=72, w=(CW-144-gap*(cols-1))/cols, h=w*4/3, rows=Math.ceil(n/cols), top=Math.max(400,(CH-140-rows*h-(rows-1)*gap)/2+120);
       D.posters.forEach((p,i)=>{ const a=seg(t,.18+i*.07,.42+i*.07); if(a<=0) return; const x=x0+(i%cols)*(w+gap), y=top+Math.floor(i/cols)*(h+gap); c.save(); c.globalAlpha=a; c.translate(x+w/2,y+h/2-(1-a)*120); c.rotate(((i%2?1:-1)*(1+i%3))*Math.PI/180); c.shadowColor="rgba(0,0,0,.7)"; c.shadowBlur=40; c.shadowOffsetY=20; rr(c,-w/2,-h/2,w,h,12); c.fillStyle="#1a1613"; c.fill(); c.shadowColor="transparent"; c.clip(); cover(c,p.w.img,-w/2,-h/2,w,h,p.w.pos); c.restore(); }); },
     hours(c,t,D){ bgPhoto(c,D.posters[D.posters.length-1]&&D.posters[D.posters.length-1].w,t); kicker(c,"백형훈과 보낸 시간",1330,t); const h=Math.floor(D.min/60), m=D.min%60, Z=240;
@@ -2784,21 +2788,21 @@
       let x=72; tx(c,wn(hv),x,1640+o,`500 ${Z}px ${F.latin}`,GOLD,"left",a); x+=wh+14; tx(c,"시간",x,1640+o,`${Math.round(Z*.26)}px ${F.name}`,INK,"left",a); x+=wu+36;
       if(m){ tx(c,String(mv),x,1640+o,`500 ${Z}px ${F.latin}`,GOLD,"left",a); tx(c,"분",x+wm+14,1640+o,`${Math.round(Z*.26)}px ${F.name}`,INK,"left",a); }
       const d=Math.floor(h/24), r=h%24, rest=[r?`${r}시간`:"",m?`${m}분`:""].filter(Boolean).join(" "); para(c,[d?`꼬박 ${d}일${rest?" "+rest:""}, 객석에서 보낸 시간이에요.`:`객석에서 보낸 시간이에요.`].concat(D.miss?[`러닝타임 정보가 없는 ${D.miss}회는 빼고 셌어요.`]:[]),1740,t); },
-    top(c,t,D){ const r=D.top; bgPhoto(c,r.w,t); kicker(c,"올해 가장 많이 만난 작품",1260,t); head(c,`〈${r.w.t}〉 ${r.w.r?r.w.r.split(/ · |·/)[0]:""}`,1370,t); big(c,r.n,"회",1640,t,.18,250); para(c,[`올해 관극의 ${Math.round(r.n/D.perf.length*100)}%를 함께했어요.`],1740,t,.34); },
-    rank(c,t,D){ bgGlow(c,.3); kicker(c,"올해 만난 작품들",210,t); head(c,`나의 ${D.Y} 무대`,320,t); const L=D.rank.slice(0,6), rh=Math.min(200,(CH-560)/Math.max(L.length,1)-24);
+    top(c,t,D){ const r=D.top; bgPhoto(c,r.w,t); kicker(c,`${D.yl} 가장 많이 만난 작품`,1260,t); head(c,`〈${r.w.t}〉 ${r.w.r?r.w.r.split(/ · |·/)[0]:""}`,1370,t); big(c,r.n,"회",1640,t,.18,250); para(c,[`${D.multi?"전체":"올해"} 관극의 ${Math.round(r.n/D.perf.length*100)}%를 함께했어요.`],1740,t,.34); },
+    rank(c,t,D){ bgGlow(c,.3); kicker(c,`${D.yl} 만난 작품들`,210,t); head(c,`나의 ${D.Y} 무대`,320,t); const L=D.rank.slice(0,6), rh=Math.min(200,(CH-560)/Math.max(L.length,1)-24);
       L.forEach((r,i)=>{ const a=seg(t,.2+i*.08,.42+i*.08); if(a<=0) return; const y=430+i*(rh+24), x=72-(1-a)*80; c.save(); c.globalAlpha=a; rr(c,x,y,CW-144,rh,18); c.fillStyle="rgba(23,19,17,.85)"; c.fill(); c.strokeStyle="#3a322b"; c.lineWidth=2; c.stroke();
         const iw=rh*.78; c.save(); rr(c,x+18,y+18,iw-20,rh-36,8); c.clip(); cover(c,r.w.img,x+18,y+18,iw-20,rh-36,r.w.pos); c.restore();
         tx(c,`〈${r.w.t}〉`,x+iw+24,y+rh/2+2,fit(c,`〈${r.w.t}〉`,CW-144-iw-200,46,F.serif,"700"),INK); tx(c,r.w.r||"",x+iw+24,y+rh/2+50,`300 30px ${F.sans}`,MUTE);
         tx(c,String(r.n),x+CW-144-36,y+rh/2+30,`500 96px ${F.latin}`,GOLD,"right"); c.restore(); }); },
     firstlast(c,t,D){ c.fillStyle="#0a0908"; c.fillRect(0,0,CW,CH); const f=D.perf[0], l=D.perf[D.perf.length-1], W=e=>works.find(x=>x.y+"|"+x.t===e.w);
-      [[f,0,"올해의 첫 만남"],[l,CH/2,"올해의 마지막 만남"]].forEach(([e,y0,lab],i)=>{ const w=W(e); c.save(); c.beginPath(); c.rect(0,y0,CW,CH/2); c.clip(); if(w) cover(c,w.img,0,y0,CW,CH/2,w.pos); c.fillStyle="rgba(10,9,8,.6)"; c.fillRect(0,y0,CW,CH/2); c.restore();
-        const [a,o]=up(t,i*.16); tx(c,lab,72,y0+CH/2-250+o,`400 34px ${F.sans}`,MUTE,"left",a); tx(c,fmtMD(e.s),72,y0+CH/2-120+o,`500 150px ${F.latin}`,GOLD,"left",a); tx(c,`${e.t} ${dayPart(e)}`,72,y0+CH/2-50+o,fit(c,`${e.t} ${dayPart(e)}`,CW-144,46,F.serif),INK,"left",a); });
+      [[f,0,D.multi?"첫 만남":"올해의 첫 만남"],[l,CH/2,D.multi?"마지막 만남":"올해의 마지막 만남"]].forEach(([e,y0,lab],i)=>{ const w=W(e); c.save(); c.beginPath(); c.rect(0,y0,CW,CH/2); c.clip(); if(w) cover(c,w.img,0,y0,CW,CH/2,w.pos); c.fillStyle="rgba(10,9,8,.6)"; c.fillRect(0,y0,CW,CH/2); c.restore();
+        const [a,o]=up(t,i*.16); tx(c,lab,72,y0+CH/2-250+o,`400 34px ${F.sans}`,MUTE,"left",a); tx(c,D.multi?`${e.s.slice(2,4)}. ${fmtMD(e.s)}`:fmtMD(e.s),72,y0+CH/2-120+o,`500 150px ${F.latin}`,GOLD,"left",a); tx(c,`${e.t} ${dayPart(e)}`,72,y0+CH/2-50+o,fit(c,`${e.t} ${dayPart(e)}`,CW-144,46,F.serif),INK,"left",a); });
       c.fillStyle="rgba(201,164,106,.35)"; c.fillRect(0,CH/2-1,CW,2); },
     theater(c,t,D){ bgGlow(c,0); const [n,cnt]=D.theaters[0]; kicker(c,"가장 많이 간 극장",260,t); head(c,n,380,t,.08,100); big(c,cnt,"회",640,t,.14,250);
       const L=D.theaters.slice(0,5), mx=L[0][1]; L.forEach(([nm,v],i)=>{ const y=820+i*96, a=seg(t,.3+i*.06,.5+i*.06); tx(c,nm,72,y,fit(c,nm,330,34,F.sans,"300"),"#d9cfc2","left",a); c.save(); c.globalAlpha=a; rr(c,430,y-22,(CW-430-150)*v/mx*seg(t,.4+i*.06,.7+i*.06)+1,16,8); c.fillStyle=GOLD; c.fill(); c.restore(); tx(c,String(v),CW-72,y,`500 50px ${F.latin}`,GOLD,"right",a); });
       const op=seg(t,.04,.4); [0,1].forEach(s=>{ c.save(); const w=CW*.55, x=s? CW-w+op*(w-30) : -op*(w-30); for(let k=0;k<w;k+=78){ c.fillStyle=["#5a1a1a","#6e2222","#4a1414"][(k/26|0)%3]; c.fillRect(x+k,0,30,CH); c.fillStyle="#5e1c1c"; c.fillRect(x+k+30,0,26,CH); c.fillStyle="#4a1414"; c.fillRect(x+k+56,0,22,CH);} c.restore(); }); },
-    month(c,t,D){ bgGlow(c,.7); const mx=Math.max(...D.mon), mi=D.mon.indexOf(mx); kicker(c,"가장 바빴던 달",250,t); head(c,`${mi+1}월, ${mx}번의 관극`,360,t);
-      const bw=(CW-144-11*16)/12, base=1150, hh=520; D.mon.forEach((v,i)=>{ const h=(v?Math.max(24,v/mx*hh):8)*seg(t,.25+i*.03,.6+i*.03); c.save(); rr(c,72+i*(bw+16),base-h,bw,h,6); c.fillStyle=i===mi?GOLD:"#5a4a33"; c.fill(); c.restore(); tx(c,String(i+1),72+i*(bw+16)+bw/2,base+50,`300 28px ${F.sans}`,MUTE,"center"); });
+    month(c,t,D){ bgGlow(c,.7); const B=D.bars, n=B.length, mx=Math.max(...B.map(x=>x[1]),1), mi=B.findIndex(x=>x[1]===mx); kicker(c,D.multi?"가장 바빴던 해":"가장 바빴던 달",250,t); head(c,`${B[mi][0]}${D.multi?"년":"월"}, ${mx}번의 관극`,360,t);
+      const gp=n>6?16:40, bw=Math.min(180,(CW-144-(n-1)*gp)/n), x0=(CW-(bw*n+gp*(n-1)))/2, base=1150, hh=520; B.forEach(([lb,v],i)=>{ const h=(v?Math.max(24,v/mx*hh):8)*seg(t,.25+i*.03,.6+i*.03); c.save(); rr(c,x0+i*(bw+gp),base-h,bw,h,6); c.fillStyle=i===mi?GOLD:"#5a4a33"; c.fill(); c.restore(); tx(c,lb,x0+i*(bw+gp)+bw/2,base+50,`300 28px ${F.sans}`,MUTE,"center"); if(D.multi&&v) tx(c,String(v),x0+i*(bw+gp)+bw/2,base-h-20,`500 44px ${F.latin}`,i===mi?GOLD:MUTE,"center",seg(t,.5,.7)); });
       para(c,[`낮공 ${D.matinee} · 밤공 ${D.night} · 주말 ${D.wkend} · 평일 ${D.perf.length-D.wkend}`],1300,t,.45,36); },
     special(c,t,D){ bgPhoto(c,D.rank[1]?D.rank[1].w:D.top.w,t,.65); kicker(c,"특별한 회차들",1000,t); head(c,"놓치지 않은 순간",1110,t); const L=Object.entries(D.special).filter(x=>x[1]); tiles(c,L,1190,t); },
     offstage(c,t,D){ bgGlow(c,.35); kicker(c,"무대 밖에서도",300,t); head(c,"공연 말고도",410,t); head(c,`${D.off.length}번 더 만났어요`,520,t,.12); tiles(c,Object.entries(D.offT).filter(x=>x[1]),640,t); },
@@ -2830,19 +2834,19 @@
   function wrTick(now){ const e=now-wrT0; if(e>=WDUR){ if(wrIdx+1>=wrSeq.length){ wrDone=true; wrDraw(1); if(wrRecOn) wrStopRec(); return; } wrIdx++; wrT0=now; }
     wrDraw(Math.min(1,(now-wrT0)/WDUR)); wrRaf=requestAnimationFrame(wrTick); }
   function wrDraw(p){ wrFrame(cx,wrSeq[wrIdx],Math.min(1,p*1.25),wrD,wrIdx,wrSeq.length,p); }
-  async function wrPlay(){ cancelAnimationFrame(wrRaf); wrD=wrData(wrY); wrSeq=wrScenes(wrD); wrIdx=0; wrDone=false;
+  async function wrPlay(){ cancelAnimationFrame(wrRaf); wrD=wrData(wrYs); wrSeq=wrScenes(wrD); wrIdx=0; wrDone=false;
     try{ await Promise.all([`120px ${F.name}`,`700 40px ${F.serif}`,`500 60px ${F.latin}`,`italic 500 60px ${F.latin}`,`300 30px ${F.sans}`,`400 30px ${F.sans}`].map(f=>document.fonts.load(f,"켱가A1"))); }catch(e){}
     const srcs=[...wrD.posters.map(p=>p.w.img)]; await Promise.all(srcs.map(s=>new Promise(r=>{ const im=wrLoad(s); if(im.complete) r(); else { im.addEventListener("load",r,{once:true}); im.addEventListener("error",r,{once:true}); } })));
     wrT0=performance.now(); wrRaf=requestAnimationFrame(wrTick); }
   cv.addEventListener("click",()=>{ if(wrRecOn) return; if(wrDone){ wrPlay(); return; } if(wrIdx+1<wrSeq.length){ wrIdx++; wrT0=performance.now(); } });
   document.getElementById("wrPlay").onclick=wrPlay;
-  document.getElementById("wrShot").onclick=()=>{ cancelAnimationFrame(wrRaf); wrDone=true; wrDraw(1); cv.toBlob(b=>wrDown(b,`kyeongchive-${wrY}-${wrIdx+1}.png`),"image/png"); };
+  document.getElementById("wrShot").onclick=()=>{ cancelAnimationFrame(wrRaf); wrDone=true; wrDraw(1); cv.toBlob(b=>wrDown(b,`kyeongchive-${wrLab(wrYs)}-${wrIdx+1}.png`),"image/png"); };
   function wrDown(b,name){ const a=document.createElement("a"); a.href=URL.createObjectURL(b); a.download=name; document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },4000); }
   let wrRec=null, wrChunks=[];
   document.getElementById("wrRec").onclick=async()=>{ if(!window.MediaRecorder||!cv.captureStream){ alert("이 브라우저는 영상 저장을 지원하지 않아요. '이 장면 이미지 저장'을 이용해 주세요."); return; }
     const types=["video/mp4;codecs=avc1","video/mp4","video/webm;codecs=vp9","video/webm"]; const mime=types.find(m=>MediaRecorder.isTypeSupported(m))||"";
     wrChunks=[]; wrRec=new MediaRecorder(cv.captureStream(30),mime?{mimeType:mime,videoBitsPerSecond:8e6}:{}); wrRec.ondataavailable=e=>{ if(e.data.size) wrChunks.push(e.data); };
-    wrRec.onstop=()=>{ const ty=wrRec.mimeType||mime||"video/webm"; wrDown(new Blob(wrChunks,{type:ty}),`kyeongchive-${wrY}.${ty.includes("mp4")?"mp4":"webm"}`); wrUI(false); };
+    wrRec.onstop=()=>{ const ty=wrRec.mimeType||mime||"video/webm"; wrDown(new Blob(wrChunks,{type:ty}),`kyeongchive-${wrLab(wrYs)}.${ty.includes("mp4")?"mp4":"webm"}`); wrUI(false); };
     wrRecOn=true; wrUI(true); wrRec.start(); await wrPlay(); };
   function wrStopRec(){ wrRecOn=false; setTimeout(()=>wrRec&&wrRec.state!=="inactive"&&wrRec.stop(),300); }
   function wrUI(on){ ["wrPlay","wrRec","wrShot"].forEach(id=>document.getElementById(id).disabled=on); document.getElementById("wrCap").textContent=on?"영상을 만드는 중이에요… 끝날 때까지 이 화면을 켜 두세요":"화면을 누르면 다음 장면으로 넘어가요"; }
@@ -2850,15 +2854,15 @@
   /* ---------- 정산 페이지 ---------- */
   function renderWrap(){
     const ny=t0().getFullYear(), ys=[]; for(let y=ny;y>=2021;y--) ys.push(y);
-    document.getElementById("wrYears").innerHTML=ys.map(y=>`<button data-y="${y}" class="${y===wrY?"on":""}">${y}</button>`).join("");
-    const D=wrData(wrY);
+    document.getElementById("wrYears").innerHTML=ys.map(y=>`<button data-y="${y}" class="${wrYs.includes(y)?"on":""}">${y}</button>`).join("");
+    const D=wrData(wrYs);
     document.getElementById("wrStat").innerHTML=`<span><b>${D.perf.length}</b>회 공연</span><span><b>${D.off.length}</b>개 행사</span><span><b>${D.posters.length}</b>개 작품</span>`;
     const nk=document.getElementById("wrNick"); if(document.activeElement!==nk) nk.value=WR.get("nick","");
     document.getElementById("wrList").innerHTML=D.all.length?D.all.map(e=>`<div class="wr-row"><div>${esc(e.t)}<small>${fmtD(e.s)}${e.tm?" "+e.tm:""}${e.pl?" · "+esc(e.pl):""}</small></div><input inputmode="numeric" placeholder="₩ 티켓값" data-pk="${esc(evKey(e))}" value="${seen[evKey(e)].p?wn(seen[evKey(e)].p):""}"><button class="wr-x" data-un="${esc(evKey(e))}" aria-label="체크 해제">×</button></div>`).join(""):`<div class="wr-empty">아직 체크한 회차가 없어요. 일정 탭에서 다녀온 회차에 봤어요를 눌러 켱 도장을 찍어 주세요.</div>`;
     const av=new Set(wrScenes(Object.assign({},D))); document.getElementById("wrScenes").innerHTML=WR_SC.map(([id,nm,sub,fx])=>`<label class="wr-sw ${!fx&&!wrOff[id]&&!av.has(id)?"na":""}"><span class="nm">${nm}${sub?`<small>${sub}</small>`:""}</span><input type="checkbox" data-sc="${id}" ${wrOff[id]?"":"checked"} ${fx?"disabled":""}><span class="tg"></span></label>`).join("");
     wrPlay();
   }
-  document.getElementById("wrYears").addEventListener("click",e=>{ const b=e.target.closest("[data-y]"); if(!b) return; wrY=+b.dataset.y; renderWrap(); });
+  document.getElementById("wrYears").addEventListener("click",e=>{ const b=e.target.closest("[data-y]"); if(!b) return; const y=+b.dataset.y; if(wrYs.includes(y)){ if(wrYs.length>1) wrYs=wrYs.filter(v=>v!==y); } else wrYs=[...wrYs,y].sort(); renderWrap(); });
   document.getElementById("wrNick").addEventListener("input",e=>{ WR.set("nick",e.target.value); });
   document.getElementById("wrNick").addEventListener("change",()=>wrPlay());
   document.getElementById("wrList").addEventListener("change",e=>{ const k=e.target.dataset.pk; if(k==null) return; const v=parseInt(e.target.value.replace(/[^\d]/g,""))||0; if(seen[k]){ seen[k].p=v||undefined; saveSeen(); } e.target.value=v?wn(v):""; wrPlay(); });
