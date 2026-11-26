@@ -2765,7 +2765,7 @@
     const special={"첫공":perf.filter(e=>has(e,"첫공")).length,"막공":perf.filter(e=>has(e,"막공")).length,"전관":perf.filter(e=>has(e,"전관")).length,"지방 투어":tour};
     const fm=off.filter(e=>/팬미팅|팬서트|인사/.test(e.t)).length;
     const offT={"팬미팅":fm,"콘서트·행사":off.length-fm};
-    let tix=0; const mItems=[]; rank.forEach(r=>{ let s=0,c=0; perf.filter(e=>e.w===r.w.y+"|"+r.w.t).forEach(e=>{ const p=+(seen[evKey(e)].p||0); if(p){s+=p;c++;} }); if(s){ mItems.push([`〈${RC_SHORT[r.w.t]||r.w.t}〉 x ${c}`,s,c,1]); tix+=s; } });
+    let tix=0; const mItems=[]; rank.forEach(r=>{ let s=0,c=0; perf.filter(e=>e.w===r.w.y+"|"+r.w.t).forEach(e=>{ const p=+(seen[evKey(e)].p||0); if(p){s+=p;c++;} }); if(s){ mItems.push([`〈${RC_SHORT[r.w.t]||r.w.t}〉${rank.filter(q=>q.w.t===r.w.t).length>1?` ’${String(r.w.y).slice(2)}`:""} x ${c}`,s,c,1]); tix+=s; } });
     let offSum=0,offC=0; off.forEach(e=>{ const p=+(seen[evKey(e)].p||0); if(p){offSum+=p;offC++;} }); if(offSum) mItems.push([`콘서트·행사 x ${offC}`,offSum,offC,0]);
     const paidN=all.filter(e=>+(seen[evKey(e)].p||0)>0).length;
     const total=mItems.reduce((a,b)=>a+b[1],0);
@@ -2836,15 +2836,15 @@
       para(c,[`낮공 ${D.matinee} · 밤공 ${D.night} · 주말 ${D.wkend} · 평일 ${D.perf.length-D.wkend}`],1300,t,.45,36); },
     special(c,t,D){ bgPhoto(c,D.rank[1]?D.rank[1].w:D.top.w,t,.65); kicker(c,"특별한 회차들",1000,t); head(c,"놓치지 않은 순간",1110,t); const L=Object.entries(D.special).filter(x=>x[1]); tiles(c,L,1190,t); },
     offstage(c,t,D){ bgGlow(c,.35); kicker(c,"무대 밖에서도",300,t); head(c,"공연 말고도",410,t); head(c,`${D.off.length}번 더 만났어요`,520,t,.12); tiles(c,Object.entries(D.offT).filter(x=>x[1]),640,t); },
-    money(c,t,D){ c.fillStyle="#0a0908"; c.fillRect(0,0,CW,CH); if(D.top){ cover(c,D.top.w.img,0,0,CW,CH,D.top.w.pos); c.fillStyle="rgba(10,9,8,.78)"; c.fillRect(0,0,CW,CH); }
-      const rows=D.mItems, n=rows.length, w=800, x=(CW-w)/2, Fh=(D.paidN?90:30)+260, R=n*62+20, maxH=CH-240, ov=Math.max(0,250+R+Fh-maxH), Rv=R-ov, h=250+Rv+Fh;
-      const y=Math.max(120,(CH-h)/2)-(1-seg(t,0,ov?.25:.45))*(h+300), so=ov*seg(t,.35,.82);
+    money(c,t,D){ const H=c.canvas.height; c.fillStyle="#0a0908"; c.fillRect(0,0,CW,H); if(D.top){ cover(c,D.top.w.img,0,0,CW,H,D.top.w.pos); c.fillStyle="rgba(10,9,8,.78)"; c.fillRect(0,0,CW,H); }
+      const rows=D.mItems, n=rows.length, w=800, x=(CW-w)/2, Fh=(D.paidN?90:30)+260, R=n*62+20, maxH=H-240, ov=Math.max(0,250+R+Fh-maxH), Rv=R-ov, h=250+Rv+Fh;
+      const y=Math.max(120,(H-h)/2)-(1-seg(t,0,ov?.25:.45))*(h+300), so=ov*seg(t,.35,.82);
       c.save(); c.shadowColor="rgba(0,0,0,.6)"; c.shadowBlur=60; c.shadowOffsetY=30; c.fillStyle="#f3ece0"; c.beginPath(); c.moveTo(x,y); c.lineTo(x+w,y); c.lineTo(x+w,y+h); for(let k=w;k>0;k-=40){ c.arc(x+k-20,y+h,20,0,Math.PI,false);} c.lineTo(x,y); c.fill(); c.restore();
       const ink="#2a2420", sub="#7a6f64", dash=yy=>{ c.save(); c.strokeStyle="#a69a8c"; c.setLineDash([10,8]); c.lineWidth=3; c.beginPath(); c.moveTo(x+50,yy); c.lineTo(x+w-50,yy); c.stroke(); c.restore(); };
       tx(c,"켱수증",CW/2,y+120,`92px ${F.name}`,ink,"center"); tx(c,`${(document.getElementById("wrNick").value||"켱러버").trim()} · ${D.Y}`,CW/2,y+175,`400 28px ${F.sans}`,sub,"center"); dash(y+220);
       const top=y+224, bot=y+250+Rv-2, vis=Math.max(1,Math.floor(Rv/62));
       c.save(); c.beginPath(); c.rect(x,top,w,bot-top); c.clip();
-      rows.forEach((r,i)=>{ const yy=y+290+i*62-so; if(yy<top-40||yy>bot+60) return; const a=ov?(i<vis?seg(t,.18+i*(.16/vis),.26+i*(.16/vis)):1):seg(t,.35+i*.05,.5+i*.05); tx(c,r[0],x+50,yy,fit(c,r[0],w-300,32,F.sans,"400"),"#3a322b","left",a); tx(c,"₩"+wn(r[1]),x+w-50,yy,`500 34px ${F.latin}`,ink,"right",a); });
+      rows.forEach((r,i)=>{ const yy=y+290+i*62-so; if(yy<top-40||yy>bot+60) return; const a=ov?(i<vis?seg(t,.18+i*(.16/vis),.26+i*(.16/vis)):1):seg(t,.35+i*Math.min(.05,.5/n),.5+i*Math.min(.05,.5/n)); tx(c,r[0],x+50,yy,fit(c,r[0],w-300,32,F.sans,"400"),"#3a322b","left",a); tx(c,"₩"+wn(r[1]),x+w-50,yy,`500 34px ${F.latin}`,ink,"right",a); });
       if(ov){ const g1=c.createLinearGradient(0,top,0,top+50); g1.addColorStop(0,"rgba(243,236,224,1)"); g1.addColorStop(1,"rgba(243,236,224,0)"); c.fillStyle=g1; c.fillRect(x,top,w,50);
         const g2=c.createLinearGradient(0,bot-60,0,bot); g2.addColorStop(0,"rgba(243,236,224,0)"); g2.addColorStop(1,"rgba(243,236,224,1)"); c.fillStyle=g2; c.fillRect(x,bot-60,w,60); }
       c.restore();
@@ -2878,7 +2878,10 @@
     wrT0=performance.now(); wrRaf=requestAnimationFrame(wrTick); }
   cv.addEventListener("click",()=>{ if(wrRecOn) return; if(wrDone){ wrPlay(); return; } if(wrIdx+1<wrSeq.length){ wrIdx++; wrT0=performance.now(); } });
   document.getElementById("wrPlay").onclick=wrPlay;
-  document.getElementById("wrShot").onclick=()=>{ cancelAnimationFrame(wrRaf); wrDone=true; wrDraw(1); cv.toBlob(b=>wrDown(b,`kyeongchive-${wrLab(wrYs)}-${wrIdx+1}.png`),"image/png"); };
+  document.getElementById("wrShot").onclick=()=>{ cancelAnimationFrame(wrRaf); wrDone=true; wrDraw(1);
+    const id=wrSeq[wrIdx], oc=document.createElement("canvas"); oc.width=CW; oc.height=id==="money"?Math.max(CH,moneyH(wrD)+240):CH; const o=oc.getContext("2d");
+    o.save(); SC[id](o,1,wrD); o.restore(); const lg=wImg["photos/logo2.png"]; if(lg&&lg.naturalWidth){ const w=190,h=w*lg.naturalHeight/lg.naturalWidth; o.globalAlpha=.85; o.drawImage(lg,CW-w-36,oc.height-h-36,w,h); o.globalAlpha=1; }
+    oc.toBlob(b=>wrDown(b,`kyeongchive-${wrLab(wrYs)}-${id==="money"?"켱수증":wrIdx+1}.png`),"image/png"); };
   function wrDown(b,name){ const a=document.createElement("a"); a.href=URL.createObjectURL(b); a.download=name; document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },4000); }
   let wrRec=null, wrChunks=[];
   document.getElementById("wrRec").onclick=async()=>{ if(!window.MediaRecorder||!cv.captureStream){ alert("이 브라우저는 영상 저장을 지원하지 않아요. '이 장면 이미지 저장'을 이용해 주세요."); return; }
