@@ -2788,7 +2788,7 @@
       let x=72; tx(c,wn(hv),x,1640+o,`500 ${Z}px ${F.latin}`,GOLD,"left",a); x+=wh+14; tx(c,"시간",x,1640+o,`${Math.round(Z*.26)}px ${F.name}`,INK,"left",a); x+=wu+36;
       if(m){ tx(c,String(mv),x,1640+o,`500 ${Z}px ${F.latin}`,GOLD,"left",a); tx(c,"분",x+wm+14,1640+o,`${Math.round(Z*.26)}px ${F.name}`,INK,"left",a); }
       const d=Math.floor(h/24), r=h%24, rest=[r?`${r}시간`:"",m?`${m}분`:""].filter(Boolean).join(" "); if(D.miss) para(c,[`러닝타임 정보가 없는 ${D.miss}회는 빼고 셌어요.`],1740,t); },
-    top(c,t,D){ const r=D.top; bgPhoto(c,r.w,t); kicker(c,`${D.yl} 가장 많이 만난 작품`,1260,t); head(c,`〈${r.w.t}〉 ${r.w.r?r.w.r.split(/ · |·/)[0]:""}`,1370,t); big(c,r.n,"회",1640,t,.18,250); para(c,[`${D.multi?"전체":"올해"} 관극의 ${Math.round(r.n/D.perf.length*100)}%를 함께했어요.`],1740,t,.34); },
+    top(c,t,D){ const r=D.top; bgPhoto(c,r.w,t); kicker(c,`${D.yl} 가장 많이 만난 작품`,1260,t); head(c,`〈${r.w.t}〉 ${r.w.r?r.w.r.split(/ · |·/)[0]:""}`,1370,t); big(c,r.n,"회",1640,t,.18,250); },
     rank(c,t,D){ bgGlow(c,.3); kicker(c,`${D.yl} 만난 작품들`,210,t); head(c,`나의 ${D.Y} 무대`,320,t); const L=D.rank.slice(0,6), rh=Math.min(200,(CH-560)/Math.max(L.length,1)-24);
       L.forEach((r,i)=>{ const a=seg(t,.2+i*.08,.42+i*.08); if(a<=0) return; const y=430+i*(rh+24), x=72-(1-a)*80; c.save(); c.globalAlpha=a; rr(c,x,y,CW-144,rh,18); c.fillStyle="rgba(23,19,17,.85)"; c.fill(); c.strokeStyle="#3a322b"; c.lineWidth=2; c.stroke();
         const iw=rh*.78; c.save(); rr(c,x+18,y+18,iw-20,rh-36,8); c.clip(); cover(c,r.w.img,x+18,y+18,iw-20,rh-36,r.w.pos); c.restore();
