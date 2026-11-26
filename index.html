@@ -518,6 +518,8 @@
   .seen-p:focus{outline:none;border-color:var(--gold)}
   .seen-st{float:right;margin:-2px 2px 4px 10px;width:46px;height:46px;border:2px dashed var(--gold);border-radius:50%;background:none;color:var(--gold);font-family:"Song Myung",var(--serif);font-size:23px;line-height:1;cursor:pointer;transform:rotate(-10deg);animation:stampIn .32s cubic-bezier(.3,1.6,.5,1)}
   .seen-st:hover{opacity:.7}
+  .seen-st.plan{border-style:dotted;border-color:rgba(201,164,106,.6);color:rgba(201,164,106,.75);font-size:13.5px;letter-spacing:-.02em}
+  .cal .ch.seen.plan::after{border-style:dotted;opacity:.6}
   @keyframes stampIn{from{transform:rotate(-10deg) scale(1.8);opacity:0}to{transform:rotate(-10deg) scale(1);opacity:1}}
   .cal .ch.seen{position:relative;padding-right:22px}
   .cal .ch.seen::after{content:attr(data-st);position:absolute;right:3px;top:50%;width:15px;height:15px;margin-top:-8.5px;display:flex;align-items:center;justify-content:center;border:1px dashed var(--gold);border-radius:50%;background:var(--bg);color:var(--gold);font-family:"Song Myung",var(--serif);font-size:9.5px;line-height:1;transform:rotate(-10deg)}
@@ -704,7 +706,7 @@
   <!-- CALENDAR -->
   <div class="view" id="v-cal"><div class="wrap page">
     <div class="sec-head"><span class="num">02</span><h2>일정</h2></div>
-    <div class="cal-wrapgo"><span>다녀온 회차에 <b>봤어요</b>를 눌러 켱 도장을 찍어 두면 한 해 관극을 영상으로 정산해 드려요.</span><button data-go="wrap">관극 정산 →</button></div>
+    <div class="cal-wrapgo"><span>다녀온 회차엔 <b>봤어요</b>, 예매한 회차엔 <b>볼 예정</b>을 눌러 도장을 찍어 두면 한 해 관극을 영상으로 정산해 드려요.</span><button data-go="wrap">관극 정산 →</button></div>
     <div class="cal-bar">
       <button class="cal-nav" id="calPrev" aria-label="이전 달">‹</button>
       <div class="cal-title" id="calTitle"></div>
@@ -832,6 +834,8 @@
   let seen=WR.get("seen",{});           /* key → {p:가격} */
   let wrOff=WR.get("off",{});           /* 꺼둔 장면 */
   const evKey=ev=>ev.s+"|"+(ev.tm||"")+"|"+ev.t;
+  const markable=ev=>!ev.e && (ev.k==="출연 회차"||ev.k==="행사");
+  const isPlan=ev=>ev.s>ds(t0());
   const seenable=ev=>!ev.e && (ev.k==="출연 회차"||ev.k==="행사") && ev.s<=ds(t0());
   const saveSeen=()=>WR.set("seen",seen);
   const STAMP="켱";
@@ -2465,7 +2469,7 @@
       if(i>=35 && d.getMonth()!==calM) break;
       const k=ds(d), evs=list.filter(ev=>onDay(ev,d));
       const rg=evs.filter(ev=>ev.e).sort((a,b)=>a.s.localeCompare(b.s)).map(ev=>`<div class="rg" style="--c:${SK[ev.k]}" title="${esc(ev.t)}">${(k===ev.s||d.getDay()===0||d.getDate()===1)?esc(ev.t.replace(" 공연 기간","")):"&nbsp;"}</div>`).join("");
-      const ch=evs.filter(ev=>!ev.e).map(ev=>`<div class="ch${seen[evKey(ev)]?" seen":""}" style="--c:${SK[ev.k]}" title="${esc(ev.t)}"${seen[evKey(ev)]?` data-st="${STAMP}"`:""}>${ev.tm?ev.tm+" ":""}${esc(ev.t)}</div>`).join("");
+      const ch=evs.filter(ev=>!ev.e).map(ev=>`<div class="ch${seen[evKey(ev)]?" seen"+(isPlan(ev)?" plan":""):""}" style="--c:${SK[ev.k]}" title="${esc(ev.t)}"${seen[evKey(ev)]?` data-st="${STAMP}"`:""}>${ev.tm?ev.tm+" ":""}${esc(ev.t)}</div>`).join("");
       h+=`<button class="d ${d.getMonth()!==calM?'out':''} ${d.getDay()===0?'su':d.getDay()===6?'sa':''} ${k===key?'td':''} ${k===calSel?'sel':''} ${pairSel.length&&evs.length?'pm':''}" data-d="${k}"><span class="n">${d.getDate()}</span>${rg}${ch}</button>`;
     }
     document.getElementById("cal").innerHTML=h;
@@ -2479,7 +2483,7 @@
     document.getElementById("calSub").textContent=title+` · ${items.length}개`;
     document.getElementById("calList").innerHTML = items.length ? `<ul class="cal-list">${items.map(ev=>{
       const w=ev.w && works.find(x=>x.y+"|"+x.t===ev.w);
-      return `<li style="--c:${SK[ev.k]}"><div class="when">${ev.e?`${fmtD(ev.s)}<small>– ${fmtD(ev.e)}</small>`:`${fmtD(ev.s)}${ev.tm?`<small>${ev.tm}</small>`:""}`}</div><div>${seenable(ev)?(seen[evKey(ev)]?`<button class="seen-st" data-seen="${esc(evKey(ev))}" title="다시 누르면 취소돼요" aria-label="본 회차 (누르면 취소)">${STAMP}</button>`:`<button class="seen-b" data-seen="${esc(evKey(ev))}">봤어요</button>`):""}<div class="t"><span class="k">${ev.k}</span>${esc(ev.t)}</div><div class="m">${[ev.note,ev.pl].filter(Boolean).map(esc).join(" · ")}${w?` · <a href="#" data-cw="${works.indexOf(w)}">작품 보기</a>`:""}${ev.u?` · <a href="${esc(ev.u)}" target="_blank" rel="noopener">자세히 ↗</a>`:""}</div>${ev.co?`<div class="pr">with ${ev.co.map(n=>pairSel.includes(n)?`<b>${esc(n)}</b>`:esc(n)).join(" · ")}</div>`:""}${seenable(ev)&&seen[evKey(ev)]?`<label class="seen-pr">티켓값 <input class="seen-p" inputmode="numeric" placeholder="입력하면 켱수증에 들어가요" data-pk="${esc(evKey(ev))}" value="${seen[evKey(ev)].p?wn(seen[evKey(ev)].p):""}"></label>`:""}</div></li>`;
+      return `<li style="--c:${SK[ev.k]}"><div class="when">${ev.e?`${fmtD(ev.s)}<small>– ${fmtD(ev.e)}</small>`:`${fmtD(ev.s)}${ev.tm?`<small>${ev.tm}</small>`:""}`}</div><div>${markable(ev)?(seen[evKey(ev)]?(isPlan(ev)?`<button class="seen-st plan" data-seen="${esc(evKey(ev))}" title="다시 누르면 취소돼요" aria-label="볼 예정 (누르면 취소)">예정</button>`:`<button class="seen-st" data-seen="${esc(evKey(ev))}" title="다시 누르면 취소돼요" aria-label="본 회차 (누르면 취소)">${STAMP}</button>`):`<button class="seen-b" data-seen="${esc(evKey(ev))}">${isPlan(ev)?"볼 예정":"봤어요"}</button>`):""}<div class="t"><span class="k">${ev.k}</span>${esc(ev.t)}</div><div class="m">${[ev.note,ev.pl].filter(Boolean).map(esc).join(" · ")}${w?` · <a href="#" data-cw="${works.indexOf(w)}">작품 보기</a>`:""}${ev.u?` · <a href="${esc(ev.u)}" target="_blank" rel="noopener">자세히 ↗</a>`:""}</div>${ev.co?`<div class="pr">with ${ev.co.map(n=>pairSel.includes(n)?`<b>${esc(n)}</b>`:esc(n)).join(" · ")}</div>`:""}${markable(ev)&&seen[evKey(ev)]?`<label class="seen-pr">티켓값 <input class="seen-p" inputmode="numeric" placeholder="입력하면 켱수증에 들어가요" data-pk="${esc(evKey(ev))}" value="${seen[evKey(ev)].p?wn(seen[evKey(ev)].p):""}"></label>`:""}</div></li>`;
     }).join("")}</ul>` : `<div class="empty">${pairSel.length?"선택한 배우들과 함께 서는 회차가 없어요.":calSel?"이 날은 등록된 일정이 없어요.":"이번 달 등록된 일정이 없어요."}</div>`;
   }
   document.getElementById("cal").addEventListener("click",e=>{const b=e.target.closest(".d"); if(!b)return; calSel = calSel===b.dataset.d?null:b.dataset.d; renderCal();});
