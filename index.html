@@ -2837,10 +2837,10 @@
     special(c,t,D){ bgPhoto(c,D.rank[1]?D.rank[1].w:D.top.w,t,.65); kicker(c,"특별한 회차들",1000,t); head(c,"놓치지 않은 순간",1110,t); const L=Object.entries(D.special).filter(x=>x[1]); tiles(c,L,1190,t); },
     offstage(c,t,D){ bgGlow(c,.35); kicker(c,"무대 밖에서도",300,t); head(c,"공연 말고도",410,t); head(c,`${D.off.length}번 더 만났어요`,520,t,.12); tiles(c,Object.entries(D.offT).filter(x=>x[1]),640,t); },
     money(c,t,D){ c.fillStyle="#0a0908"; c.fillRect(0,0,CW,CH); if(D.top){ cover(c,D.top.w.img,0,0,CW,CH,D.top.w.pos); c.fillStyle="rgba(10,9,8,.78)"; c.fillRect(0,0,CW,CH); }
-      const rows=D.mItems.slice(0,8), w=800, x=(CW-w)/2, h=560+rows.length*62+120, y=Math.max(120,(CH-h)/2)-(1-seg(t,0,.45))*(h+300);
+      const rows=D.mItems.slice(0,8), w=800, x=(CW-w)/2, h=560+rows.length*62+60, y=Math.max(120,(CH-h)/2)-(1-seg(t,0,.45))*(h+300);
       c.save(); c.shadowColor="rgba(0,0,0,.6)"; c.shadowBlur=60; c.shadowOffsetY=30; c.fillStyle="#f3ece0"; c.beginPath(); c.moveTo(x,y); c.lineTo(x+w,y); c.lineTo(x+w,y+h); for(let k=w;k>0;k-=40){ c.arc(x+k-20,y+h,20,0,Math.PI,false);} c.lineTo(x,y); c.fill(); c.restore();
       const ink="#2a2420", sub="#7a6f64", dash=yy=>{ c.save(); c.strokeStyle="#a69a8c"; c.setLineDash([10,8]); c.lineWidth=3; c.beginPath(); c.moveTo(x+50,yy); c.lineTo(x+w-50,yy); c.stroke(); c.restore(); };
-      tx(c,"켱수증",CW/2,y+120,`92px ${F.name}`,ink,"center"); tx(c,`KYEONGCHIVE · ${D.Y}`,CW/2,y+175,`500 28px ${F.latin}`,sub,"center"); dash(y+220);
+      tx(c,"켱수증",CW/2,y+120,`92px ${F.name}`,ink,"center"); tx(c,`${(document.getElementById("wrNick").value||"켱러버").trim()} · ${D.Y}`,CW/2,y+175,`400 28px ${F.sans}`,sub,"center"); dash(y+220);
       rows.forEach((r,i)=>{ const a=seg(t,.35+i*.05,.5+i*.05); tx(c,r[0],x+50,y+290+i*62,fit(c,r[0],w-330,32,F.sans,"400"),"#3a322b","left",a); tx(c,"₩"+wn(r[1]),x+w-50,y+290+i*62,`500 34px ${F.latin}`,ink,"right",a); });
       let yy=y+290+rows.length*62-20; dash(yy); const a2=seg(t,.6,.75); if(D.paidN) tx(c,`한 회당 평균  ₩${wn(Math.round(D.total/D.paidN))}`,x+50,yy+60,`300 28px ${F.sans}`,"#6b6157","left",a2);
       yy+=(D.paidN?90:30); dash(yy); tx(c,"TOTAL",x+50,yy+80,`600 34px ${F.sans}`,ink,"left",a2); tx(c,"₩"+wn(Math.round(D.total*seg(t,.62,.95)/1000)*1000||0),x+w-50,yy+86,`700 64px ${F.serif}`,ink,"right",a2);
