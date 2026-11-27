@@ -2933,8 +2933,8 @@
       const [a,o]=up(t,.14), k=seg(t,.18,.64), hv=Math.round(h*k), mv=Math.round(m*k); c.save(); c.font=`500 ${Z}px ${F.latin}`; const wh=c.measureText(wn(hv)).width, wm=c.measureText(String(mv)).width; c.font=`${Math.round(Z*.26)}px ${F.name}`; const wu=c.measureText("시간").width; c.restore();
       let x=72; tx(c,wn(hv),x,1640+o,`500 ${Z}px ${F.latin}`,GOLD,"left",a); x+=wh+14; tx(c,"시간",x,1640+o,`${Math.round(Z*.26)}px ${F.name}`,INK,"left",a); x+=wu+36;
       if(m){ tx(c,String(mv),x,1640+o,`500 ${Z}px ${F.latin}`,GOLD,"left",a); tx(c,"분",x+wm+14,1640+o,`${Math.round(Z*.26)}px ${F.name}`,INK,"left",a); }
-      const d=Math.floor(h/24), r=h%24, rest=[r?`${r}시간`:"",m?`${m}분`:""].filter(Boolean).join(" "); { const dv=D.min/1440, dTxt=Math.abs(dv-Math.round(dv))<.05&&dv>=1?`${Math.round(dv)}`:dv.toFixed(1); const [a2,o2]=up(t,.3); c.save(); c.font=`300 36px ${F.sans}`; const lw=c.measureText("일수로는 약").width; c.font=`500 72px ${F.latin}`; const nw=c.measureText(dTxt).width; c.restore();
-        tx(c,"일수로는 약",72,1752+o2,`300 36px ${F.sans}`,"#d9cfc2","left",a2); tx(c,dTxt,72+lw+18,1752+o2,`500 72px ${F.latin}`,GOLD,"left",a2); tx(c,"일",72+lw+18+nw+8,1752+o2,`36px ${F.name}`,INK,"left",a2); }
+      const d=Math.floor(h/24), r=h%24, rest=[r?`${r}시간`:"",m?`${m}분`:""].filter(Boolean).join(" "); { const dv=D.min/1440, dTxt=Math.abs(dv-Math.round(dv))<.05&&dv>=1?`${Math.round(dv)}`:dv.toFixed(1); const [a2,o2]=up(t,.3); c.save(); c.font=`500 72px ${F.latin}`; const nw=c.measureText(dTxt).width; c.restore();
+        tx(c,dTxt,72,1752+o2,`500 72px ${F.latin}`,GOLD,"left",a2); tx(c,"일 동안 함께했어요",72+nw+10,1752+o2,`36px ${F.name}`,INK,"left",a2); }
       if(D.miss) para(c,[`러닝타임 정보가 없는 ${D.miss}회는 빼고 셌어요.`],1820,t,.4,30); },
     top(c,t,D){ const r=D.top; bgPhoto(c,r.w,t); kicker(c,`${D.yl} 가장 많이 만난 작품`,1260,t); head(c,`〈${r.w.t}〉 ${r.w.r?r.w.r.split(/ · |·/)[0]:""}`,1370,t); big(c,r.n,"회",1640,t,.18,250); },
     rank(c,t,D){ bgGlow(c,.3); kicker(c,`${D.yl} 만난 작품들`,210,t); head(c,"최다 관극 랭킹",320,t); const L=D.rank.slice(0,6), rh=Math.min(200,(CH-560)/Math.max(L.length,1)-24);
