@@ -221,7 +221,22 @@
 
   /* ---------- calendar ---------- */
   .cal-bar{display:flex;align-items:center;gap:10px;margin-bottom:14px}
-  .cal-title{font-family:var(--serif);font-size:26px;font-weight:700;min-width:150px;text-align:center}
+  .cal-title{font-family:var(--serif);font-size:26px;font-weight:700;min-width:150px;text-align:center;background:none;border:0;color:var(--ink);cursor:pointer;padding:2px 8px;border-radius:10px}
+  .cal-title::after{content:"▾";font-size:12px;color:var(--gold);margin-left:6px;vertical-align:4px}
+  .cal-title:hover{color:var(--gold)}
+  .cal-pick-w{position:relative}
+  .cal-pick{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);z-index:30;width:264px;background:#17130f;border:1px solid var(--line);border-radius:14px;padding:12px;box-shadow:0 14px 40px rgba(0,0,0,.55)}
+  .cp-y{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+  .cp-y b{font-family:var(--serif);font-size:18px}
+  .cp-y button{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:none;color:var(--ink);font-size:16px;cursor:pointer}
+  .cp-y button:disabled{opacity:.3;cursor:default}
+  .cp-m{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+  .cp-m button{position:relative;background:none;border:1px solid transparent;border-radius:9px;color:var(--ink);font:inherit;font-size:14px;padding:9px 0;cursor:pointer}
+  .cp-m button:hover{border-color:var(--line)}
+  .cp-m button.on{background:var(--gold);color:#17130f;font-weight:700}
+  .cp-m button.has::after{content:"";position:absolute;left:50%;bottom:4px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:var(--gold)}
+  .cp-m button.on.has::after{background:#17130f}
+  .cp-m button.now{border-color:rgba(201,164,106,.5)}
   .cal-nav{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:none;color:var(--ink);font-size:20px;cursor:pointer}
   .cal-nav:hover,.cal-today:hover{border-color:var(--gold);color:var(--gold)}
   .cal-today{margin-left:auto;border:1px solid var(--line);background:none;color:var(--ink);padding:8px 16px;border-radius:999px;cursor:pointer;font-size:13px}
@@ -739,7 +754,11 @@
     <div class="cal-wrapgo"><span>다녀온 회차엔 <b>봤어요</b>, 예매한 회차엔 <b>볼 예정</b>을 눌러 도장을 찍어 두면 한 해 관극을 영상으로 정산해 드려요.</span><button data-go="wrap">관극 정산 →</button></div>
     <div class="cal-bar">
       <button class="cal-nav" id="calPrev" aria-label="이전 달">‹</button>
-      <div class="cal-title" id="calTitle"></div>
+      <div class="cal-pick-w"><button class="cal-title" id="calTitle" aria-haspopup="true" aria-expanded="false"></button>
+        <div class="cal-pick" id="calPick" hidden>
+          <div class="cp-y"><button id="cpPrev" aria-label="이전 해">‹</button><b id="cpYear"></b><button id="cpNext" aria-label="다음 해">›</button></div>
+          <div class="cp-m" id="cpMonths"></div>
+        </div></div>
       <button class="cal-nav" id="calNext" aria-label="다음 달">›</button>
       <button class="cal-today" id="calToday">오늘</button>
     </div>
@@ -2551,6 +2570,20 @@
       el.classList.remove("swl","swr"); void el.offsetWidth; el.classList.add(dir>0?"swl":"swr");
     },{passive:true});
   })();
+  const CP_YS=SCHED.map(e=>+e.s.slice(0,4)), CP_MIN=Math.min(...CP_YS), CP_MAX=Math.max(...CP_YS,t0().getFullYear());
+  let cpY=null;
+  function cpRender(){ const pk=document.getElementById("calPick"); document.getElementById("cpYear").textContent=cpY+"년";
+    document.getElementById("cpPrev").disabled=cpY<=CP_MIN; document.getElementById("cpNext").disabled=cpY>=CP_MAX; const t=t0();
+    document.getElementById("cpMonths").innerHTML=Array.from({length:12},(_,m)=>{ const mk=`${cpY}-${String(m+1).padStart(2,"0")}`, has=SCHED.some(e=>e.s.slice(0,7)===mk);
+      return `<button data-cm="${m}" class="${cpY===calY&&m===calM?"on":""}${has?" has":""}${cpY===t.getFullYear()&&m===t.getMonth()?" now":""}">${m+1}월</button>`; }).join(""); }
+  function cpToggle(open){ const pk=document.getElementById("calPick"), tt=document.getElementById("calTitle"); if(open==null) open=pk.hidden; pk.hidden=!open; tt.setAttribute("aria-expanded",open); if(open){ cpY=calY; cpRender(); } }
+  document.getElementById("calTitle").addEventListener("click",e=>{ e.stopPropagation(); cpToggle(); });
+  document.getElementById("cpPrev").addEventListener("click",e=>{ e.stopPropagation(); cpY--; cpRender(); });
+  document.getElementById("cpNext").addEventListener("click",e=>{ e.stopPropagation(); cpY++; cpRender(); });
+  document.getElementById("cpMonths").addEventListener("click",e=>{ const b=e.target.closest("[data-cm]"); if(!b) return; calY=cpY; calM=+b.dataset.cm; calSel=null; cpToggle(false); renderCal(); });
+  document.getElementById("calPick").addEventListener("click",e=>e.stopPropagation());
+  document.addEventListener("click",()=>{ const pk=document.getElementById("calPick"); if(pk&&!pk.hidden) cpToggle(false); });
+  document.addEventListener("keydown",e=>{ if(e.key==="Escape"){ const pk=document.getElementById("calPick"); if(pk&&!pk.hidden) cpToggle(false); } });
   document.getElementById("calPrev").addEventListener("click",()=>{calM--; if(calM<0){calM=11;calY--;} calSel=null; renderCal();});
   document.getElementById("calNext").addEventListener("click",()=>{calM++; if(calM>11){calM=0;calY++;} calSel=null; renderCal();});
   document.getElementById("calToday").addEventListener("click",()=>{const t=t0(); calY=t.getFullYear(); calM=t.getMonth(); calSel=ds(t); renderCal();});
